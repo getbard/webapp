@@ -2,14 +2,21 @@
   "name": "webapp",
   "version": "0.1.0",
   "private": true,
+  "repository": "https://github.com/getbard/webapp",
+  "author": "Anthony Morris <anthony@amorrissound.com>",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
     "next": "9.3.0",
+    "next-seo": "^4.4.0",
+    "postcss-import": "^12.0.1",
     "react": "16.13.0",
-    "react-dom": "16.13.0"
+    "react-dom": "16.13.0",
+    "tailwindcss": "^1.2.0"
   }
 }

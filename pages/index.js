@@ -1,203 +1,103 @@
-import Head from 'next/head'
+import { useState } from 'react';
+import Link from 'next/link';
+import styled from '@emotion/styled';
 
-const Home = () => (
-  <div className="container">
-    <Head>
-      <title>Create Next App</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
+const Container = styled.div`
+    &:after {
+        content: "";
+        background-image: url(../blob-secondary.svg);
+        opacity: 0.18;
+        top: -90vh;
+        left: -5vw;
+        bottom: 0;
+        right: -40vw;
+        position: absolute;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        z-index: -1;
+    }
+`;
 
-    <main>
-      <h1 className="title">
-        Welcome to <a href="https://nextjs.org">Next.js!</a>
-      </h1>
+function Index() {
+  const [email, setEmail] = useState();
 
-      <p className="description">
-        Get started by editing <code>pages/index.js</code>
-      </p>
+  return (
+    <Container className="overflow-x-hidden relative">
+      {/* Hero */}
+      <div className="min-h-screen flex flex-col justify-between container mx-auto px-10 lg:px-5">
+        <nav className="py-10 flex flex-col sm:flex-row justify-between sm:items-center">
+          <Link href="/">
+            <a className="logo font-extrabold text-5xl text-primary z-10 font-serif">
+              bard.
+            </a>
+          </Link>
 
-      <div className="grid">
-        <a href="https://nextjs.org/docs" className="card">
-          <h3>Documentation &rarr;</h3>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+          <Link href="/open-letter">
+            <a className="text-2xl text-primary">
+              An Open Letter
+            </a>
+          </Link>
+        </nav>
 
-        <a href="https://nextjs.org/learn" className="card">
-          <h3>Learn &rarr;</h3>
-          <p>Learn about Next.js in an interactive course with quizzes!</p>
-        </a>
+        <section className="flex items-center pb-20 md:pb-48">
+          <div className="md:w-1/2 inline-block z-10">
+            <h1 className="font-bold text-3xl xl:text-4xl inline font-serif">Quality writing rarely earns you cash.</h1> <h1 className="font-extrabold text-3xl xl:text-4xl inline text-primary font-serif">Until now.</h1>
 
-        <a
-          href="https://github.com/zeit/next.js/tree/master/examples"
-          className="card"
-        >
-          <h3>Examples &rarr;</h3>
-          <p>Discover and deploy boilerplate example Next.js projects.</p>
-        </a>
+            <p className="text-xl xl:text-2xl text-gray-800 my-10">Whether you have a large audience, starting from scratch, or something in-between, we let you focus on writing — we handle the rest.</p>
 
-        <a
-          href="https://zeit.co/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          className="card"
-        >
-          <h3>Deploy &rarr;</h3>
-          <p>
-            Instantly deploy your Next.js site to a public URL with ZEIT Now.
-          </p>
-        </a>
+            <form action="https://getbard.us4.list-manage.com/subscribe/post?u=86d9490b3d050660444e895dd&amp;id=bf0fd8d2e4" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank" noValidate>
+              <input name="EMAIL" type="email" value={email} onChange={e => setEmail(e.target.value)} id="mce-EMAIL" className="bg-snow border border-platinum px-4 py-3 rounded w-full xl:w-3/4 mr-2 mb-4 inline-block" placeholder="ernest@hemingway.com" required />
+              <div style={{ position: 'absolute', left: -5000 }} aria-hidden="true"><input type="text" name="b_86d9490b3d050660444e895dd_bf0fd8d2e4" tabIndex="-1" defaultValue="" /></div>
+              <input type="submit" className="bg-primary hover:bg-secondary px-4 py-3 text-snow rounded font-serif w-full xl:w-auto" value="Keep Me Posted" />
+            </form>
+          </div>
+
+          <div className="md:w-1/2">
+            <img src="/woman-writer.svg" alt="woman writing" className="hidden md:inline-block" />
+          </div>
+        </section>
       </div>
-    </main>
 
-    <footer>
-      <a
-        href="https://zeit.co?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Powered by <img src="/zeit.svg" alt="ZEIT Logo" />
-      </a>
-    </footer>
+      <section className="bg-primary text-snow lg:w-11/12 mx-auto z-10 flex flex-col md:flex-row">
+        <div className="pt-20 xl:pt-40 py-10 md:py-20 xl:py-40 px-10 xl:px-20 z-10 bg-primary md:w-1/3 md:inline-block">
+          <h2 className="font-bold text-2xl xl:text-4xl pb-5 font-serif">Quality Over Quantity</h2>
+          <p className="text-xl xl:text-2xl">Get rewarded based on the value you provide, not on how many clicks you get. The end of clickbait has arrived.</p>
+        </div>
 
-    <style jsx>{`
-      .container {
-        min-height: 100vh;
-        padding: 0 0.5rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
+        <div className="py-10 md:py-20 xl:py-40 px-10 xl:px-20 z-10 bg-primary md:w-1/3 md:inline-block">
+          <h2 className="font-bold text-2xl xl:text-4xl pb-5 font-serif">We Got Your Back</h2>
+          <p className="text-xl xl:text-2xl">We give you the tools you need to thrive. Forget about setting up a website or newsletters. Focus on your writing.</p>
+        </div>
 
-      main {
-        padding: 5rem 0;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
+        <div className="pb-20 xl:pb-40 py-10 md:py-20 xl:py-40 px-10 xl:px-20 z-10 bg-primary md:w-1/3 md:inline-block">
+          <h2 className="font-bold text-2xl xl:text-4xl pb-5 font-serif">Your Audience</h2>
+          <p className="text-xl xl:text-2xl">Reach new readers who are hungry for quality content and eager to reward it.</p>
+        </div>
+      </section>
 
-      footer {
-        width: 100%;
-        height: 100px;
-        border-top: 1px solid #eaeaea;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+      <section className="container mx-auto px-10 py-20 sm:py-20 lg:p-48 text-center z-10">
+        <h2 className="font-bold text-3xl xl:text-4xl pb-5 text-primary font-serif">Join the writing revolution today.</h2>
 
-      footer img {
-        margin-left: 0.5rem;
-      }
+        <form action="https://getbard.us4.list-manage.com/subscribe/post?u=86d9490b3d050660444e895dd&amp;id=bf0fd8d2e4" method="post" id="mc-embedded-subscribe-form2" name="mc-embedded-subscribe-form" target="_blank" noValidate>
+          <input name="EMAIL" type="email" value={email} onChange={e => setEmail(e.target.value)} id="mce-EMAIL2" className="bg-snow border border-platinum px-4 py-3 rounded w-full lg:w-3/4 mr-2 mb-4" placeholder="ernest@hemingway.com" required />
+          <div style={{ position: 'absolute', left: -5000 }} aria-hidden="true"><input type="text" name="b_86d9490b3d050660444e895dd_bf0fd8d2e4" tabIndex="-1" defaultValue="" /></div>
+          <input type="submit" className="bg-primary hover:bg-secondary px-4 py-3 text-snow rounded font-serif w-full lg:w-auto" value="Keep Me Posted" />
+        </form>
+      </section>
 
-      footer a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+      <footer className="bg-gunmetal text-snow p-20 flex items-end justify-between z-10">
+        <div>
+          <div className="font-bold font-serif">Questions?</div>
+          <div>Get in touch at <a className="text-secondary hover:text-platinum" href="mailto:hello@getbard.com">hello@getbard.com</a></div>
+        </div>
 
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
+        <div className="text-right hidden md:block">
+          <div className="font-serif">The pen is mightier than the sword.</div>
+        </div>
+      </footer>
+    </Container>
+  )
+}
 
-      .title a {
-        color: #0070f3;
-        text-decoration: none;
-      }
-
-      .title a:hover,
-      .title a:focus,
-      .title a:active {
-        text-decoration: underline;
-      }
-
-      .title {
-        margin: 0;
-        line-height: 1.15;
-        font-size: 4rem;
-      }
-
-      .title,
-      .description {
-        text-align: center;
-      }
-
-      .description {
-        line-height: 1.5;
-        font-size: 1.5rem;
-      }
-
-      code {
-        background: #fafafa;
-        border-radius: 5px;
-        padding: 0.75rem;
-        font-size: 1.1rem;
-        font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-          DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-      }
-
-      .grid {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
-
-        max-width: 800px;
-        margin-top: 3rem;
-      }
-
-      .card {
-        margin: 1rem;
-        flex-basis: 45%;
-        padding: 1.5rem;
-        text-align: left;
-        color: inherit;
-        text-decoration: none;
-        border: 1px solid #eaeaea;
-        border-radius: 10px;
-        transition: color 0.15s ease, border-color 0.15s ease;
-      }
-
-      .card:hover,
-      .card:focus,
-      .card:active {
-        color: #0070f3;
-        border-color: #0070f3;
-      }
-
-      .card h3 {
-        margin: 0 0 1rem 0;
-        font-size: 1.5rem;
-      }
-
-      .card p {
-        margin: 0;
-        font-size: 1.25rem;
-        line-height: 1.5;
-      }
-
-      @media (max-width: 600px) {
-        .grid {
-          width: 100%;
-          flex-direction: column;
-        }
-      }
-    `}</style>
-
-    <style jsx global>{`
-      html,
-      body {
-        padding: 0;
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-          Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-    `}</style>
-  </div>
-)
-
-export default Home
+export default Index;
