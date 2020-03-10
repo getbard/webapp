@@ -1,8 +1,9 @@
-import Link from 'next/link';
 import { useState } from 'react';
+import { NextPage } from 'next';
+import Link from 'next/link';
 
-function OpenLetter() {
-  const [email, setEmail] = useState();
+const OpenLetter: NextPage = () => {
+  const [email, setEmail] = useState('');
 
   return (
     <div className="flex flex-col justify-between container mx-auto px-10 lg:px-5">
@@ -11,7 +12,7 @@ function OpenLetter() {
           <Link href="/">
             <a className="logo font-extrabold text-5xl text-primary z-10 font-serif">
               bard.
-                        </a>
+            </a>
           </Link>
         </nav>
       </header>
@@ -46,7 +47,7 @@ function OpenLetter() {
 
         <form action="https://getbard.us4.list-manage.com/subscribe/post?u=86d9490b3d050660444e895dd&amp;id=bf0fd8d2e4" method="post" id="mc-embedded-subscribe-form2" name="mc-embedded-subscribe-form" target="_blank" noValidate>
           <input name="EMAIL" type="email" value={email} onChange={e => setEmail(e.target.value)} id="mce-EMAIL2" className="bg-snow border border-platinum px-4 py-3 rounded w-full lg:w-3/4 mr-2 mb-4" placeholder="ernest@hemingway.com" required />
-          <div style={{ position: 'absolute', left: -5000 }} aria-hidden="true"><input type="text" name="b_86d9490b3d050660444e895dd_bf0fd8d2e4" tabIndex="-1" defaultValue="" /></div>
+          <div style={{ position: 'absolute', left: -5000 }} aria-hidden="true"><input type="text" name="b_86d9490b3d050660444e895dd_bf0fd8d2e4" tabIndex={-1} defaultValue="" /></div>
           <input type="submit" className="bg-primary hover:bg-secondary px-4 py-3 text-snow rounded font-serif w-full lg:w-auto" value="Keep Me Posted" />
         </form>
       </section>
