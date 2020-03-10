@@ -8,6 +8,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "start:production": "next start -p $PORT",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
@@ -20,7 +21,6 @@
     "tailwindcss": "^1.2.0"
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^2.1.0",
     "@types/node": "^13.9.0",
     "@types/react": "^16.9.23",
     "@typescript-eslint/eslint-plugin": "^2.23.0",
