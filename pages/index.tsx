@@ -20,8 +20,10 @@ const Container = styled.div`
   }
 `;
 
-const Index: NextPage = () => {
+const Index: NextPage = (): React.ReactElement => {
   const [email, setEmail] = useState('');
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => setEmail(e.target.value);
 
   return (
     <Container className="overflow-x-hidden relative">
@@ -48,7 +50,7 @@ const Index: NextPage = () => {
             <p className="text-xl xl:text-2xl text-gray-800 my-10">Whether you have a large audience, starting from scratch, or something in-between, we let you focus on writing — we handle the rest.</p>
 
             <form action="https://getbard.us4.list-manage.com/subscribe/post?u=86d9490b3d050660444e895dd&amp;id=bf0fd8d2e4" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank" noValidate>
-              <input name="EMAIL" type="email" value={email} onChange={e => setEmail(e.target.value)} id="mce-EMAIL" className="bg-snow border border-platinum px-4 py-3 rounded w-full xl:w-3/4 mr-2 mb-4 inline-block" placeholder="ernest@hemingway.com" required />
+              <input name="EMAIL" type="email" value={email} onChange={handleEmailChange} id="mce-EMAIL" className="bg-snow border border-platinum px-4 py-3 rounded w-full xl:w-3/4 mr-2 mb-4 inline-block" placeholder="ernest@hemingway.com" required />
               <div style={{ position: 'absolute', left: -5000 }} aria-hidden="true"><input type="text" name="b_86d9490b3d050660444e895dd_bf0fd8d2e4" tabIndex={-1} defaultValue="" /></div>
               <input type="submit" className="bg-primary hover:bg-secondary px-4 py-3 text-snow rounded font-serif w-full xl:w-auto" value="Keep Me Posted" />
             </form>
@@ -81,7 +83,7 @@ const Index: NextPage = () => {
         <h2 className="font-bold text-3xl xl:text-4xl pb-5 text-primary font-serif">Join the writing revolution today.</h2>
 
         <form action="https://getbard.us4.list-manage.com/subscribe/post?u=86d9490b3d050660444e895dd&amp;id=bf0fd8d2e4" method="post" id="mc-embedded-subscribe-form2" name="mc-embedded-subscribe-form" target="_blank" noValidate>
-          <input name="EMAIL" type="email" value={email} onChange={e => setEmail(e.target.value)} id="mce-EMAIL2" className="bg-snow border border-platinum px-4 py-3 rounded w-full lg:w-3/4 mr-2 mb-4" placeholder="ernest@hemingway.com" required />
+          <input name="EMAIL" type="email" value={email} onChange={handleEmailChange} id="mce-EMAIL2" className="bg-snow border border-platinum px-4 py-3 rounded w-full lg:w-3/4 mr-2 mb-4" placeholder="ernest@hemingway.com" required />
           <div style={{ position: 'absolute', left: -5000 }} aria-hidden="true"><input type="text" name="b_86d9490b3d050660444e895dd_bf0fd8d2e4" tabIndex={-1} defaultValue="" /></div>
           <input type="submit" className="bg-primary hover:bg-secondary px-4 py-3 text-snow rounded font-serif w-full lg:w-auto" value="Keep Me Posted" />
         </form>
