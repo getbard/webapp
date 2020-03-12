@@ -8,6 +8,9 @@ module.exports = {
         snow: '#FFFAFB',
         platinum: '#E0E0E2',
         gunmetal: '#292F36',
+        gray: {
+          '100': '#F8F8F8',
+        },
       }
     },
   },

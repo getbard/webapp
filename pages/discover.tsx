@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import { withApollo } from '../lib/apollo';
 
 import DiscoverArticles from '../components/DiscoverArticles';
 
@@ -16,4 +17,4 @@ const Discover: NextPage = (): React.ReactElement => {
   );
 }
 
-export default Discover;
+export default withApollo({ ssr: true })(Discover);
