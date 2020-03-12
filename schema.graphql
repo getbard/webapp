@@ -1,0 +1,67 @@
+# source: http://localhost:4000
+# timestamp: Thu Mar 12 2020 15:20:43 GMT-0700 (Pacific Daylight Time)
+
+directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
+
+type Article {
+  id: ID!
+  title: String!
+  subtitle: String
+  content: String!
+  headerImageURL: String
+  author: User!
+  categories: [Category]
+  comments: [Comment]
+  likes: Int!
+  wordLength: Int!
+}
+
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
+}
+
+type Category {
+  id: ID
+  name: String!
+}
+
+type Comment {
+  id: ID
+  user: User!
+  message: String!
+  replies: [Comment]
+}
+
+input CreateArticleInput {
+  title: String!
+  subtitle: String
+  content: String!
+  headerImageURL: String
+}
+
+type CreateArticlePayload {
+  id: ID!
+}
+
+type Mutation {
+  createArticle(input: CreateArticleInput!): CreateArticlePayload!
+}
+
+type Query {
+  articles: [Article]
+  article(id: ID): Article
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+type User {
+  id: ID!
+  name: String
+  username: String!
+  email: String!
+  profileImageURL: String
+  following: [User]
+  followers: [User]
+}

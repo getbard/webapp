@@ -3,7 +3,7 @@
 @import "tailwindcss/utilities";
 
 body {
-  @apply bg-gray-50;
+  @apply bg-snow;
 }
 
 a:hover:not(.logo) {
