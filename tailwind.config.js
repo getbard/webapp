@@ -9,6 +9,7 @@ module.exports = {
         platinum: '#E0E0E2',
         gunmetal: '#292F36',
         gray: {
+          '50': '#f8f8f8',
           '100': '#f5f5f5',
           '200': '#eeeeee',
           '300': '#e0e0e0',
