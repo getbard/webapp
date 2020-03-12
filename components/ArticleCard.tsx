@@ -1,5 +1,6 @@
-function ArticleCard({ data }: { data: any }): React.ReactElement {
-  console.log(data);
+import { Article } from '../generated/graphql';
+
+function ArticleCard({ data }: { data: Article }): React.ReactElement {
   return (
     <div>
       <h1>{data.title}</h1>

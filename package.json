@@ -5,12 +5,15 @@
   "repository": "https://github.com/getbard/webapp",
   "author": "Anthony Morris <anthony@amorrissound.com>",
   "scripts": {
+    "predev": "yarn generate",
     "dev": "next dev",
+    "prebuild": "yarn generate",
     "build": "next build",
     "start": "next start",
     "start:production": "next start -p $PORT",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "schema": "graphql get-schema dev"
+    "schema": "graphql get-schema dev",
+    "generate": "graphql-codegen --config codegen.yaml"
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.1.3",
@@ -30,6 +33,8 @@
     "tailwindcss": "^1.2.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.13.0",
+    "@graphql-codegen/typescript": "^1.13.0",
     "@types/node": "^13.9.0",
     "@types/react": "^16.9.23",
     "@typescript-eslint/eslint-plugin": "^2.23.0",

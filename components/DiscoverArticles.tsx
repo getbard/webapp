@@ -1,6 +1,8 @@
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
+import { Article } from '../generated/graphql';
+
 import ArticleCard from './ArticleCard';
 
 export const ALL_ARTICLES_QUERY = gql`
@@ -21,7 +23,7 @@ function DiscoverArticles(): React.ReactElement {
 
   return (
     <div>
-      {data.articles.map((article: any) => <ArticleCard key={article.id} data={article} />)}
+      {data.articles.map((article: Article) => <ArticleCard key={article.id} data={article} />)}
     </div>
   );
 }
