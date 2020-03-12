@@ -5,7 +5,7 @@
   "repository": "https://github.com/getbard/webapp",
   "author": "Anthony Morris <anthony@amorrissound.com>",
   "scripts": {
-    "predev": "yarn generate",
+    "predev": "yarn schema && yarn generate",
     "dev": "next dev",
     "prebuild": "yarn generate",
     "build": "next build",

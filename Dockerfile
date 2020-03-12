@@ -24,6 +24,7 @@ COPY package.json yarn.lock ./
 RUN yarn --production
 
 COPY --from=builder /build/.next .next
+COPY --from=builder /build/generated generated
 COPY public ./public
 
 # Disable telemetry
