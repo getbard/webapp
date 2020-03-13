@@ -2,10 +2,6 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-body {
-  @apply bg-snow;
-}
-
 a:hover:not(.logo) {
   cursor: pointer !important;
   @apply text-primary;
