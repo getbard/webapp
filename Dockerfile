@@ -25,7 +25,8 @@ RUN yarn --production
 
 COPY --from=builder /build/.next .next
 COPY --from=builder /build/generated generated
-COPY public ./public
+COPY public public
+COPY .env .env
 
 # Disable telemetry
 RUN npx next telemetry disable

@@ -14,7 +14,7 @@ export default function createApolloClient(
   return new ApolloClient({
     ssrMode: Boolean(ctx),
     link: new HttpLink({
-      uri: 'http://localhost:4000', // Server URL (must be absolute)
+      uri: process.env.GRAPHQL_URI, // Server URL (must be absolute)
       credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
       fetch,
     }),
