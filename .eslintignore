@@ -6,3 +6,5 @@ dist
 
 # testing
 coverage
+
+next.config.js
