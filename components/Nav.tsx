@@ -21,7 +21,7 @@ function Nav(): React.ReactElement {
           auth.user
             ? (
               <>
-                <ButtonLink href="/write" className="mr-4">
+                <ButtonLink href="/write" className="mr-4 py-1">
                   Write
                 </ButtonLink>
                 
@@ -36,7 +36,7 @@ function Nav(): React.ReactElement {
                   </a>
                 </Link>
 
-                <ButtonLink href="/signup">
+                <ButtonLink href="/signup" className="py-1">
                   Join
                 </ButtonLink>
               </>

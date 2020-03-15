@@ -1,13 +1,16 @@
 type Props = {
   children: React.ReactChild | React.ReactChild[];
   onClick?: () => void;
+  className?: string;
 }
 
-function Button({ children, onClick }: Props): React.ReactElement {
+function Button({ children, onClick, className }: Props): React.ReactElement {
+  const classes = `bg-primary hover:bg-secondary px-4 py-2 text-white rounded ${className}`
   return (
     <button
-      className="bg-primary hover:bg-secondary hover:text-primary px-4 p-1 text-snow rounded font-serif"
+      className={classes}
       onClick={onClick}
+      type="submit"
     >
       {children}
     </button>

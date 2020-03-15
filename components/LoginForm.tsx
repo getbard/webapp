@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 
 import { useAuth } from '../hooks/useAuth';
 
+import Button from './Button';
+
 type FormData = {
   email: string;
   password: string;
@@ -91,16 +93,13 @@ const LoginForm = ({
         </div>
 
         <div className="flex items-center md:justify-between justify-center">
-          <button
-            className="bg-primary hover:bg-secondary text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full md:w-auto"
-            type="submit"
-          >
+          <Button className="w-full md:w-auto">
             {
               loading
                 ? <FaSpinner className="w-full icon-spin" />
                 : 'Login'
             }
-          </button>
+          </Button>
 
           <a className="inline-block align-baseline text-sm hidden md:block text-black" onClick={setFormToForgotPassword}>
             Forgot your password?

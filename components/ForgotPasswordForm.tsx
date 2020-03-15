@@ -3,6 +3,8 @@ import firebase from '../lib/firebase';
 import { useForm } from 'react-hook-form';
 import { FaSpinner } from 'react-icons/fa';
 
+import Button from './Button';
+
 type FormData = {
   email: string;
   reset: string;
@@ -69,16 +71,13 @@ const ForgotPasswordForm = ({
         </div>
 
         <div className="flex items-center md:justify-between justify-center">
-          <button
-            className="bg-primary hover:bg-secondary text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full md:w-auto"
-            type="submit"
-          >
+          <Button className="w-full md:w-auto">
             {
               loading
                 ? <FaSpinner className="w-full icon-spin" />
                 : 'Reset Password'
             }
-          </button>
+          </Button>
 
           <a className="inline-block align-baseline text-sm hidden md:block text-black" onClick={setFormToLogin}>
             Back to login

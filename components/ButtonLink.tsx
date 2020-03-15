@@ -7,12 +7,12 @@ type Props = {
 }
 
 function ButtonLink({ children, href, className }: Props): React.ReactElement {
-  const classes = `bg-primary hover:bg-secondary hover:text-primary px-4 p-1 text-snow rounded font-serif ${className}`
+  const classes = `bg-primary hover:bg-secondary px-4 p-2 text-white rounded ${className}`
   return (
     <Link href={href}>
-      <a className={classes}>
+      <button className={classes}>
         {children}
-      </a>
+      </button>
     </Link>
   );
 }
