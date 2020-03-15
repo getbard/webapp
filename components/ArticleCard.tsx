@@ -15,7 +15,7 @@ function ArticleCard({ data }: { data: Article }): React.ReactElement {
   const imageSrc = data.headerImageURL || undefined;
 
   return (
-    <ArticleCardDiv className="p-3 m-2 border border-gray-200 rounded-sm">
+    <ArticleCardDiv className="p-3 m-2 border border-gray-300 rounded-sm">
       {
         imageSrc
          ? <img className="mb-5" src ={imageSrc} />

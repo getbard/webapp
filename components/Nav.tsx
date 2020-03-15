@@ -1,6 +1,10 @@
 import Link from 'next/link';
 
+import { useAuth } from '../hooks/useAuth';
+
 function Nav(): React.ReactElement {
+  const auth = useAuth();
+console.log(auth.user);
   return (
     <nav className="px-5 flex flex-row justify-between items-center border-b border-gray-200">
       <Link href="/">
@@ -9,11 +13,19 @@ function Nav(): React.ReactElement {
         </a>
       </Link>
 
-      <Link href="/open-letter">
-        <a>
-          An Open Letter
-        </a>
-      </Link>
+      <div>
+        {
+          auth.user
+            ? <a className="pr-2" onClick={(): Promise<boolean | void> => auth.signOut()}>Sign Out</a>
+            : <Link href="/login"><a className="pr-2">Login</a></Link>
+        }
+
+        <Link href="/open-letter">
+          <a>
+            An Open Letter
+          </a>
+        </Link>
+      </div>
     </nav>
   );
 }

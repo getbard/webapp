@@ -1,5 +1,7 @@
 import { NextPage } from 'next';
+
 import { withApollo } from '../lib/apollo';
+import withLayout from '../components/withLayout';
 
 import DiscoverArticles from '../components/DiscoverArticles';
 
@@ -15,4 +17,4 @@ const Discover: NextPage = (): React.ReactElement => {
   );
 }
 
-export default withApollo({ ssr: true })(Discover);
+export default withApollo({ ssr: true })(withLayout(Discover));

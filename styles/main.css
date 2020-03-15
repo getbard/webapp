@@ -2,6 +2,10 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+body {
+  @apply text-gray-800;
+}
+
 a:hover:not(.logo) {
   cursor: pointer !important;
   @apply text-primary;
