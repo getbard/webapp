@@ -19,12 +19,6 @@ console.log(auth.user);
             ? <a className="pr-2" onClick={(): Promise<boolean | void> => auth.signOut()}>Sign Out</a>
             : <Link href="/login"><a className="pr-2">Login</a></Link>
         }
-
-        <Link href="/open-letter">
-          <a>
-            An Open Letter
-          </a>
-        </Link>
       </div>
     </nav>
   );
