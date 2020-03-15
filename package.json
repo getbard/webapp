@@ -31,6 +31,8 @@
     "next-seo": "^4.4.0",
     "react": "16.13.0",
     "react-dom": "16.13.0",
+    "react-hook-form": "^5.0.3",
+    "react-icons": "^3.9.0",
     "react-xmasonry": "^3.0.3",
     "tailwindcss": "^1.2.0"
   },

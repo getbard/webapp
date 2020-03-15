@@ -13,6 +13,7 @@ export const ALL_ARTICLES_QUERY = gql`
       title
       headerImageURL
       subtitle
+      content
     }
   }
 `;

@@ -32,7 +32,7 @@ const Writers: NextPage = (): React.ReactElement => {
           <div className="md:w-1/2 inline-block z-10">
             <h1 className="font-bold text-3xl xl:text-4xl inline font-serif">Quality writing rarely earns you cash.</h1> <h1 className="font-extrabold text-3xl xl:text-4xl inline text-primary font-serif">Until now.</h1>
 
-            <p className="text-xl xl:text-2xl text-gray-800 my-10">Whether you have a large audience, starting from scratch, or something in-between, we let you focus on writing — we handle the rest.</p>
+            <p className="text-xl xl:text-2xl my-10">Whether you have a large audience, starting from scratch, or something in-between, we let you focus on writing — we handle the rest.</p>
 
             <form action="https://getbard.us4.list-manage.com/subscribe/post?u=86d9490b3d050660444e895dd&amp;id=bf0fd8d2e4" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank" noValidate>
               <input name="EMAIL" type="email" value={email} onChange={handleEmailChange} id="mce-EMAIL" className="bg-snow border border-platinum px-4 py-3 rounded w-full xl:w-3/4 mr-2 mb-4 inline-block" placeholder="ernest@hemingway.com" required />
