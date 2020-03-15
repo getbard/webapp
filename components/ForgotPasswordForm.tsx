@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import firebase from '../firebase';
+import firebase from '../lib/firebase';
 import { useForm } from 'react-hook-form';
 import { FaSpinner } from 'react-icons/fa';
 

@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import firebase from '../firebase';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { FaSpinner } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+
+import { useAuth } from '../hooks/useAuth';
 
 type FormData = {
   email: string;
@@ -15,16 +16,22 @@ type FormData = {
 };
 
 const SignupUser = (): React.ReactElement => {
+  const auth = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, errors, setError, watch } = useForm<FormData>();
 
+  useEffect(() => {
+    if (auth.user !== null){
+      router.push('/');
+    }
+  }, [auth]);
+
   const onSubmit = ({ email, password }: FormData): void => {
     setLoading(true);
 
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
+    auth
+      .signUp(email, password)
       .then(() => {
         router.push('/');
       })

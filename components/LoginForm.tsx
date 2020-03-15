@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import firebase from '../firebase';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaSpinner } from 'react-icons/fa';
 import { useRouter } from 'next/router';
+
+import { useAuth } from '../hooks/useAuth';
 
 type FormData = {
   email: string;
@@ -15,17 +16,23 @@ const LoginForm = ({
 }: {
   setForm: React.Dispatch<React.SetStateAction<string>>;
 }): React.ReactElement => {
+  const auth = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, errors, setError } = useForm<FormData>();
   const setFormToForgotPassword = (): void => setForm('forgotPassword');
 
+  useEffect(() => {
+    if (auth.user !== null){
+      router.push('/');
+    }
+  }, [auth]);
+
   const onSubmit = ({ email, password }: FormData): void => {
     setLoading(true);
 
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
+    auth
+      .signIn(email, password)
       .then(() => {
         router.push('/');
       })
