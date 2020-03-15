@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 import LoginForm from '../components/LoginForm';
 import ForgotPasswordForm from '../components/ForgotPasswordForm';
@@ -14,13 +13,8 @@ const formComponents: {
 };
 
 const Login: NextPage = (): React.ReactElement => {
-  // const router = useRouter();
   const [form, setForm] = useState('login');
   const Component = formComponents[form];
-
-  // if (user.isAuthenticated) {
-  //   router.push('/');
-  // }
 
   return (
     <div className="flex flex-col justify-center items-center pt-16">
