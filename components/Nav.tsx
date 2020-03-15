@@ -2,9 +2,11 @@ import Link from 'next/link';
 
 import { useAuth } from '../hooks/useAuth';
 
+import NavMenu from './NavMenu';
+
 function Nav(): React.ReactElement {
   const auth = useAuth();
-console.log(auth.user);
+
   return (
     <nav className="px-5 flex flex-row justify-between items-center border-b border-gray-200">
       <Link href="/">
@@ -16,7 +18,7 @@ console.log(auth.user);
       <div>
         {
           auth.user
-            ? <a className="pr-2" onClick={(): Promise<boolean | void> => auth.signOut()}>Sign Out</a>
+            ? <NavMenu />
             : <Link href="/login"><a className="pr-2">Login</a></Link>
         }
       </div>
