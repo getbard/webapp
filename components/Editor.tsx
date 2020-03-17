@@ -13,39 +13,44 @@ const emptyValue = [{
   children: [{ text: '' }],
 }];
 
-function BardEditor(): React.ReactElement {
+function BardEditor({ setContent }: { setContent: (content: Node[]) => void }): React.ReactElement {
   const [value, setValue] = useState<Node[]>(emptyValue);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
-const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
-  if (!e.ctrlKey && !e.metaKey) {
-    return;
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
+    if (!e.ctrlKey && !e.metaKey) {
+      return;
+    }
+    
+    switch(e.key) {
+      case 'b': {
+        e.preventDefault();
+        toggleFormatInline(editor, 'bold');
+        break;
+      }
+      case 'i': {
+        e.preventDefault();
+        toggleFormatInline(editor, 'italic');
+        break;
+      }
+      case 'u': {
+        e.preventDefault();
+        toggleFormatInline(editor, 'underline');
+        break;
+      }
+    }
   }
-  
-  switch(e.key) {
-    case 'b': {
-      e.preventDefault();
-      toggleFormatInline(editor, 'bold');
-      break;
-    }
-    case 'i': {
-      e.preventDefault();
-      toggleFormatInline(editor, 'italic');
-      break;
-    }
-    case 'u': {
-      e.preventDefault();
-      toggleFormatInline(editor, 'underline');
-      break;
-    }
+
+  const handleChange = (value: Node[]): void => {
+    setValue(value);
+    setContent(value);
   }
-}
 
   return (
     <Slate
       editor={editor}
       value={value}
-      onChange={(value): void => setValue(value)}
+      onChange={handleChange}
     >
       <EditorToolbar />
 
