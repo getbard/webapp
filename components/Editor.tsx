@@ -9,7 +9,7 @@ import EditorToolbar from './EditorToolbar';
 const emptyValue = [
   {
     type: 'paragraph',
-    children: [{ text: 'Okay world. This is what I am thinking. Boooo. Alice is a butthead.' }],
+    children: [{ text: '' }],
   },
 ];
 
