@@ -10,11 +10,11 @@ type FormData = {
   reset: string;
 };
 
-const ForgotPasswordForm = ({
+function ForgotPasswordForm({
   setForm
 }: {
   setForm: React.Dispatch<React.SetStateAction<string>>;
-}): React.ReactElement => {
+}): React.ReactElement {
   const [loading, setLoading] = useState(false);
   const [resetSent, setResetSent] = useState(false);
   const { register, handleSubmit, errors, setError } = useForm<FormData>();

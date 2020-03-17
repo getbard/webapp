@@ -13,11 +13,11 @@ type FormData = {
   login: string;
 };
 
-const LoginForm = ({
+function LoginForm({
   setForm
 }: {
   setForm: React.Dispatch<React.SetStateAction<string>>;
-}): React.ReactElement => {
+}): React.ReactElement {
   const auth = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);

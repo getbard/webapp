@@ -16,7 +16,7 @@ const Menu = styled.div`
   right: -12px;
 `;
 
-const DisplayMenu = (): React.ReactElement => {
+function DisplayMenu(): React.ReactElement {
   const auth = useAuth();
 
   return (
@@ -26,7 +26,7 @@ const DisplayMenu = (): React.ReactElement => {
   );
 }
 
-const NavMenu = (): React.ReactElement => {
+function NavMenu(): React.ReactElement {
   const [display, setDisplay] = useState(false);
 
   return (

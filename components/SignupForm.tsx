@@ -17,7 +17,7 @@ type FormData = {
   signup: string;
 };
 
-const SignupUser = (): React.ReactElement => {
+function SignupUser(): React.ReactElement {
   const auth = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
