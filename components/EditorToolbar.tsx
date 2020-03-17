@@ -98,10 +98,6 @@ function HoveringToolbar(): React.ReactElement {
         <FormatButton format="bold" />
         <FormatButton format="italic" />
         <FormatButton format="underline" />
-        <FormatButton format="underline" />
-        <FormatButton format="underline" />
-        <FormatButton format="underline" />
-        <FormatButton format="underline" />
       </Menu>
     </Portal>
   )
