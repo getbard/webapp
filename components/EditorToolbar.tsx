@@ -84,10 +84,9 @@ function HoveringToolbar(): React.ReactElement {
     const rect = domRange?.getBoundingClientRect();
     el.style.opacity = '1';
     el.style.top = `${(rect?.top || 0) + window.pageYOffset - el.offsetHeight}px`;
-    el.style.left = `${(rect?.left || 0) +
-      window.pageXOffset -
-      el.offsetWidth / 2 +
-      (rect?.width || 0) / 2}px`;
+    const leftStyle = (rect?.left || 0) + window.pageXOffset - el.offsetWidth / 2 + (rect?.width || 0) / 2;
+    // Don't let the menu go off the page
+    el.style.left = `${Math.max(2, leftStyle)}px`;
   });
 
   return (
@@ -98,6 +97,10 @@ function HoveringToolbar(): React.ReactElement {
       >
         <FormatButton format="bold" />
         <FormatButton format="italic" />
+        <FormatButton format="underline" />
+        <FormatButton format="underline" />
+        <FormatButton format="underline" />
+        <FormatButton format="underline" />
         <FormatButton format="underline" />
       </Menu>
     </Portal>
