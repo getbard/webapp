@@ -15,7 +15,6 @@ const icons: {
 
 import Portal from './Portal';
 
-
 const Menu = styled.div`
   top: -10000px;
   left: -10000px;

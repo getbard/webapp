@@ -1,9 +1,42 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { useAuth } from '../hooks/useAuth';
 
 import NavMenu from './NavMenu';
 import ButtonLink from './ButtonLink';
+
+function LoggedInMenu(): React.ReactElement {
+  const router = useRouter();
+
+  return (
+    <>
+      {router.pathname !== '/write' && (
+        <ButtonLink href="/write" className="mr-4 py-1">
+          Write
+        </ButtonLink>
+      )}
+
+      <NavMenu />
+    </>
+  )
+}
+
+function LoggedOutMenu(): React.ReactElement {
+  return (
+    <>
+      <Link href = "/login">
+        <a className = "mr-4">
+          Login
+        </a>
+      </Link>
+
+      <ButtonLink href="/signup" className="py-1">
+        Join
+      </ButtonLink>
+    </>
+  );
+}
 
 function Nav(): React.ReactElement {
   const auth = useAuth();
@@ -20,32 +53,12 @@ function Nav(): React.ReactElement {
         <div className="flex items-center">
           {
             auth.user
-              ? (
-                <>
-                  <ButtonLink href="/write" className="mr-4 py-1">
-                    Write
-                  </ButtonLink>
-                  
-                  <NavMenu />
-                </>
-              )
-              : (
-                <>
-                  <Link href="/login">
-                    <a className="mr-4">
-                      Login
-                    </a>
-                  </Link>
-
-                  <ButtonLink href="/signup" className="py-1">
-                    Join
-                  </ButtonLink>
-                </>
-              )
+              ? <LoggedInMenu/>
+              : <LoggedOutMenu/>
           }
-        </div>
-      </div>
-    </nav>
+        </div >
+      </div >
+    </nav >
   );
 }
 

@@ -6,12 +6,10 @@ import { withHistory } from 'slate-history';
 import EditorLeaf from './EditorLeaf';
 import EditorToolbar from './EditorToolbar';
 
-const emptyValue = [
-  {
-    type: 'paragraph',
-    children: [{ text: '' }],
-  },
-];
+const emptyValue = [{
+  type: 'paragraph',
+  children: [{ text: '' }],
+}];
 
 function BardEditor(): React.ReactElement {
   const [value, setValue] = useState<Node[]>(emptyValue);

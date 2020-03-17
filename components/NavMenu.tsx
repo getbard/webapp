@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { FaCog } from 'react-icons/fa';
 import styled from '@emotion/styled'
-// import Link from 'next/link';
 
 import { useAuth } from '../hooks/useAuth';
 
