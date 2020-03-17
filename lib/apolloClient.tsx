@@ -1,9 +1,29 @@
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
+import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { NextPageContext } from 'next';
 import fetch from 'isomorphic-unfetch';
+
+import firebase from '../lib/firebase';
+
+const httpLink = createHttpLink({
+  uri: process.env.GRAPHQL_URI, 
+  credentials: 'same-origin',
+  fetch,
+});
+
+const authLink = setContext(async (_, { headers }) => {
+  const token = await firebase?.auth()?.currentUser?.getIdToken() || null;
+
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    }
+  }
+});
 
 export default function createApolloClient(
   initialState: NormalizedCacheObject,
@@ -13,11 +33,7 @@ export default function createApolloClient(
   // use it to extract auth headers (ctx.req) or similar.
   return new ApolloClient({
     ssrMode: Boolean(ctx),
-    link: new HttpLink({
-      uri: process.env.GRAPHQL_URI, // Server URL (must be absolute)
-      credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
-      fetch,
-    }),
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache().restore(initialState),
   });
 }
