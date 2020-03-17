@@ -1,9 +1,11 @@
 import { useRef, useEffect } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
-import { Range, Editor, Transforms, Text } from 'slate';
+import { Range, Editor } from 'slate';
 import styled from '@emotion/styled';
 import { FaBold, FaItalic, FaUnderline } from 'react-icons/fa';
 import { IconType } from 'react-icons/lib/cjs';
+
+import { isFormatActive, toggleFormat } from '../lib/editor';
 
 const icons: {
   [index: string]: IconType;
@@ -21,23 +23,6 @@ const Menu = styled.div`
   margin-top: -6px;
   transition: opacity 0.75s;
 `;
-
-const isFormatActive = (editor: Editor, format: string): boolean => {
-  const [match] = Editor.nodes(editor, {
-    match: n => n[format] === true,
-    mode: 'all',
-  });
-  return !!match;
-}
-
-const toggleFormat = (editor: Editor, format: string): void => {
-  const isActive = isFormatActive(editor, format);
-  Transforms.setNodes(
-    editor,
-    { [format]: isActive ? null : true },
-    { match: Text.isText, split: true },
-  );
-}
 
 function FormatButton({ format }: { format: string}): React.ReactElement {
   const editor = useSlate();

@@ -29,9 +29,9 @@ const Write: NextPage = (): React.ReactElement => {
         <SubscribersOnlyToggle subscribersOnly={subscribersOnly} setSubscribersOnly={setSubscribersOnly} />
 
         <div>
-          <span className="mr-4 underline">
+          {/* <span className="mr-4 underline">
             Schedule
-          </span>
+          </span> */}
 
           <Button thin>
             Publish
