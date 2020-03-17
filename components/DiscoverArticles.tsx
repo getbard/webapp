@@ -12,7 +12,7 @@ export const ALL_ARTICLES_QUERY = gql`
       id
       title
       headerImageURL
-      subtitle
+      summary
       content
     }
   }

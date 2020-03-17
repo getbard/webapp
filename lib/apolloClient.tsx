@@ -15,7 +15,7 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext(async (_, { headers }) => {
-  const token = await firebase?.auth()?.currentUser?.getIdToken() || null;
+  const token = await firebase?.auth()?.currentUser?.getIdToken(true) || null;
 
   return {
     headers: {

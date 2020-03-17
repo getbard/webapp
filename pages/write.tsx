@@ -8,7 +8,7 @@ import Editor from '../components/Editor';
 import Button from '../components/Button';
 import SubscribersOnlyToggle from '../components/SubcriberOnlyToggle';
 
-import { CreateArticleInput } from '../generated/graphql';
+// import { CreateArticleInput } from '../generated/graphql';
 
 const Write: NextPage = (): React.ReactElement => {
   const [title, setTitle] = useState('');
