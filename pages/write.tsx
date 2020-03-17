@@ -21,7 +21,7 @@ const Write: NextPage = (): React.ReactElement => {
   }
 
   return (
-    <div className="px-5 pt-5 container mx-auto">
+    <div className="sm:w-3/5 px-5 pt-5 container mx-auto">
       <TextareaAutosize 
         className="focus:outline-none text-4xl w-full h-auto resize-none placeholder-gray-400"
         placeholder="Title"

@@ -9,7 +9,7 @@ const EditorLeaf = ({ attributes, children, leaf }: RenderLeafProps): React.Reac
     children = <em>{children}</em>
   }
 
-  if (leaf.underlined) {
+  if (leaf.underline) {
     children = <u>{children}</u>
   }
 
