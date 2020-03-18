@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Tue Mar 17 2020 15:17:52 GMT-0700 (Pacific Daylight Time)
+# timestamp: Tue Mar 17 2020 20:48:06 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -52,6 +52,7 @@ input CreateOrUpdateArticleInput {
   updatedAt: String
   userId: String
   subscribersOnly: Boolean!
+  draft: Boolean
 }
 
 type CreateOrUpdateArticlePayload {
