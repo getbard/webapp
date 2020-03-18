@@ -6,6 +6,8 @@ import { useRouter } from 'next/router';
 
 import { useAuth } from '../hooks/useAuth';
 
+import Button from './Button';
+
 type FormData = {
   email: string;
   password: string;
@@ -15,7 +17,7 @@ type FormData = {
   signup: string;
 };
 
-const SignupUser = (): React.ReactElement => {
+function SignupUser(): React.ReactElement {
   const auth = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -178,16 +180,13 @@ const SignupUser = (): React.ReactElement => {
             </div>
 
             <div className="flex items-center justify-center">
-              <button
-                className="bg-primary w-full hover:bg-secondary text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="submit"
-              >
+              <Button className="w-full">
                 {
                   loading
                     ? <FaSpinner className="w-full icon-spin" />
                     : 'Sign Up'
                 }
-              </button>
+              </Button>
             </div>
           </form>
         </div>

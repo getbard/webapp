@@ -23,7 +23,7 @@ function ArticleCard({ data }: { data: Article }): React.ReactElement {
       }
 
       <h1 className="font-serif font-bold">{data.title}</h1>
-      <div className="text-gray-600 text-sm">{data.subtitle}</div>
+      <div className="text-gray-600 text-sm">{data.summary}</div>
     </ArticleCardDiv>
   );
 }

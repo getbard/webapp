@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { FaCog } from 'react-icons/fa';
 import styled from '@emotion/styled'
-// import Link from 'next/link';
 
 import { useAuth } from '../hooks/useAuth';
 
@@ -16,7 +15,7 @@ const Menu = styled.div`
   right: -12px;
 `;
 
-const DisplayMenu = (): React.ReactElement => {
+function DisplayMenu(): React.ReactElement {
   const auth = useAuth();
 
   return (
@@ -26,7 +25,7 @@ const DisplayMenu = (): React.ReactElement => {
   );
 }
 
-const NavMenu = (): React.ReactElement => {
+function NavMenu(): React.ReactElement {
   const [display, setDisplay] = useState(false);
 
   return (

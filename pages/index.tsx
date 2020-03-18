@@ -2,7 +2,6 @@ import { NextPage } from 'next';
 
 import { withApollo } from '../lib/apollo';
 import withLayout from '../components/withLayout';
-
 import DiscoverArticles from '../components/DiscoverArticles';
 
 const Discover: NextPage = (): React.ReactElement => {
