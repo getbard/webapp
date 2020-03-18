@@ -27,7 +27,7 @@ const saveArticle = debounce((createOrUpdateArticle, input: CreateOrUpdateArticl
   if (data?.createOrUpdateArticle?.id) {
     input.id = data.createOrUpdateArticle.id;
   }
-  console.log('update', input);
+
   createOrUpdateArticle({
     variables: {
       input,
