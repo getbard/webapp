@@ -13,8 +13,16 @@ const emptyValue = [{
   children: [{ text: '' }],
 }];
 
-function BardEditor({ setContent }: { setContent: (content: Node[]) => void }): React.ReactElement {
-  const [value, setValue] = useState<Node[]>(emptyValue);
+function BardEditor({
+  setContent,
+  readOnly,
+  initialValue,
+}: {
+  setContent?: (content: Node[]) => void;
+  readOnly?: boolean;
+  initialValue?: Node[];
+}): React.ReactElement {
+  const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
@@ -43,7 +51,9 @@ function BardEditor({ setContent }: { setContent: (content: Node[]) => void }): 
 
   const handleChange = (value: Node[]): void => {
     setValue(value);
-    setContent(value);
+    if (setContent) {
+      setContent(value);
+    }
   }
 
   return (
@@ -55,6 +65,8 @@ function BardEditor({ setContent }: { setContent: (content: Node[]) => void }): 
       <EditorToolbar />
 
       <Editable
+        className="text-lg"
+        readOnly={readOnly}
         placeholder="Let the world know what is on your mind."
         renderLeaf={(props): JSX.Element => <EditorLeaf {...props} />}
         onKeyDown={handleKeyDown}

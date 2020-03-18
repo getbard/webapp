@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FaCog } from 'react-icons/fa';
 import styled from '@emotion/styled'
+import Link from 'next/link';
 
 import { useAuth } from '../hooks/useAuth';
 
@@ -19,8 +20,22 @@ function DisplayMenu(): React.ReactElement {
   const auth = useAuth();
 
   return (
-    <Menu className="z-20 px-4 bg-white border border-gray-300 absolute rounded-sm shadow-sm flex flex-col">
-      <a className="my-2" onClick={(): Promise<boolean | void> => auth.signOut()}>Logout</a>
+    <Menu className="z-20 bg-white border border-gray-300 absolute rounded-sm shadow-sm whitespace-no-wrap">
+      <Link href="/write">
+        <a className="hover:bg-gray-100 block py-2 pl-2 pr-12">
+          Write an article
+        </a>
+      </Link>
+
+      <Link href="/articles">
+        <a className="hover:bg-gray-100 block py-2 pl-2 pr-12">
+          Articles
+        </a>
+      </Link>
+
+      <div className="border-b border-gray-100"></div>
+
+      <a className="hover:bg-gray-100 block py-2 pl-2 pr-12" onClick={(): Promise<boolean | void> => auth.signOut()}>Logout</a>
     </Menu>
   );
 }
@@ -29,8 +44,11 @@ function NavMenu(): React.ReactElement {
   const [display, setDisplay] = useState(false);
 
   return (
-    <div className="flex justify-end relative">
-      <StyledCog onClick={(): void => setDisplay(!display)} />
+    <div className="flex justify-end relative ml-4">
+      <StyledCog
+        onClick={(): void => setDisplay(!display)}
+        className={`${display && 'text-gray-700'}`}
+      />
 
       {display && <DisplayMenu />}
     </div>

@@ -82,7 +82,7 @@ const Write: NextPage = (): React.ReactElement => {
       </div>
 
       <TextareaAutosize 
-        className="focus:outline-none text-4xl w-full h-auto resize-none placeholder-gray-400"
+        className="focus:outline-none text-4xl font-serif w-full h-auto resize-none placeholder-gray-400"
         placeholder="Title"
         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setTitle(e.target.value)}
       >

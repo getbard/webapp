@@ -4,6 +4,7 @@
 
 body {
   @apply text-gray-800;
+  @apply text-sm;
 }
 
 a:hover:not(.logo) {

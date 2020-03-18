@@ -3,6 +3,7 @@ import firebase from '../lib/firebase';
 
 type AuthContext = {
   user: firebase.User | null;
+  userId: string | null;
   signIn: (email: string, password: string) => Promise<firebase.auth.UserCredential | firebase.User | null>;
   signUp: (email: string, password: string) => Promise<firebase.auth.UserCredential | firebase.User | null>;
   signOut: () => Promise<boolean | void>;
@@ -18,6 +19,7 @@ const fbConfirmPasswordReset = (code: string, password: string): Promise<boolean
 
 const authContext = createContext<AuthContext>({
   user: null,
+  userId: '',
   signIn: fbSignIn,
   signUp: fbSignUp,
   signOut: fbSignOut,
@@ -26,6 +28,8 @@ const authContext = createContext<AuthContext>({
 });
 
 function useAuthContext(): AuthContext {
+  const defaultUserId = typeof window === 'undefined' ? null : localStorage.getItem('uid');
+  const [userId, setUserId] = useState(defaultUserId);
   const [user, setUser] = useState<firebase.User | null>(null);
 
   const signIn = (
@@ -89,8 +93,10 @@ function useAuthContext(): AuthContext {
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (user) {
         setUser(user);
+        localStorage.setItem('uid', user.uid);
       } else {
         setUser(null);
+        localStorage.removeItem('uid');
       }
     });
 
@@ -99,6 +105,7 @@ function useAuthContext(): AuthContext {
 
   return {
     user,
+    userId,
     signIn,
     signUp,
     signOut,
