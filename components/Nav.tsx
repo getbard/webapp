@@ -12,7 +12,7 @@ function LoggedInMenu(): React.ReactElement {
   return (
     <>
       {router.pathname !== '/write' && (
-        <ButtonLink href="/write" className="mr-4 py-1">
+        <ButtonLink href="/write" className="py-1">
           Write
         </ButtonLink>
       )}
@@ -52,7 +52,7 @@ function Nav(): React.ReactElement {
 
         <div className="flex items-center">
           {
-            auth.user
+            auth.user || auth.userId
               ? <LoggedInMenu/>
               : <LoggedOutMenu/>
           }

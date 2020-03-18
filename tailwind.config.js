@@ -23,6 +23,8 @@ module.exports = {
       }
     },
   },
-  variants: {},
+  variants: {
+    cursor: ['hover'],
+  },
   plugins: [],
 };

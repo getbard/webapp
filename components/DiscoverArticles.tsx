@@ -30,7 +30,7 @@ function DiscoverArticles(): React.ReactElement {
       {data.articles.map((article: Article) => {
         return (
           <XBlock key={article.id}>
-            <ArticleCard data={article} />
+            <ArticleCard article={article} />
           </XBlock>
         );
       })}
