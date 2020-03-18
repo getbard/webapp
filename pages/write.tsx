@@ -102,4 +102,4 @@ const Write: NextPage = (): React.ReactElement => {
   );
 }
 
-export default withApollo({ ssr: true })(withLayout(Write));
+export default withApollo()(withLayout(Write));
