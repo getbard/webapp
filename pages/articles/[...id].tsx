@@ -1,41 +1,19 @@
 import { NextPage } from 'next';
-import gql from 'graphql-tag';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
+
+import ArticleBySlugQuery from '../../queries/ArticleBySlugQuery';
+import ArticleByIdQuery from '../../queries/ArticleByIdQuery';
 
 import { withApollo } from '../../lib/apollo';
 import withLayout from '../../components/withLayout';
 import Editor from '../../components/Editor';
 
-export const ARTICLE_BY_SLUG_QUERY = gql`
-  query article($id: String!) {
-    articleBySlug(slug: $id) {
-      id
-      title
-      headerImageURL
-      summary
-      content
-    }
-  }
-`;
-
-export const ARTICLE_BY_ID_QUERY = gql`
-  query article($id: ID!) {
-    article(id: $id) {
-      id
-      title
-      headerImageURL
-      summary
-      content
-    }
-  }
-`;
-
 const Article: NextPage = (): React.ReactElement => {
   const router = useRouter();
   const { id: idParams } = router.query;
   const [idType, id] = idParams;
-  const articleQuery = idType === 's' ? ARTICLE_BY_SLUG_QUERY : ARTICLE_BY_ID_QUERY;
+  const articleQuery = idType === 's' ? ArticleBySlugQuery : ArticleByIdQuery;
 
   const { loading, error, data } = useQuery(articleQuery, { variables: { id } });
 
