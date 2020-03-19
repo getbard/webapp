@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { NextPage } from 'next';
 import { Node } from 'slate';
-import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import TextareaAutosize from 'react-textarea-autosize';
 import debounce from 'lodash/debounce';
+
+import { useAuth } from '../hooks/useAuth';
 
 import { withApollo } from '../lib/apollo';
 import withLayout from '../components/withLayout';
@@ -14,16 +15,15 @@ import Button from '../components/Button';
 import SubscribersOnlyToggle from '../components/SubcribersOnlyToggle';
 
 import { CreateOrUpdateArticleInput } from '../generated/graphql';
+import CreateOrUpdateArticleMutation from '../queries/CreateOrUpdateArticleMutation';
+import ArticlesSummaryQuery from '../queries/ArticlesSummaryQuery';
 
-const CREATE_OR_UPDATE_ARTICLE = gql`
-  mutation createOrUpdateArticle($input: CreateOrUpdateArticleInput!) {
-    createOrUpdateArticle(input: $input) {
-      id
-    }
-  }
-`;
-
-const saveArticle = debounce((createOrUpdateArticle, input: CreateOrUpdateArticleInput, data): void => {
+const saveArticle = debounce(({
+  createOrUpdateArticle,
+  input,
+  data,
+  userId,
+}): void => {
   if (data?.createOrUpdateArticle?.id) {
     input.id = data.createOrUpdateArticle.id;
   }
@@ -32,15 +32,26 @@ const saveArticle = debounce((createOrUpdateArticle, input: CreateOrUpdateArticl
     variables: {
       input,
     },
+    refetchQueries: [{
+      query: ArticlesSummaryQuery,
+      variables: { userId },
+    }]
   });
 }, 2000);
 
 const Write: NextPage = (): React.ReactElement => {
+  const auth = useAuth();
+  const userId = auth.userId || auth.user?.uid;
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
   const [content, setContent] = useState('[{"type":"paragraph","children":[{"text":""}]}]');
   const [subscribersOnly, setSubscribersOnly] = useState(false);
-  const [createOrUpdateArticle, { data, loading: mutationLoading, error: mutationError, called }] = useMutation(CREATE_OR_UPDATE_ARTICLE);
+  const [createOrUpdateArticle, {
+    data,
+    loading: mutationLoading,
+    error: mutationError,
+    called,
+  }] = useMutation(CreateOrUpdateArticleMutation);
 
   useEffect(() => {
     if (!title && !summary && !content) {
@@ -54,7 +65,12 @@ const Write: NextPage = (): React.ReactElement => {
       subscribersOnly,
     };
 
-    saveArticle(createOrUpdateArticle, input, data);
+    saveArticle({
+      createOrUpdateArticle,
+      input,
+      data,
+      userId,
+    });
   }, [title, summary, content, subscribersOnly]);
 
   const handleContentChange = (newContent: Node[]): void => {
