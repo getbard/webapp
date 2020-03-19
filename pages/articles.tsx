@@ -52,12 +52,23 @@ function ArticleRow({ article }: { article: Article }): React.ReactElement {
   return (
     <div className="border-b border-gray-200 my-2 py-4 flex justify-between items-center">
       <div>
-        <Link href={`/articles/i/${article.id}`}>
-          <a className="text-3xl font-serif flex items-center hover:text-primary hover:cursor-pointer">
-            {article.title}
-            &nbsp;{article.subscribersOnly && <span className="text-xs uppercase tracking-widest bg-primary rounded-full text-white px-2 py-1 font-sans">Premium</span>}
-          </a>
-        </Link>
+        {
+          article.draft
+            ? (
+              <div className="text-3xl font-serif flex items-center">
+                {article.title}
+                &nbsp;{article.subscribersOnly && <span className="text-xs uppercase tracking-widest bg-primary rounded-full text-white px-2 py-1 font-sans">Premium</span>}
+              </div>
+            )
+            : (
+              <Link href={`/articles/i/${article.id}`}>
+                <a className="text-3xl font-serif flex items-center hover:text-primary hover:cursor-pointer">
+                  {article.title}
+                  &nbsp;{article.subscribersOnly && <span className="text-xs uppercase tracking-widest bg-primary rounded-full text-white px-2 py-1 font-sans">Premium</span>}
+                </a>
+              </Link>
+            ) 
+        }
 
         <div className="text-lg w-full mb-4">
           {article?.summary}

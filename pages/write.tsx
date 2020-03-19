@@ -38,7 +38,7 @@ const saveArticle = debounce((createOrUpdateArticle, input: CreateOrUpdateArticl
 const Write: NextPage = (): React.ReactElement => {
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState('[{"type":"paragraph","children":[{"text":""}]}]');
   const [subscribersOnly, setSubscribersOnly] = useState(false);
   const [createOrUpdateArticle, { data, loading: mutationLoading, error: mutationError, called }] = useMutation(CREATE_OR_UPDATE_ARTICLE);
 
