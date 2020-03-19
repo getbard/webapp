@@ -26,7 +26,7 @@ function LoggedOutMenu(): React.ReactElement {
   return (
     <>
       <Link href = "/login">
-        <a className = "mr-4">
+        <a className="mr-4">
           Login
         </a>
       </Link>
