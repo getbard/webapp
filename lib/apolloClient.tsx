@@ -5,6 +5,8 @@ import { setContext } from 'apollo-link-context';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { NextPageContext } from 'next';
 import fetch from 'isomorphic-unfetch';
+import cookie from 'js-cookie';
+import { Cookie } from 'next-cookie';
 
 import firebase from '../lib/firebase';
 
@@ -14,23 +16,34 @@ const httpLink = createHttpLink({
   fetch,
 });
 
-const authLink = setContext(async (_, { headers }) => {
-  const token = await firebase?.auth()?.currentUser?.getIdToken() || null;
-
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : '',
-    }
-  }
-});
-
 export default function createApolloClient(
   initialState: NormalizedCacheObject,
   ctx?: NextPageContext
 ): ApolloClient<NormalizedCacheObject> {
   // The `ctx` (NextPageContext) will only be present on the server.
   // use it to extract auth headers (ctx.req) or similar.
+  let token: string | undefined;
+
+  if (ctx) {
+    const nextCookie = new Cookie(ctx);
+    token = nextCookie.get('token');
+  } else {
+    token = cookie.get('token');
+  }
+
+  const authLink = setContext(async (_, { headers }) => {
+    if (!token) {
+      token = await firebase?.auth()?.currentUser?.getIdToken() || undefined;
+    }
+
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : '',
+      }
+    }
+  });
+
   return new ApolloClient({
     ssrMode: Boolean(ctx),
     link: authLink.concat(httpLink),

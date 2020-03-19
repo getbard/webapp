@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import firebase from '../lib/firebase';
+import cookie from 'js-cookie';
 
 type AuthContext = {
   user: firebase.User | null;
@@ -29,7 +30,7 @@ const authContext = createContext<AuthContext>({
 
 function useAuthContext(): AuthContext {
   const defaultUserId = typeof window === 'undefined' ? null : localStorage.getItem('uid');
-  const [userId, setUserId] = useState(defaultUserId);
+  const [userId] = useState(defaultUserId);
   const [user, setUser] = useState<firebase.User | null>(null);
 
   const signIn = (
@@ -90,12 +91,15 @@ function useAuthContext(): AuthContext {
   // component that utilizes this hook to re-render with the
   // latest auth object
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(async user => {
       if (user) {
         setUser(user);
+        const token = await user.getIdToken();
+        cookie.set('token', token);
         localStorage.setItem('uid', user.uid);
       } else {
         setUser(null);
+        cookie.remove('token');
         localStorage.removeItem('uid');
       }
     });
