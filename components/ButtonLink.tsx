@@ -8,14 +8,14 @@ type Props = {
 
 function ButtonLink({ children, href, className }: Props): React.ReactElement {
   const classes = `bg-primary hover:bg-secondary px-4 p-2 text-white rounded ${className}`;
-  console.log(classes);
+
   return (
     <button>
-    <Link href={href}>
-      <a className={classes}>
-        {children}
-      </a>
-    </Link>
+      <Link href={href}>
+        <a className={classes}>
+          {children}
+        </a>
+      </Link>
     </button>
   );
 }
