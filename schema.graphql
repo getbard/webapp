@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Wed Mar 18 2020 10:47:28 GMT-0700 (Pacific Daylight Time)
+# timestamp: Thu Mar 19 2020 13:45:22 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -7,7 +7,7 @@ type Article {
   id: ID!
   title: String!
   summary: String
-  content: String!
+  content: String
   headerImageURL: String
   author: User!
   categories: [Category]
@@ -45,14 +45,14 @@ type Comment {
 
 input CreateOrUpdateArticleInput {
   id: ID
-  title: String!
+  title: String
   summary: String
-  content: String!
+  content: String
   headerImageURL: String
   createdAt: String
   updatedAt: String
   userId: String
-  subscribersOnly: Boolean!
+  subscribersOnly: Boolean
   draft: Boolean
 }
 
@@ -68,7 +68,7 @@ type Query {
   articles: [Article]
   article(id: ID): Article
   articleBySlug(slug: String): Article
-  articlesByUser(userId: ID): Article
+  articlesByUser(userId: ID): [Article]
 }
 
 """The `Upload` scalar type represents a file upload."""
