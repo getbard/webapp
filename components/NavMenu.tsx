@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { FiSettings } from 'react-icons/fi';
 import styled from '@emotion/styled'
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { useAuth } from '../hooks/useAuth';
 import useOnClickOutside from '../hooks/useOnClickOutside';
@@ -13,6 +14,14 @@ const Menu = styled.div`
 
 function DisplayMenu(): React.ReactElement {
   const auth = useAuth();
+  const router = useRouter();
+
+  const handleLogout = (): void => {
+    auth.signOut();
+    if (router.pathname !== '/') {
+      router.push('/');
+    }
+  }
 
   return (
     <Menu className="z-20 bg-white border border-gray-300 absolute rounded-sm shadow-sm whitespace-no-wrap">
@@ -30,7 +39,7 @@ function DisplayMenu(): React.ReactElement {
 
       <div className="border-b border-gray-100"></div>
 
-      <a className="hover:bg-gray-100 block py-2 pl-2 pr-12" onClick={(): Promise<boolean | void> => auth.signOut()}>Logout</a>
+      <a className="hover:bg-gray-100 block py-2 pl-2 pr-12" onClick={handleLogout}>Logout</a>
     </Menu>
   );
 }
