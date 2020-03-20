@@ -10,6 +10,7 @@ const ArticlesSummaryQuery = gql`
       publishedAt
       subscribersOnly
       draft
+      slug
     }
   }
 `;

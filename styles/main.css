@@ -12,6 +12,10 @@ a:hover:not(.logo) {
   @apply text-primary;
 }
 
+button > a:hover:not(.logo) {
+  @apply text-white;
+}
+
 .icon-spin {
   animation: icon-spin 2s infinite linear;
 }

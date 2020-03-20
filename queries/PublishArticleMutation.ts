@@ -4,6 +4,7 @@ const PublishArticleMutation = gql`
   mutation publishArticle($input: PublishArticleInput!) {
     publishArticle(input: $input) {
       id
+      slug
     }
   }
 `;
