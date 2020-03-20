@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { FiSettings } from 'react-icons/fi';
 import styled from '@emotion/styled'
 import Link from 'next/link';
 
 import { useAuth } from '../hooks/useAuth';
+import useOnClickOutside from '../hooks/useOnClickOutside';
 
 const Menu = styled.div`
   top: 22px;
@@ -35,10 +36,20 @@ function DisplayMenu(): React.ReactElement {
 }
 
 function NavMenu(): React.ReactElement {
+  const menuRef = useRef(null);
   const [display, setDisplay] = useState(false);
 
+  useOnClickOutside(menuRef, () => {
+    if (display) {
+      setDisplay(!display);
+    }
+  });
+
   return (
-    <div className="flex justify-end relative ml-4">
+    <div
+      className="flex justify-end relative ml-4"
+      ref={menuRef}
+    >
       <FiSettings
         onClick={(): void => setDisplay(!display)}
         className={`${display && 'text-gray-700'} hover:cursor-pointer hover:text-primary`}
