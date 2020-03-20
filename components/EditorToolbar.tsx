@@ -2,18 +2,8 @@ import { useRef, useEffect } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import { Range, Editor } from 'slate';
 import styled from '@emotion/styled';
-import { FaBold, FaItalic, FaUnderline } from 'react-icons/fa';
-import { IconType } from 'react-icons/lib/cjs';
 
 import { isFormatActive, toggleFormat } from '../lib/editor';
-
-const icons: {
-  [index: string]: IconType;
-} = {
-  bold: FaBold,
-  italic: FaItalic,
-  underline: FaUnderline,
-};
 
 import Portal from './Portal';
 
@@ -24,9 +14,17 @@ const Menu = styled.div`
   transition: opacity 0.75s;
 `;
 
+const formatStyles: {
+  [index: string]: string;
+} = {
+  bold: 'font-bold',
+  italic: 'italic',
+  underline: 'underline',
+};
+
 function FormatButton({ format }: { format: string}): React.ReactElement {
   const editor = useSlate();
-  const IconComponent = icons[format];
+  const formatStyle = formatStyles[format];
 
   return (
     <button
@@ -36,7 +34,9 @@ function FormatButton({ format }: { format: string}): React.ReactElement {
         toggleFormat(editor, format);
       }}
     >
-      <IconComponent />
+      <span className={`font-serif text-lg ${formatStyle}`}>
+        {format[0].toUpperCase()}
+      </span>
     </button>
   )
 }

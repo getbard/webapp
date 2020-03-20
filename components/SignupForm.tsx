@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
-import { FaSpinner } from 'react-icons/fa';
+import { FiLoader } from 'react-icons/fi';
 import { useRouter } from 'next/router';
 
 import { useAuth } from '../hooks/useAuth';
@@ -183,7 +183,7 @@ function SignupUser(): React.ReactElement {
               <Button className="w-full">
                 {
                   loading
-                    ? <FaSpinner className="w-full icon-spin" />
+                    ? <FiLoader className="w-full icon-spin text-xl" />
                     : 'Sign Up'
                 }
               </Button>

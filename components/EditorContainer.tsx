@@ -3,7 +3,7 @@ import { Node } from 'slate';
 import { useMutation } from '@apollo/react-hooks';
 import TextareaAutosize from 'react-textarea-autosize';
 import debounce from 'lodash/debounce';
-import { FaSpinner } from 'react-icons/fa';
+import { FiLoader } from 'react-icons/fi';
 import { useRouter } from 'next/router';
 
 import { useAuth } from '../hooks/useAuth';
@@ -132,7 +132,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
           >
             {
               publishLoading || (publishCalled && !publishError)
-                ? <FaSpinner className="icon-spin w-full px-4 my-1" />
+                ? <FiLoader className="icon-spin w-full px-4 text-xl" />
                 : 'Publish'
             }
           </Button>
