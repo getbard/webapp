@@ -7,6 +7,7 @@ const ArticlesSummaryQuery = gql`
       title
       summary
       updatedAt
+      publishedAt
       subscribersOnly
       draft
     }

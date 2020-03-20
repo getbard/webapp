@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Thu Mar 19 2020 13:45:22 GMT-0700 (Pacific Daylight Time)
+# timestamp: Thu Mar 19 2020 16:11:01 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -17,6 +17,7 @@ type Article {
   draft: Boolean!
   createdAt: String!
   updatedAt: String!
+  publishedAt: String
   userId: String!
   subscribersOnly: Boolean!
   slug: String!
@@ -66,9 +67,10 @@ type Mutation {
 
 type Query {
   articles: [Article]
-  article(id: ID): Article
-  articleBySlug(slug: String): Article
-  articlesByUser(userId: ID): [Article]
+  article(id: ID!): Article
+  articleBySlug(slug: String!): Article
+  articlesByUser(userId: ID!): [Article]
+  publishArticle(id: ID!): Article
 }
 
 """The `Upload` scalar type represents a file upload."""

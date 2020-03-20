@@ -3,10 +3,19 @@ type Props = {
   onClick?: () => void;
   className?: string;
   thin?: boolean;
+  disabled?: boolean;
 }
 
-function Button({ children, onClick, className, thin }: Props): React.ReactElement {
-  const classes = `bg-primary hover:bg-secondary px-4 ${thin ? 'py-1' : 'py-2'} text-white rounded ${className}`
+function Button({
+  children,
+  onClick,
+  className,
+  thin,
+  disabled: isDisabled,
+}: Props): React.ReactElement {
+  const yPadding = thin ? 'py-1' : 'py-2';
+  const disabled = isDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-secondary';
+  const classes = `bg-primary px-4 ${yPadding} ${disabled} text-white rounded ${className}`
   return (
     <button
       className={classes}

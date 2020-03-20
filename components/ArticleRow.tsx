@@ -31,12 +31,18 @@ function ArticleRow({ article }: { article: Article }): React.ReactElement {
         </div>
 
         <div className="text-xs">
+          { article?.publishedAt ? `Published ${formatDistanceToNow(new Date(article.updatedAt))} ago | ` : ''}
           Updated {formatDistanceToNow(new Date(article.updatedAt))} ago
-          </div>
+        </div>
       </div>
 
       <div>
-        <div className="inline hover:text-primary hover:cursor-pointer font-medium mr-4">Edit</div>
+        <Link href={`/edit/${article.id}`}>
+          <a className="inline hover:text-primary hover:cursor-pointer font-medium mr-4">
+            Edit
+          </a>
+        </Link>
+
         <div className="inline text-red-600 hover:text-red-900 hover:cursor-pointer font-medium">Delete</div>
       </div>
     </div>
