@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaSpinner } from 'react-icons/fa';
+import { FiLoader } from 'react-icons/fi';
 import { useRouter } from 'next/router';
 
 import { useAuth } from '../hooks/useAuth';
@@ -96,7 +96,7 @@ function LoginForm({
           <Button className="w-full md:w-auto">
             {
               loading
-                ? <FaSpinner className="w-full icon-spin" />
+                ? <FiLoader className="w-full icon-spin px-2 text-xl" />
                 : 'Login'
             }
           </Button>

@@ -1,15 +1,9 @@
 import { useState } from 'react';
-import { FaCog } from 'react-icons/fa';
+import { FiSettings } from 'react-icons/fi';
 import styled from '@emotion/styled'
 import Link from 'next/link';
 
 import { useAuth } from '../hooks/useAuth';
-
-const StyledCog = styled(FaCog)`
-  &:hover {
-    cursor: pointer;
-  }
-`;
 
 const Menu = styled.div`
   top: 22px;
@@ -45,9 +39,9 @@ function NavMenu(): React.ReactElement {
 
   return (
     <div className="flex justify-end relative ml-4">
-      <StyledCog
+      <FiSettings
         onClick={(): void => setDisplay(!display)}
-        className={`${display && 'text-gray-700'}`}
+        className={`${display && 'text-gray-700'} hover:cursor-pointer hover:text-primary`}
       />
 
       {display && <DisplayMenu />}

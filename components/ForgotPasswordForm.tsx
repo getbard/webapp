@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import firebase from '../lib/firebase';
 import { useForm } from 'react-hook-form';
-import { FaSpinner } from 'react-icons/fa';
+import { FiLoader } from 'react-icons/fi';
 
 import Button from './Button';
 
@@ -74,7 +74,7 @@ function ForgotPasswordForm({
           <Button className="w-full md:w-auto">
             {
               loading
-                ? <FaSpinner className="w-full icon-spin" />
+                ? <FiLoader className="w-full icon-spin text-xl px-10" />
                 : 'Reset Password'
             }
           </Button>
