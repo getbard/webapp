@@ -20,7 +20,7 @@ const Article: NextPage = (): React.ReactElement => {
   if (error) return <div>Error</div>;
   if (loading) return <div>Loading</div>;
 
-  const { article } = data;
+  const article = data?.article || data?.articleBySlug;
 
   return (
     <div className="sm:w-3/5 px-5 pt-5 container mx-auto relative">

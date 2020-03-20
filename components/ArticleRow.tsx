@@ -1,10 +1,15 @@
 
+import { useRef } from 'react';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
+import { FiCopy } from 'react-icons/fi';
+import ReactTooltip from 'react-tooltip';
 
 import { Article } from '../generated/graphql';
 
 function ArticleRow({ article }: { article: Article }): React.ReactElement {
+  const copyIcon = useRef(null);
+
   return (
     <div className="border-b border-gray-200 my-2 py-4 flex justify-between items-center">
       <div>
@@ -36,7 +41,26 @@ function ArticleRow({ article }: { article: Article }): React.ReactElement {
         </div>
       </div>
 
-      <div>
+      <div className="flex justify-end items-center">
+        {
+          !article?.draft && article?.slug &&
+          (
+            <span
+              ref={copyIcon}
+              data-for="copied-tooltip"
+              data-tip="Copied!"
+              onClick={(): void => {
+                navigator.clipboard.writeText(`https://getbard.com/articles/s/${article.slug}`);
+                const el = copyIcon?.current || undefined;
+                setTimeout(() => ReactTooltip.hide(el), 2000);
+              }}
+            >
+              <FiCopy className="block hover:cursor-pointer hover:text-primary mr-4" />
+              <ReactTooltip id="copied-tooltip" event="click" isCapture />
+            </span>
+          )
+        }
+
         <Link href={`/edit/${article.id}`}>
           <a className="inline hover:text-primary hover:cursor-pointer font-medium mr-4">
             Edit

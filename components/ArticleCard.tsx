@@ -13,9 +13,10 @@ const ArticleCardDiv = styled.div`
 
 function ArticleCard({ article }: { article: Article }): React.ReactElement {
   const imageSrc = article.headerImageURL || undefined;
+  const articleHref = article?.slug ? `/articles/s/${article.slug}` : `/articles/i/${article.id}`;
 
   return (
-    <Link href={`/articles/i/${article.id}`}>
+    <Link href={articleHref}>
       <ArticleCardDiv className="p-3 m-2 border border-gray-300 rounded-sm hover:cursor-pointer">
         {
           imageSrc

@@ -92,7 +92,9 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   }
 
   if (publishData) {
-    router.push(`/articles/i/${articleId}`);
+    const articleSlug = publishData?.publishArticle?.slug;
+    const articleHref = articleSlug ? `/articles/s/${articleSlug}` : `/articles/i/${articleId}`;
+    router.push(articleHref);
   }
 
   const handlePublishArticle = (): void => {

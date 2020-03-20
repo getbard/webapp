@@ -8,6 +8,7 @@ const DiscoverArticlesQuery = gql`
       headerImageURL
       summary
       content
+      slug
     }
   }
 `;
