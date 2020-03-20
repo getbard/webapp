@@ -8,6 +8,8 @@ const ArticleByIdQuery = gql`
       headerImageURL
       summary
       content
+      userId
+      subscribersOnly
     }
   }
 `;
