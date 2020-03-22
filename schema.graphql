@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Thu Mar 19 2020 16:11:01 GMT-0700 (Pacific Daylight Time)
+# timestamp: Sun Mar 22 2020 15:28:14 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -20,7 +20,7 @@ type Article {
   publishedAt: String
   userId: String!
   subscribersOnly: Boolean!
-  slug: String!
+  slug: String
 }
 
 enum CacheControlScope {
@@ -61,8 +61,30 @@ type CreateOrUpdateArticlePayload {
   id: ID!
 }
 
+input CreateUserInput {
+  email: String!
+  firstName: String!
+  lastName: String
+}
+
+type CreateUserPayload {
+  id: ID!
+  username: String!
+}
+
 type Mutation {
   createOrUpdateArticle(input: CreateOrUpdateArticleInput!): CreateOrUpdateArticlePayload!
+  publishArticle(input: PublishArticleInput!): PublishArticlePayload!
+  createUser(input: CreateUserInput!): CreateUserPayload!
+}
+
+input PublishArticleInput {
+  id: ID!
+}
+
+type PublishArticlePayload {
+  id: ID!
+  slug: String!
 }
 
 type Query {
@@ -70,7 +92,7 @@ type Query {
   article(id: ID!): Article
   articleBySlug(slug: String!): Article
   articlesByUser(userId: ID!): [Article]
-  publishArticle(id: ID!): Article
+  me(userId: ID!): User!
 }
 
 """The `Upload` scalar type represents a file upload."""
@@ -78,7 +100,8 @@ scalar Upload
 
 type User {
   id: ID!
-  name: String
+  firstName: String!
+  lastName: String
   username: String!
   email: String!
   profileImageURL: String

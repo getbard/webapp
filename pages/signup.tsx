@@ -1,15 +1,18 @@
 import { NextPage } from 'next';
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 
+import { useAuth } from '../hooks/useAuth';
+
+import { withApollo } from '../lib/apollo';
 import SignupForm from '../components/SignupForm';
 
 const Signup: NextPage = (): React.ReactElement => {
-//   const router = useRouter();
-//   const authUser = useStoreState(state => state.user);
+  const router = useRouter();
+  const auth = useAuth();
 
-//   if (authUser.isAuthenticated) {
-//     router.push('/write');
-//   }
+  if (auth.user) {
+    router.push('/write');
+  }
 
   return (
     <div>
@@ -18,5 +21,5 @@ const Signup: NextPage = (): React.ReactElement => {
   );
 };
 
-export default Signup;
+export default withApollo()(Signup);
  
