@@ -22,18 +22,18 @@ export default function createApolloClient(
 ): ApolloClient<NormalizedCacheObject> {
   // The `ctx` (NextPageContext) will only be present on the server.
   // use it to extract auth headers (ctx.req) or similar.
-  let token: string | undefined;
-
-  if (ctx) {
-    const nextCookie = new Cookie(ctx);
-    token = nextCookie.get('token');
-  } else {
-    token = cookie.get('token');
-  }
-
   const authLink = setContext(async (_, { headers }) => {
-    if (!token) {
-      token = await firebase?.auth()?.currentUser?.getIdToken() || undefined;
+    let token: string | undefined;
+
+    if (ctx) {
+      const nextCookie = new Cookie(ctx);
+      token = nextCookie.get('token');
+    } else {
+      // Refresh the token on the client and update the cookie
+      token = await firebase?.auth()?.currentUser?.getIdToken();
+      if (token) {
+        cookie.set('token', token);
+      }
     }
 
     return {

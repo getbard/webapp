@@ -3,10 +3,14 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { FiLoader } from 'react-icons/fi';
 import { useRouter } from 'next/router';
+import { useMutation } from '@apollo/react-hooks';
 
 import { useAuth } from '../hooks/useAuth';
 
 import Button from './Button';
+
+import { CreateUserInput } from '../generated/graphql';
+import CreateUserMutation from '../queries/CreateUserMutation';
 
 type FormData = {
   email: string;
@@ -22,6 +26,7 @@ function SignupUser(): React.ReactElement {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, errors, setError, watch } = useForm<FormData>();
+  const [createUser] = useMutation<CreateUserInput>(CreateUserMutation);
 
   useEffect(() => {
     if (auth.user !== null){
@@ -29,12 +34,18 @@ function SignupUser(): React.ReactElement {
     }
   }, [auth]);
 
-  const onSubmit = ({ email, password }: FormData): void => {
+  const onSubmit = ({
+    email,
+    firstName,
+    lastName,
+    password,
+  }: FormData): void => {
     setLoading(true);
 
     auth
       .signUp(email, password)
       .then(() => {
+        createUser({ variables: { email, firstName, lastName } });
         router.push('/');
       })
       .catch(() => {
@@ -120,7 +131,7 @@ function SignupUser(): React.ReactElement {
                 type="text"
                 placeholder="Ernest"
                 name="firstName"
-                ref={register({ required: 'Please enter your name' })}
+                ref={register({ required: 'Please enter your first name' })}
               />
               <span className="tracking-wide text-primary text-xs font-bold">{errors.firstName && errors.firstName.message}</span>
             </div>
@@ -179,7 +190,7 @@ function SignupUser(): React.ReactElement {
               <span className="tracking-wide text-primary text-xs font-bold">{errors.signup && errors.signup.message}</span>
             </div>
 
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center focus:outline-none">
               <Button className="w-full">
                 {
                   loading
