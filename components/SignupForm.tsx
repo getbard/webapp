@@ -44,8 +44,19 @@ function SignupUser(): React.ReactElement {
 
     auth
       .signUp(email, password)
-      .then(() => {
-        createUser({ variables: { email, firstName, lastName } });
+      .then((user) => {
+        createUser({
+          variables: {
+            input: {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+              // @ts-ignore
+              id: user?.uid,
+              email,
+              firstName,
+              lastName,
+            },
+          },
+        });
         router.push('/');
       })
       .catch(() => {

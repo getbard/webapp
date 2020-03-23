@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import Error from 'next/error';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
 
