@@ -10,6 +10,7 @@ const ArticleBySlugQuery = gql`
       content
       publishedAt
       author {
+        username
         firstName
         lastName
       }

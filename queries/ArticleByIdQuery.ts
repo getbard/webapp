@@ -12,6 +12,7 @@ const ArticleByIdQuery = gql`
       subscribersOnly
       publishedAt
       author {
+        username
         firstName
         lastName
       }

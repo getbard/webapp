@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
 import { format } from 'date-fns';
@@ -36,7 +37,8 @@ const Article: NextPage = (): React.ReactElement => {
         </div>
 
         <div className="text-sm w-full font-bold">
-          written by {authorName} on {format(new Date(article.publishedAt), 'MMM do, YYY')}
+          written by <Link href={`/${article.author.username}`} ><a className="underline">{authorName}</a></Link>
+          &nbsp;on {format(new Date(article.publishedAt), 'MMM do, yyyy')}
         </div>
       </div>
 
