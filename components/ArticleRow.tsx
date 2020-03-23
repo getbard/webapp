@@ -23,7 +23,7 @@ function ArticleRow({ article }: { article: Article }): React.ReactElement {
             )
             : (
               <Link href={`/articles/i/${article.id}`}>
-                <a className="text-3xl font-serif flex items-center hover:text-primary hover:cursor-pointer">
+                <a className="text-3xl font-serif flex items-center hover:text-primary hover:cursor-pointer transition duration-150 ease-in-out">
                   {article.title}
                     &nbsp;{article.subscribersOnly && <span className="text-xs uppercase tracking-widest bg-primary rounded-full text-white px-2 py-1 font-sans">Premium</span>}
                 </a>
@@ -55,19 +55,19 @@ function ArticleRow({ article }: { article: Article }): React.ReactElement {
                 setTimeout(() => ReactTooltip.hide(el), 2000);
               }}
             >
-              <FiCopy className="block hover:cursor-pointer hover:text-primary mr-4" />
+              <FiCopy className="block hover:cursor-pointer hover:text-primary mr-4 transition duration-150 ease-in-out" />
               <ReactTooltip id="copied-tooltip" event="click" isCapture />
             </span>
           )
         }
 
         <Link href={`/edit/${article.id}`}>
-          <a className="inline hover:text-primary hover:cursor-pointer font-medium mr-4">
+          <a className="inline hover:text-primary hover:cursor-pointer font-medium mr-4 transition duration-150 ease-in-out">
             Edit
           </a>
         </Link>
 
-        <div className="inline text-red-600 hover:text-red-900 hover:cursor-pointer font-medium">Delete</div>
+        <div className="inline text-red-600 hover:text-red-900 hover:cursor-pointer font-medium transition duration-150 ease-in-out">Delete</div>
       </div>
     </div>
   );

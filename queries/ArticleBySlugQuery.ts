@@ -8,6 +8,12 @@ const ArticleBySlugQuery = gql`
       headerImageURL
       summary
       content
+      publishedAt
+      author {
+        username
+        firstName
+        lastName
+      }
     }
   }
 `;

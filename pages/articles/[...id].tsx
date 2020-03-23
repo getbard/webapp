@@ -1,6 +1,8 @@
 import { NextPage } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
+import { format } from 'date-fns';
 
 import ArticleBySlugQuery from '../../queries/ArticleBySlugQuery';
 import ArticleByIdQuery from '../../queries/ArticleByIdQuery';
@@ -21,15 +23,23 @@ const Article: NextPage = (): React.ReactElement => {
   if (loading) return <div>Loading</div>;
 
   const article = data?.article || data?.articleBySlug;
+  const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName[0] + '.'}`;
 
   return (
     <div className="sm:w-3/5 px-5 pt-5 container mx-auto relative">
-      <div className="text-4xl w-full font-serif">
-        {article.title}
-      </div>
+      <div className="mb-8">
+        <div className="text-4xl w-full font-serif">
+          {article.title}
+        </div>
 
-      <div className="text-xl w-full mb-4">
-        {article?.summary}
+        <div className="text-xl w-full mb-4">
+          {article?.summary}
+        </div>
+
+        <div className="text-sm w-full font-bold">
+          written by <Link href={`/${article.author.username}`} ><a className="underline">{authorName}</a></Link>
+          &nbsp;on {format(new Date(article.publishedAt), 'MMM do, yyyy')}
+        </div>
       </div>
 
       <Editor

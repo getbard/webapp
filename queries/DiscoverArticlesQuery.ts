@@ -9,6 +9,12 @@ const DiscoverArticlesQuery = gql`
       summary
       content
       slug
+      publishedAt
+      author {
+        username
+        firstName
+        lastName
+      }
     }
   }
 `;

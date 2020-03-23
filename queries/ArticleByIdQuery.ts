@@ -10,6 +10,12 @@ const ArticleByIdQuery = gql`
       content
       userId
       subscribersOnly
+      publishedAt
+      author {
+        username
+        firstName
+        lastName
+      }
     }
   }
 `;
