@@ -5,31 +5,20 @@ import TextareaAutosize from 'react-textarea-autosize';
 import debounce from 'lodash/debounce';
 import { FiLoader } from 'react-icons/fi';
 import { useRouter } from 'next/router';
-import styled from '@emotion/styled';
 
 import { useAuth } from '../hooks/useAuth';
 
-import Editor from '../components/Editor';
-import EditorNotification from '../components/EditorNotification';
-import Button from '../components/Button';
-import SubscribersOnlyToggle from '../components/SubcribersOnlyToggle';
-import EditorHeaderPhotoSelector from '../components/EditorHeaderPhotoSelector';
+import Editor from './Editor';
+import EditorNotification from './EditorNotification';
+import Button from './Button';
+import SubscribersOnlyToggle from './SubcribersOnlyToggle';
+import EditorHeaderPhotoSelector from './EditorHeaderPhotoSelector';
+import HeaderImage from './HeaderImage';
 
 import { CreateOrUpdateArticleInput, Article } from '../generated/graphql';
 import CreateOrUpdateArticleMutation from '../queries/CreateOrUpdateArticleMutation';
 import PublishArticleMutation from '../queries/PublishArticleMutation';
 import ArticlesSummaryQuery from '../queries/ArticlesSummaryQuery';
-
-type HeaderImageProps = {
-  url: string;
-}
-
-const HeaderImage = styled.div`
-  height: 28rem;
-  background-size: cover;
-  background-position: center;
-  background-image: url(${(props: HeaderImageProps): string => props.url});
-`;
 
 const saveArticle = debounce(({
   createOrUpdateArticle,
