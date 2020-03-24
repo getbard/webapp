@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 const ArticlesSummaryQuery = gql`
-  query articlesSummary($userId: ID!) {
-    articlesByUser(userId: $userId) {
+  query articlesSummary($userId: ID!, $drafts: Boolean) {
+    articlesByUser(userId: $userId, drafts: $drafts) {
       id
       title
       summary
