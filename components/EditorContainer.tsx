@@ -78,7 +78,8 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   const publishable = !(!articleId || !title || content === emptyDocumentString);
 
   useEffect(() => {
-    if (!title && !summary && !content || article?.publishedAt) {
+    const noContent = !title && !summary && content === emptyDocumentString;
+    if (noContent || article?.publishedAt) {
       return;
     }
 
