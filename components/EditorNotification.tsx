@@ -40,7 +40,7 @@ const EditorLeaf = ({ saving, error, called }: Props): React.ReactElement => {
 
   return (
     <div className="fixed bottom-0 left-0 w-full flex justify-center">
-      <p className={`${display ? 'opactiy-100' : 'opacity-0'} ${error ? 'bg-red-600' : 'bg-primary'} transition duration-300 transition-opacity px-4 py-2 mb-2 text-white rounded`}>
+      <p className={`${display ? 'opactiy-100' : 'opacity-0'} ${error ? 'bg-red-600' : 'bg-primary'} transition duration-300 transition-opacity px-4 py-2 mb-2 text-white rounded z-30`}>
         {notification}
       </p>
     </div>

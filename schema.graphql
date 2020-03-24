@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Mon Mar 23 2020 13:58:31 GMT-0700 (Pacific Daylight Time)
+# timestamp: Tue Mar 24 2020 13:19:55 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -92,9 +92,24 @@ type Query {
   articles: [Article]
   article(id: ID!): Article
   articleBySlug(slug: String!): Article
-  articlesByUser(userId: ID!): [Article]
+  articlesByUser(userId: ID!, drafts: Boolean): [Article]
   me(userId: ID!): User!
   user(username: String!): User
+  unsplashPhoto(search: String): [UnsplashPhoto]
+}
+
+type UnsplashPhoto {
+  id: ID!
+  urls: UnsplashPhotoURLs!
+  photographerName: String!
+}
+
+type UnsplashPhotoURLs {
+  raw: String!
+  full: String!
+  regular: String!
+  small: String!
+  thumb: String!
 }
 
 """The `Upload` scalar type represents a file upload."""
