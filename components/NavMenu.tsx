@@ -24,7 +24,7 @@ function DisplayMenu(): React.ReactElement {
   }
 
   return (
-    <Menu className="z-20 bg-white border border-gray-300 absolute rounded-sm shadow-sm whitespace-no-wrap">
+    <Menu className="z-40 bg-white border border-gray-300 absolute rounded-sm shadow-sm whitespace-no-wrap">
       <Link href="/write">
         <a className="hover:bg-gray-100 block py-2 pl-2 pr-12">
           Write an article

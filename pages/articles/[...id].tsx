@@ -10,6 +10,7 @@ import ArticleByIdQuery from '../../queries/ArticleByIdQuery';
 import { withApollo } from '../../lib/apollo';
 import withLayout from '../../components/withLayout';
 import Editor from '../../components/Editor';
+import HeaderImage from '../../components/HeaderImage';
 
 const Article: NextPage = (): React.ReactElement => {
   const router = useRouter();
@@ -26,8 +27,13 @@ const Article: NextPage = (): React.ReactElement => {
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName[0] + '.'}`;
 
   return (
-    <div className="sm:w-3/5 px-5 pt-5 container mx-auto relative">
+    <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
       <div className="mb-8">
+        {
+          article?.headerImageURL
+          && <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-4" url={article.headerImageURL} />
+        }
+        
         <div className="text-4xl w-full font-serif">
           {article.title}
         </div>

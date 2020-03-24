@@ -8,10 +8,12 @@ import { useRouter } from 'next/router';
 
 import { useAuth } from '../hooks/useAuth';
 
-import Editor from '../components/Editor';
-import EditorNotification from '../components/EditorNotification';
-import Button from '../components/Button';
-import SubscribersOnlyToggle from '../components/SubcribersOnlyToggle';
+import Editor from './Editor';
+import EditorNotification from './EditorNotification';
+import Button from './Button';
+import SubscribersOnlyToggle from './SubcribersOnlyToggle';
+import EditorHeaderPhotoSelector from './EditorHeaderPhotoSelector';
+import HeaderImage from './HeaderImage';
 
 import { CreateOrUpdateArticleInput, Article } from '../generated/graphql';
 import CreateOrUpdateArticleMutation from '../queries/CreateOrUpdateArticleMutation';
@@ -44,6 +46,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   const [summary, setSummary] = useState(article?.summary || '');
   const [content, setContent] = useState(article?.content || emptyDocumentString);
   const [subscribersOnly, setSubscribersOnly] = useState(article?.subscribersOnly || false);
+  const [headerImageURL, setHeaderImageURL] = useState(article?.headerImageURL || '');
 
   const [createOrUpdateArticle, {
     data: saveData,
@@ -64,7 +67,8 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   const publishable = !(!articleId || !title || content === emptyDocumentString);
 
   useEffect(() => {
-    if (!title && !summary && !content || article?.draft === false) {
+    const noContent = !title && !summary && content === emptyDocumentString;
+    if (noContent || article?.publishedAt) {
       return;
     }
 
@@ -73,6 +77,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
       summary,
       content,
       subscribersOnly,
+      headerImageURL,
     };
 
     if (articleId) {
@@ -84,7 +89,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
       input,
       userId,
     });
-  }, [title, summary, content, subscribersOnly]);
+  }, [title, summary, content, subscribersOnly, headerImageURL]);
 
   const handleContentChange = (newContent: Node[]): void => {
     const contentString = JSON.stringify(newContent);
@@ -112,52 +117,63 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   }
 
   return (
-    <div className="sm:w-3/5 px-5 pt-5 container mx-auto relative">
-      <div className="flex justify-between sticky bg-white z-10 top-0 -mt-2 mb-4 py-2">
-        <SubscribersOnlyToggle
-          subscribersOnly={subscribersOnly}
-          setSubscribersOnly={setSubscribersOnly}
-        />
+    <div className="relative py-5">
+      <div className="sticky bg-white z-20 top-0 min-w-screen py-2 mb-4">
+        <div className="flex justify-between sm:w-3/5 px-5 container mx-auto">
+          <SubscribersOnlyToggle
+            subscribersOnly={subscribersOnly}
+            setSubscribersOnly={setSubscribersOnly}
+          />
 
-        <div>
-          {/* <span className="mr-4 underline">
-            Schedule
-          </span> */}
+          <div>
+            {/* <span className="mr-4 underline">
+              Schedule
+            </span> */}
 
-          <Button
-            thin
-            onClick={handlePublishArticle}
-            disabled={!publishable}
-            className="focus:outline-none"
-          >
-            {
-              publishLoading || (publishCalled && !publishError)
-                ? <FiLoader className="icon-spin w-full px-4 text-xl" />
-                : 'Publish'
-            }
-          </Button>
+            <Button
+              thin
+              onClick={handlePublishArticle}
+              disabled={!publishable}
+              className="focus:outline-none"
+            >
+              {
+                publishLoading || (publishCalled && !publishError)
+                  ? <FiLoader className="icon-spin w-full px-4 text-xl" />
+                  : 'Publish'
+              }
+            </Button>
+          </div>
         </div>
       </div>
 
-      <TextareaAutosize 
-        className="focus:outline-none text-4xl font-serif w-full h-auto resize-none placeholder-gray-400"
-        placeholder="Title"
-        value={title}
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setTitle(e.target.value)}
-      >
-      </TextareaAutosize>
+      <div className="sm:w-3/5 px-5 container mx-auto">
+        {
+          (article?.headerImageURL || headerImageURL)
+          && <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-4" url={article?.headerImageURL || headerImageURL} />
+        }
 
-      <TextareaAutosize 
-        className="focus:outline-none text-xl w-full h-auto resize-none placeholder-gray-400 mb-4 font-medium"
-        placeholder="Add an optional summary"
-        value={summary}
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setSummary(e.target.value)}
-      >
-      </TextareaAutosize>
+        <EditorHeaderPhotoSelector setHeaderImageURL={setHeaderImageURL} />
 
-      <Editor initialValue={JSON.parse(content)} setContent={handleContentChange} />
+        <TextareaAutosize 
+          className="focus:outline-none text-4xl font-serif w-full h-auto resize-none placeholder-gray-400"
+          placeholder="Title"
+          value={title}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setTitle(e.target.value)}
+        >
+        </TextareaAutosize>
 
-      <EditorNotification saving={mutationLoading} error={mutationError || publishError} called={called} />
+        <TextareaAutosize 
+          className="focus:outline-none text-xl w-full h-auto resize-none placeholder-gray-400 mb-4 font-medium"
+          placeholder="Add an optional summary"
+          value={summary}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setSummary(e.target.value)}
+        >
+        </TextareaAutosize>
+
+        <Editor initialValue={JSON.parse(content)} setContent={handleContentChange} />
+
+        <EditorNotification saving={mutationLoading} error={mutationError || publishError} called={called} />
+      </div>
     </div>
   );
 }
