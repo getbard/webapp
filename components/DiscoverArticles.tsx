@@ -47,7 +47,7 @@ function DiscoverArticles(): React.ReactElement {
     }
   });
 
-  for (let i = 0; i < articlesWithHeader.length; i+= smallArticleCardCount) {
+  for (let i = 0; i < articlesWithoutHeader.length; i+= smallArticleCardCount) {
     articleChunks.push(articlesWithoutHeader.slice(i, i + smallArticleCardCount));
   }
 
