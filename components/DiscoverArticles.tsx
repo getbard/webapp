@@ -1,5 +1,4 @@
 import { useQuery } from '@apollo/react-hooks';
-import { XMasonry, XBlock } from 'react-xmasonry';
 import styled from '@emotion/styled';
 
 import useMedia from '../hooks/useMedia';
@@ -10,15 +9,6 @@ import DiscoverArticlesQuery from '../queries/DiscoverArticlesQuery';
 import ArticleCard from './ArticleCard';
 import SmallArticleCard from './SmallArticleCard';
 
-function shuffle(arr: any[]): any[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
 const ArticleChunkContainer = styled.div`
   > div:not(:last-child) {
     border-bottom: 1px solid;
@@ -27,8 +17,6 @@ const ArticleChunkContainer = styled.div`
 `;
 
 function DiscoverArticles(): React.ReactElement {
-  const smallArticleCardWidth = useMedia(['(max-width: 640px)', '@media (min-width: 640px)'], [1, 2], 2);
-  const smallArticleCardCount = useMedia(['(max-width: 640px)', '@media (min-width: 640px)'], [4, 8], 8);
   const { loading, error, data } = useQuery(DiscoverArticlesQuery);
 
   if (error) return <div>Error</div>;
@@ -47,54 +35,61 @@ function DiscoverArticles(): React.ReactElement {
     }
   });
 
-  for (let i = 0; i < articlesWithoutHeader.length; i+= smallArticleCardCount) {
-    articleChunks.push(articlesWithoutHeader.slice(i, i + smallArticleCardCount));
+  for (let i = 0; i < articlesWithoutHeader.length; i+= 6) {
+    articleChunks.push(articlesWithoutHeader.slice(i, i + 6));
   }
 
   const articleBlocks = articlesWithHeader.map((article: Article) => {
     return (
-      <XBlock key={article.id}>
+      <div key={article.id}>
         <ArticleCard article={article} />
-      </XBlock>
+      </div>
     );
   });
 
   const articleChunkBlocks = articleChunks.map((articleChunk: Article[], index: number) => {
     return (
-      <XBlock key={index} width={smallArticleCardWidth}>
-        <div className="grid sm:grid-cols-2 border border-gray-300 m-2 p-1">
-          <ArticleChunkContainer className="sm:hidden">
-            {articleChunk.map((article: Article) => {
-              return (
-                <SmallArticleCard key={article.id} article={article} />
-              );
-            })}
-          </ArticleChunkContainer>
-          <ArticleChunkContainer className="col-span-1 border-r border-gray-300 hidden sm:block">
-            {articleChunk.slice(0, articleChunk.length / 2).map((article: Article) => {
-              return (
-                <SmallArticleCard key={article.id} article={article} />
-              );
-            })}
-          </ArticleChunkContainer>
-          <ArticleChunkContainer className="col-span-1 hidden sm:block">
-            {articleChunk.slice(articleChunk.length / 2).map((article: Article) => {
-              return (
-                <SmallArticleCard key={article.id} article={article} />
-              );
-            })}
-          </ArticleChunkContainer>
-        </div>
-      </XBlock>
+        <ArticleChunkContainer className="row-span-2 col-span-1 border border-gray-300 p-1" key={index}>
+          {articleChunk.map((article: Article) => {
+            return (
+              <SmallArticleCard key={article.id} article={article} />
+            );
+          })}
+        </ArticleChunkContainer>
     )
   });
 
-  const blocks = shuffle([...articleBlocks, ...articleChunkBlocks]);
+  const blocks = [];
+
+  let lastInserted = 'left';
+  let insertedSince = 0;
+  let articleBlockIndex = 0;
+  let articleChunkBlockIndex = 0;
+  let articleBlocksCount = articleBlocks.length;
+
+  // This algorithm will cause articles without images to not show up
+  // if there are not enough articles with images to display nicely
+  while (articleBlocksCount >= 0) {
+    const shouldInsertRight = (lastInserted === 'left' && insertedSince === 10) || (articleBlockIndex === 3 && insertedSince === 3);
+    const shouldInsertLeft = lastInserted === 'right' && insertedSince === 3;
+
+    if (shouldInsertRight || shouldInsertLeft) {
+      blocks.push(articleChunkBlocks[articleChunkBlockIndex]);
+      articleChunkBlockIndex++;
+      lastInserted = lastInserted === 'left' ? 'right' : 'left';
+      insertedSince = 0;
+    } else {
+      blocks.push(articleBlocks[articleBlockIndex]);
+      articleBlockIndex++;
+      articleBlocksCount--;
+      insertedSince++;
+    }
+  }
 
   return (
-    <XMasonry>
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
       {blocks}
-    </XMasonry>
+    </div>
   );
 }
 
