@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceStrict } from 'date-fns';
 
 import { Article } from '../generated/graphql';
 
@@ -30,21 +30,21 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
   
   return (
     <Link href={articleHref}>
-      <ArticleCardDiv className="p-3 m-2 border border-gray-300 rounded-sm hover:cursor-pointer transition duration-150 ease-in">
-        {article?.headerImageURL && <ArticleCardImage className="h-40 -mt-3 -mx-3 mb-5 transition duration-150 ease-in" url={article.headerImageURL} />}
+      <ArticleCardDiv className="p-4 m-2 border border-gray-300 rounded-sm hover:cursor-pointer transition duration-150 ease-in">
+        {article?.headerImageURL && <ArticleCardImage className="h-40 rounded-t-sm -mt-3 -mx-3 mb-3 transition duration-150 ease-in" url={article.headerImageURL} />}
 
         <h1 className="font-serif font-bold text-xl transition duration-150 ease-in">{article.title}</h1>
         <div className="text-gray-600 text-sm">{article.summary}</div>
         
         <div className={`flex justify-between text-xs align-center font-bold ${article.summary && 'mt-2'}`}>
-          <div>
-            written by {authorName}
+          <div className="text-gray-700">
+            {authorName}
           </div> 
           {
             article.publishedAt
               ? (
                 <div className="text-primary">
-                  {formatDistanceToNow(new Date(article.publishedAt))} ago
+                  {formatDistanceStrict(new Date(), new Date(article.publishedAt))} ago
                 </div>
               )
               : ''
