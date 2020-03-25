@@ -30,8 +30,14 @@ const Article: NextPage = (): React.ReactElement => {
     <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
       <div className="mb-8">
         {
-          article?.headerImageURL
-          && <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-4" url={article.headerImageURL} />
+          article?.headerImageURL && (
+            <div className="mb-4">
+              <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-1" url={article.headerImageURL} />
+              <div className="text-xs text-center">
+                photo insert photo credit here
+              </div>
+            </div>
+          )
         }
         
         <div className="text-4xl w-full font-serif">
