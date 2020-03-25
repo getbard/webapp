@@ -30,25 +30,27 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
   
   return (
     <Link href={articleHref}>
-      <ArticleCardDiv className="p-4 border border-gray-300 rounded-sm hover:cursor-pointer transition duration-150 ease-in">
-        {article?.headerImageURL && <ArticleCardImage className="h-40 rounded-t-sm -mt-3 -mx-3 mb-3 transition duration-150 ease-in" url={article.headerImageURL} />}
-
-        <h1 className="font-serif font-bold text-xl transition duration-150 ease-in">{article.title}</h1>
-        <div className="text-gray-600 text-sm">{article.summary}</div>
-        
-        <div className="flex justify-between text-xs align-center font-bold mt-2">
-          <div className="text-gray-700">
-            {authorName}
-          </div> 
-          {
-            article.publishedAt
-              ? (
-                <div className="text-primary">
-                  {formatDistanceStrict(new Date(), new Date(article.publishedAt))} ago
-                </div>
-              )
-              : ''
-          }
+      <ArticleCardDiv className="p-4 border border-gray-300 rounded-sm hover:cursor-pointer transition duration-150 ease-in flex justify-between flex-col">
+        {article?.headerImageURL && <ArticleCardImage className="flex-grow h-40 rounded-t-sm -mt-3 -mx-3 mb-3 transition duration-150 ease-in" url={article.headerImageURL} />}
+      
+        <div>
+          <h1 className="font-serif font-bold text-xl transition duration-150 ease-in">{article.title}</h1>
+          <div className="text-gray-600 text-sm">{article.summary}</div>
+          
+          <div className="flex justify-between text-xs align-center font-bold mt-2">
+            <div className="text-gray-700">
+              {authorName}
+            </div> 
+            {
+              article.publishedAt
+                ? (
+                  <div className="text-primary">
+                    {formatDistanceStrict(new Date(), new Date(article.publishedAt))} ago
+                  </div>
+                )
+                : ''
+            }
+          </div>
         </div>
       </ArticleCardDiv>
     </Link>

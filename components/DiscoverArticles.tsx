@@ -40,11 +40,7 @@ function DiscoverArticles(): React.ReactElement {
   }
 
   const articleBlocks = articlesWithHeader.map((article: Article) => {
-    return (
-      <div key={article.id}>
-        <ArticleCard article={article} />
-      </div>
-    );
+    return <ArticleCard key={article.id} article={article} />;
   });
 
   const articleChunkBlocks = articleChunks.map((articleChunk: Article[], index: number) => {
