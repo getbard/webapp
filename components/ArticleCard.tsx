@@ -8,10 +8,6 @@ const ArticleCardDiv = styled.div`
   &:hover {
     border-color: #bdbdbd;
 
-    .header-image {
-      opacity: 0.75;
-    }
-
     h1 {
       color: #616161;
     }
@@ -35,7 +31,7 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
   return (
     <Link href={articleHref}>
       <ArticleCardDiv className="p-3 m-2 border border-gray-300 rounded-sm hover:cursor-pointer transition duration-150 ease-in">
-        {article?.headerImageURL && <ArticleCardImage className="header-image h-40 -mt-3 -mx-3 mb-5 transition duration-150 ease-in" url={article.headerImageURL} />}
+        {article?.headerImageURL && <ArticleCardImage className="h-40 -mt-3 -mx-3 mb-5 transition duration-150 ease-in" url={article.headerImageURL} />}
 
         <h1 className="font-serif font-bold text-xl transition duration-150 ease-in">{article.title}</h1>
         <div className="text-gray-600 text-sm">{article.summary}</div>
