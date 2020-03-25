@@ -36,7 +36,7 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
         <h1 className="font-serif font-bold text-xl transition duration-150 ease-in">{article.title}</h1>
         <div className="text-gray-600 text-sm">{article.summary}</div>
         
-        <div className={`flex justify-between text-xs align-center font-bold ${article.summary && 'mt-2'}`}>
+        <div className="flex justify-between text-xs align-center font-bold mt-2">
           <div className="text-gray-700">
             {authorName}
           </div> 
