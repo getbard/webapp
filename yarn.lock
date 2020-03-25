@@ -9849,11 +9849,6 @@ react-tooltip@^4.1.2:
   dependencies:
     prop-types "^15.7.2"
 
-react-xmasonry@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/react-xmasonry/-/react-xmasonry-3.0.3.tgz#de06a7e3ab41980d294a323e680c78918578f412"
-  integrity sha512-383LCwmEEIloBOxhvXX7DTLm9cUnyx7r3uOtmj+KCHnB8+J9FQxzo/0fKUyZd9TiaVvZahnCYbqpGTCr6WAaeg==
-
 react@16.13.0:
   version "16.13.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.0.tgz#d046eabcdf64e457bbeed1e792e235e1b9934cf7"

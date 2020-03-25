@@ -9,6 +9,8 @@ function withLayout(PageComponent: NextPage): NextPage {
         <Nav />
   
         <PageComponent />
+
+        <div className="pt-5"></div>
       </div>
     );
   }
