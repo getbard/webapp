@@ -15,7 +15,7 @@ import SubscribersOnlyToggle from './SubcribersOnlyToggle';
 import EditorHeaderPhotoSelector from './EditorHeaderPhotoSelector';
 import HeaderImage from './HeaderImage';
 
-import { CreateOrUpdateArticleInput, Article } from '../generated/graphql';
+import { CreateOrUpdateArticleInput, Article, PublishArticleInput } from '../generated/graphql';
 import CreateOrUpdateArticleMutation from '../queries/CreateOrUpdateArticleMutation';
 import PublishArticleMutation from '../queries/PublishArticleMutation';
 import ArticlesSummaryQuery from '../queries/ArticlesSummaryQuery';
@@ -34,7 +34,7 @@ const saveArticle = debounce(({
       variables: { userId },
     }],
   });
-}, 2000);
+}, 1000);
 
 const emptyDocumentString = '[{"type":"paragraph","children":[{"text":""}]}]';
 
@@ -47,6 +47,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   const [content, setContent] = useState(article?.content || emptyDocumentString);
   const [subscribersOnly, setSubscribersOnly] = useState(article?.subscribersOnly || false);
   const [headerImageURL, setHeaderImageURL] = useState(article?.headerImageURL || '');
+  const noContent = !title && !summary && content === emptyDocumentString;
 
   const [createOrUpdateArticle, {
     data: saveData,
@@ -62,12 +63,11 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
     called: publishCalled,
   }] = useMutation(PublishArticleMutation);
 
-
   const articleId = saveData?.createOrUpdateArticle?.id || article?.id;
-  const publishable = !(!articleId || !title || content === emptyDocumentString);
+  const publishable = !(!articleId || !title || content === emptyDocumentString) && !(called && mutationLoading);
+  const publishButtonText = article?.publishedAt ? 'Save and Publish' : 'Publish';
 
   useEffect(() => {
-    const noContent = !title && !summary && content === emptyDocumentString;
     if (noContent || article?.publishedAt) {
       return;
     }
@@ -107,8 +107,24 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
       return;
     }
 
+    let input: PublishArticleInput;
+    if (article?.publishedAt) {
+      input = {
+        id: articleId,
+        article: {
+          title,
+          summary,
+          content,
+          subscribersOnly,
+          headerImageURL,
+        }
+      };
+    } else {
+      input = { id: articleId };
+    }
+
     publishArticle({
-      variables: { input: { id: articleId } },
+      variables: { input },
       refetchQueries: [{
         query: ArticlesSummaryQuery,
         variables: { userId },
@@ -139,7 +155,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
               {
                 publishLoading || (publishCalled && !publishError)
                   ? <FiLoader className="icon-spin w-full px-4 text-xl" />
-                  : 'Publish'
+                  : publishButtonText
               }
             </Button>
           </div>
