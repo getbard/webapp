@@ -11,6 +11,7 @@ const ArticlesSummaryQuery = gql`
       subscribersOnly
       draft
       slug
+      userId
     }
   }
 `;
