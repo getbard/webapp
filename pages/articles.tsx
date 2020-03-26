@@ -61,4 +61,4 @@ const Articles: NextPage = (): React.ReactElement => {
   );
 }
 
-export default withApollo()(withLayout(Articles));
+export default withApollo({ ssr: true })(withLayout(Articles));
