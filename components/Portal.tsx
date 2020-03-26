@@ -9,10 +9,10 @@ function Portal({ children, selector }: {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    ref.current = document.querySelector(selector)
-    setMounted(true)
+    ref.current = document.querySelector(selector);
+    setMounted(true);
   }, [selector])
-
+  
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   return mounted ? createPortal(children, ref.current) : null

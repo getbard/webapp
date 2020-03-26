@@ -1,14 +1,15 @@
 
-import { useRef } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 import { FiCopy } from 'react-icons/fi';
-import ReactTooltip from 'react-tooltip';
 
 import { Article } from '../generated/graphql';
 
+import Tooltip from './Tooltip';
+
 function ArticleRow({ article }: { article: Article }): React.ReactElement {
-  const copyIcon = useRef(null);
+  const [showCopiedTooltip, setShowCopiedTooltip] = useState(false);
 
   return (
     <div className="border-b border-gray-200 my-2 py-4 flex justify-between items-center">
@@ -46,17 +47,19 @@ function ArticleRow({ article }: { article: Article }): React.ReactElement {
           !article?.draft && article?.slug &&
           (
             <span
-              ref={copyIcon}
-              data-for="copied-tooltip"
-              data-tip="Copied!"
+              id={`${article.id}-copy`} 
+              className="relative"
               onClick={(): void => {
                 navigator.clipboard.writeText(`https://getbard.com/articles/s/${article.slug}`);
-                const el = copyIcon?.current || undefined;
-                setTimeout(() => ReactTooltip.hide(el), 2000);
+                setShowCopiedTooltip(true);
+                setTimeout(() => setShowCopiedTooltip(false), 2500);
               }}
             >
               <FiCopy className="block hover:cursor-pointer hover:text-primary mr-4 transition duration-150 ease-in-out" />
-              <ReactTooltip id="copied-tooltip" event="click" isCapture />
+              <Tooltip showTooltip={showCopiedTooltip} selector={`#${article.id}-copy`}>
+                A link to the article has been <br/>
+                copied to your clipboard.
+              </Tooltip>
             </span>
           )
         }
