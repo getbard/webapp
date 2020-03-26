@@ -164,8 +164,8 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
 
       <div className="sm:w-3/5 px-5 container mx-auto">
         {
-          (article?.headerImageURL || headerImageURL)
-          && <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-4" url={article?.headerImageURL || headerImageURL} />
+          headerImageURL
+          && <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-4" url={headerImageURL} />
         }
 
         <EditorHeaderPhotoSelector setHeaderImageURL={setHeaderImageURL} />
