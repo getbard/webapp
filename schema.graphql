@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Tue Mar 24 2020 13:19:55 GMT-0700 (Pacific Daylight Time)
+# timestamp: Thu Mar 26 2020 07:47:55 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -81,6 +81,7 @@ type Mutation {
 
 input PublishArticleInput {
   id: ID!
+  article: CreateOrUpdateArticleInput
 }
 
 type PublishArticlePayload {
