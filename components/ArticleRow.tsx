@@ -52,7 +52,7 @@ function ArticleRow({ article }: { article: Article }): React.ReactElement {
             !article?.draft && article?.slug &&
             (
               <span
-                id={`${article.id}-copy`} 
+                id={`a-${article.id}-copy`} 
                 className="relative"
                 onClick={(): void => {
                   navigator.clipboard.writeText(`https://getbard.com/articles/s/${article.slug}`);
@@ -61,7 +61,7 @@ function ArticleRow({ article }: { article: Article }): React.ReactElement {
                 }}
               >
                 <FiCopy className="block hover:cursor-pointer hover:text-primary mr-4 transition duration-150 ease-in-out" />
-                <Tooltip showTooltip={showCopiedTooltip} selector={`#${article.id}-copy`}>
+                <Tooltip showTooltip={showCopiedTooltip} selector={`#a-${article.id}-copy`}>
                   A link to the article has been <br/>
                   copied to your clipboard.
                 </Tooltip>
