@@ -7,6 +7,7 @@ import { NextPageContext } from 'next';
 import fetch from 'isomorphic-unfetch';
 import cookie from 'js-cookie';
 import { Cookie } from 'next-cookie';
+import jwt from 'jsonwebtoken';
 
 import firebase from '../lib/firebase';
 
@@ -29,8 +30,15 @@ export default function createApolloClient(
       const nextCookie = new Cookie(ctx);
       token = nextCookie.get('token');
     } else {
+      token = cookie.get('token');
+    }
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    const { exp } = jwt.decode(token || '');
+    if (Date.now() >= exp * 1000) {
       // Refresh the token on the client and update the cookie
-      token = await firebase?.auth()?.currentUser?.getIdToken();
+      token = await firebase?.auth()?.currentUser?.getIdToken(true);
       if (token) {
         cookie.set('token', token);
       }

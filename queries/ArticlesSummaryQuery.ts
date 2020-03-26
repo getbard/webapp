@@ -9,7 +9,6 @@ const ArticlesSummaryQuery = gql`
       updatedAt
       publishedAt
       subscribersOnly
-      draft
       slug
       userId
     }

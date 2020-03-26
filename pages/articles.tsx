@@ -26,10 +26,10 @@ const Articles: NextPage = (): React.ReactElement => {
   const drafts: Article[] = [];
   const published: Article[] = [];
   articlesByUser.forEach((article: Article): void => {
-    if (article.draft) {
-      drafts.push(article);
-    } else {
+    if (article.publishedAt) {
       published.push(article);
+    } else {
+      drafts.push(article);
     }
   });
   const articlesToDisplay = articleType === 'drafts' ? drafts : published;
