@@ -18,7 +18,7 @@ function withLayout(PageComponent: NextPage): NextPage {
 
     useEffect(() => {
       if (!cookie.get('token') && protectedRoutes.includes(router.pathname)) {
-        router.push('/');
+        router.push('/login');
       }
     }, []);
 
