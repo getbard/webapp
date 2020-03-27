@@ -13,11 +13,15 @@ import DeleteArticleMutation from '../queries/DeleteArticleMutation';
 import Tooltip from './Tooltip';
 import Notification from './Notification';
 
-function ArticleRow({ article }: { article: Article }): React.ReactElement {
+function ArticleRow({ article, refetch }: { article: Article; refetch: () => void }): React.ReactElement {
   const auth = useAuth();
   const [showCopiedTooltip, setShowCopiedTooltip] = useState(false);
   const articleOwner = auth.user?.uid === article.userId;
-  const [deleteArticle, { data, called, error }] = useMutation(DeleteArticleMutation);
+  const [deleteArticle, { data, called, error }] = useMutation(DeleteArticleMutation, {
+    update() {
+      refetch();
+    }
+  });
 
   const handleDelete = (): void => {
     deleteArticle({ variables: { input: { id: article.id } } });

@@ -31,7 +31,10 @@ const saveArticle = debounce(({
     },
     refetchQueries: [{
       query: ArticlesSummaryQuery,
-      variables: { userId },
+      variables: {
+        userId,
+        drafts: true,
+      },
     }],
   });
 }, 1000);
@@ -134,7 +137,10 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
       variables: { input },
       refetchQueries: [{
         query: ArticlesSummaryQuery,
-        variables: { userId },
+        variables: {
+          userId,
+          drafts: true,
+        },
       }],
     });
   }
