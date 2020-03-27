@@ -37,7 +37,27 @@ function DisplayMenu(): React.ReactElement {
         </a>
       </Link>
 
-      <div className="border-b border-gray-100"></div>
+      <div className="border-b border-gray-200"></div>
+
+      <Link href="/earn-money">
+        <a className="hover:bg-gray-100 block py-2 pl-2 pr-12">
+          Earn money
+        </a>
+      </Link>
+
+      <div className="border-b border-gray-200"></div>
+
+      <Link href="/username">
+        <a className="hover:bg-gray-100 block py-2 pl-2 pr-12">
+          Profile
+        </a>
+      </Link>
+
+      <Link href="/settings">
+        <a className="hover:bg-gray-100 block py-2 pl-2 pr-12">
+          Settings
+        </a>
+      </Link>
 
       <a className="hover:bg-gray-100 block py-2 pl-2 pr-12" onClick={handleLogout}>Logout</a>
     </Menu>

@@ -11,6 +11,7 @@ import { withApollo } from '../lib/apollo';
 import withLayout from '../components/withLayout';
 import ArticleTypeSelector from '../components/ArticleTypeSelector';
 import ArticleRow from '../components/ArticleRow';
+import PageHeader from '../components/PageHeader';
 
 const Articles: NextPage = (): React.ReactElement => {
   const auth = useAuth();
@@ -36,9 +37,9 @@ const Articles: NextPage = (): React.ReactElement => {
 
   return (
     <div className="px-5 pt-5 container mx-auto relative">
-      <h1 className="text-4xl font-serif font-bold mb-2">
+      <PageHeader>
         Your articles
-      </h1>
+      </PageHeader>
 
       <div className="mb-6 pb-4 border-b border-gray-300">
         <ArticleTypeSelector

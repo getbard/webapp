@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
 import { format } from 'date-fns';
 import { ApolloError } from 'apollo-client';
+import Error from 'next/error';
 
 import { Article } from '../generated/graphql';
 import AuthorProfileQuery from '../queries/AuthorProfileQuery';
@@ -51,6 +52,10 @@ const Author: NextPage = (): React.ReactElement => {
   if (loading) return <div>Loading</div>;
 
   const { user } = data;
+
+  if (!user?.id) {
+    return <Error statusCode={404} />;
+  }
 
   const {
     loading: articlesLoading,
