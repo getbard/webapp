@@ -19,10 +19,12 @@ function Articles({
   loading,
   error,
   articlesData,
+  refetch,
 }: {
   loading: boolean;
   error: ApolloError | undefined;
   articlesData: { articlesByUser: Article[] };
+  refetch: () => void;
 }): React.ReactElement {
 
   if (error) return <div>Error loading articles!</div>;
@@ -32,7 +34,9 @@ function Articles({
 
   return (
     <>
-      {articlesByUser.map((article: Article) => <ArticleRow key={article.id} article={article} />)}
+      {articlesByUser.map((article: Article) => {
+        return <ArticleRow key={article.id} article={article} refetch={refetch} />;
+      })}
     </>
   );
 }
@@ -52,6 +56,7 @@ const Author: NextPage = (): React.ReactElement => {
     loading: articlesLoading,
     error: articlesError,
     data: articlesData,
+    refetch,
   } = useQuery(ArticlesSummaryQuery, { variables: { userId: user.id } });
 
   return (
@@ -89,7 +94,14 @@ const Author: NextPage = (): React.ReactElement => {
 
         {
           section === 'articles'
-            ? <Articles loading={articlesLoading} error={articlesError} articlesData={articlesData} />
+            ? (
+              <Articles
+                loading={articlesLoading}
+                error={articlesError}
+                articlesData={articlesData}
+                refetch={refetch}
+              />
+            )
             : <div>Feed coming soon!</div>
         }
       </div>

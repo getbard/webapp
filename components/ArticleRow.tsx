@@ -3,23 +3,35 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 import { FiCopy } from 'react-icons/fi';
+import { useMutation } from '@apollo/react-hooks';
 
 import { useAuth } from '../hooks/useAuth';
 
 import { Article } from '../generated/graphql';
+import DeleteArticleMutation from '../queries/DeleteArticleMutation';
 
 import Tooltip from './Tooltip';
+import Notification from './Notification';
 
-function ArticleRow({ article }: { article: Article }): React.ReactElement {
+function ArticleRow({ article, refetch }: { article: Article; refetch: () => void }): React.ReactElement {
   const auth = useAuth();
   const [showCopiedTooltip, setShowCopiedTooltip] = useState(false);
   const articleOwner = auth.user?.uid === article.userId;
+  const [deleteArticle, { data, called, error }] = useMutation(DeleteArticleMutation, {
+    update() {
+      refetch();
+    }
+  });
+
+  const handleDelete = (): void => {
+    deleteArticle({ variables: { input: { id: article.id } } });
+  }
 
   return (
     <div className="border-b border-gray-200 my-2 py-4 flex justify-between items-center">
       <div>
         {
-          article.draft
+          !article.publishedAt
             ? (
               <div className="text-3xl font-serif flex items-center">
                 {article.title}
@@ -49,7 +61,7 @@ function ArticleRow({ article }: { article: Article }): React.ReactElement {
       {articleOwner && (
         <div className="flex justify-end items-center">
           {
-            !article?.draft && article?.slug &&
+            article?.publishedAt && article?.slug &&
             (
               <span
                 id={`a-${article.id}-copy`} 
@@ -75,7 +87,15 @@ function ArticleRow({ article }: { article: Article }): React.ReactElement {
             </a>
           </Link>
 
-          <div className="inline text-red-600 hover:text-red-900 hover:cursor-pointer font-medium transition duration-150 ease-in-out">Delete</div>
+          <div
+            className="inline text-red-600 hover:text-red-900 hover:cursor-pointer font-medium transition duration-150 ease-in-out"
+            onClick={handleDelete}
+          >
+            Delete
+          </div>
+          <Notification showNotification={(data && called) || !!error} error={error}>
+            Deleted
+          </Notification>
         </div>
       )}
       </div>

@@ -9,11 +9,11 @@ import { useRouter } from 'next/router';
 import { useAuth } from '../hooks/useAuth';
 
 import Editor from './Editor';
-import EditorNotification from './EditorNotification';
 import Button from './Button';
 import SubscribersOnlyToggle from './SubcribersOnlyToggle';
 import EditorHeaderPhotoSelector from './EditorHeaderPhotoSelector';
 import HeaderImage from './HeaderImage';
+import Notification from './Notification';
 
 import { CreateOrUpdateArticleInput, Article, PublishArticleInput } from '../generated/graphql';
 import CreateOrUpdateArticleMutation from '../queries/CreateOrUpdateArticleMutation';
@@ -31,7 +31,10 @@ const saveArticle = debounce(({
     },
     refetchQueries: [{
       query: ArticlesSummaryQuery,
-      variables: { userId },
+      variables: {
+        userId,
+        drafts: true,
+      },
     }],
   });
 }, 1000);
@@ -47,6 +50,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   const [content, setContent] = useState(article?.content || emptyDocumentString);
   const [subscribersOnly, setSubscribersOnly] = useState(article?.subscribersOnly || false);
   const [headerImageURL, setHeaderImageURL] = useState(article?.headerImageURL || '');
+  const [notification, setNotification] = useState('');
   const noContent = !title && !summary && content === emptyDocumentString;
 
   const [createOrUpdateArticle, {
@@ -55,6 +59,12 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
     error: mutationError,
     called,
   }] = useMutation(CreateOrUpdateArticleMutation);
+
+  if (mutationLoading && notification !== 'Saving...') {
+    setNotification('Saving...');
+  } else if (!mutationLoading && notification === 'Saving...') {
+    setTimeout(() => setNotification('Saved!'), 500);
+  }
 
   const [publishArticle, {
     data: publishData,
@@ -127,7 +137,10 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
       variables: { input },
       refetchQueries: [{
         query: ArticlesSummaryQuery,
-        variables: { userId },
+        variables: {
+          userId,
+          drafts: true,
+        },
       }],
     });
   }
@@ -188,7 +201,9 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
 
         <Editor initialValue={JSON.parse(content)} setContent={handleContentChange} />
 
-        <EditorNotification saving={mutationLoading} error={mutationError || publishError} called={called} />
+        <Notification showNotification={mutationLoading} error={mutationError || publishError} bgColor="bg-primary">
+          {notification}
+        </Notification>
       </div>
     </div>
   );

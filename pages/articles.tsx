@@ -15,7 +15,7 @@ import ArticleRow from '../components/ArticleRow';
 const Articles: NextPage = (): React.ReactElement => {
   const auth = useAuth();
   const userId = auth.userId || auth.user?.uid;
-  const { loading, error, data } = useQuery(ArticlesSummaryQuery, { variables: { userId, drafts: true } });
+  const { loading, error, data, refetch } = useQuery(ArticlesSummaryQuery, { variables: { userId, drafts: true } });
   const [articleType, setArticleType] = useState('drafts');
 
   if (error) return <div>Error</div>;
@@ -26,10 +26,10 @@ const Articles: NextPage = (): React.ReactElement => {
   const drafts: Article[] = [];
   const published: Article[] = [];
   articlesByUser.forEach((article: Article): void => {
-    if (article.draft) {
-      drafts.push(article);
-    } else {
+    if (article.publishedAt) {
       published.push(article);
+    } else {
+      drafts.push(article);
     }
   });
   const articlesToDisplay = articleType === 'drafts' ? drafts : published;
@@ -56,7 +56,9 @@ const Articles: NextPage = (): React.ReactElement => {
         />
       </div>
 
-      {articlesToDisplay.map((article: Article) => <ArticleRow key={article.id} article={article} />)}
+      {articlesToDisplay.map((article: Article) => {
+        return <ArticleRow key={article.id} article={article} refetch={refetch} />;
+      })}
     </div>
   );
 }
