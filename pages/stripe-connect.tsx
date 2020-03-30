@@ -11,12 +11,14 @@ import ConnectStripeAccountMutation from '../queries/ConnectStripeAccountMutatio
 import withLayout from '../components/withLayout';
 import PageHeader from '../components/PageHeader';
 
+const isAccountAlreadyConnectedError = (error: string): boolean => error.includes('authorization code has already been used');
+
 const StripeConnect: NextPage = (): React.ReactElement => {
   const auth = useAuth();
   const router = useRouter();
   const { code, state } = router.query;
   const [connectStripeAccount, { data, loading, called, error }] = useMutation(ConnectStripeAccountMutation);
-  const accountAlreadyConnected = error && error?.message === 'GraphQL error: This authorization code has already been used. All tokens issued with this code have been revoked.';
+  const accountAlreadyConnected = error && isAccountAlreadyConnectedError(error?.message);
 
   if (!auth.user?.uid || (!code && !state)) {
     return <div>Loading...</div>;
@@ -39,6 +41,10 @@ const StripeConnect: NextPage = (): React.ReactElement => {
           authCode: code,
           userId: auth.user.uid,
         }
+      }
+    }).catch(error => {
+      if (isAccountAlreadyConnectedError(error?.message)) {
+        router.push('/analytics');
       }
     });
   }
