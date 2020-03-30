@@ -7,13 +7,9 @@ body {
   @apply text-sm;
 }
 
-a:hover:not(.logo) {
+a:hover:not(.logo):not(.button) {
   cursor: pointer !important;
   @apply text-primary;
-}
-
-button > a:hover:not(.logo) {
-  @apply text-white;
 }
 
 .icon-spin {

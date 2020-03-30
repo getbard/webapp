@@ -10,31 +10,31 @@ function LoggedInMenu(): React.ReactElement {
   const router = useRouter();
 
   return (
-    <>
+    <span className="flex items-center">
       {router.pathname !== '/write' && (
-        <ButtonLink href="/write" className="py-1">
+        <ButtonLink href="/write" thin>
           Write
         </ButtonLink>
       )}
 
       <NavMenu />
-    </>
+    </span>
   )
 }
 
 function LoggedOutMenu(): React.ReactElement {
   return (
-    <>
+    <div className="flex items-center">
       <Link href = "/login">
         <a className="mr-4">
           Login
         </a>
       </Link>
 
-      <ButtonLink href="/signup" className="py-1">
+      <ButtonLink href="/signup" thin>
         Join
       </ButtonLink>
-    </>
+    </div>
   );
 }
 
@@ -50,13 +50,11 @@ function Nav(): React.ReactElement {
           </a>
         </Link>
 
-        <div className="flex items-center">
-          {
-            auth.user || auth.userId
-              ? <LoggedInMenu/>
-              : <LoggedOutMenu/>
-          }
-        </div >
+        {
+          auth.user || auth.userId
+            ? <LoggedInMenu/>
+            : <LoggedOutMenu/>
+        }
       </div >
     </nav >
   );

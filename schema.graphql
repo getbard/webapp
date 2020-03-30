@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Thu Mar 26 2020 15:37:23 GMT-0700 (Pacific Daylight Time)
+# timestamp: Mon Mar 30 2020 13:38:31 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -44,6 +44,15 @@ type Comment {
   updatedAt: String!
 }
 
+input ConnectStripeAccountInput {
+  userId: String!
+  authCode: String!
+}
+
+type ConnectStripeAccountPayload {
+  success: Boolean!
+}
+
 input CreateOrUpdateArticleInput {
   id: ID
   title: String
@@ -85,6 +94,7 @@ type Mutation {
   publishArticle(input: PublishArticleInput!): PublishArticlePayload!
   deleteArticle(input: DeleteArticleInput!): DeleteArticlePayload!
   createUser(input: CreateUserInput!): CreateUserPayload!
+  connectStripeAccount(input: ConnectStripeAccountInput!): ConnectStripeAccountPayload!
 }
 
 input PublishArticleInput {
@@ -102,7 +112,7 @@ type Query {
   article(id: ID!): Article
   articleBySlug(slug: String!): Article
   articlesByUser(userId: ID!, drafts: Boolean): [Article]
-  me(userId: ID!): User!
+  me: User!
   user(username: String!): User
   unsplashPhoto(search: String): [UnsplashPhoto]
 }
@@ -135,4 +145,5 @@ type User {
   followers: [User]
   createdAt: String!
   updatedAt: String!
+  stripeUserId: String
 }

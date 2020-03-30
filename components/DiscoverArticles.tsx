@@ -1,8 +1,6 @@
 import { useQuery } from '@apollo/react-hooks';
 import styled from '@emotion/styled';
 
-import useMedia from '../hooks/useMedia';
-
 import { Article } from '../generated/graphql';
 import DiscoverArticlesQuery from '../queries/DiscoverArticlesQuery';
 
