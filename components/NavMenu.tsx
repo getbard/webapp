@@ -2,7 +2,6 @@ import { useState, useRef } from 'react';
 import { FiSettings } from 'react-icons/fi';
 import styled from '@emotion/styled'
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 import { useAuth } from '../hooks/useAuth';
 import useOnClickOutside from '../hooks/useOnClickOutside';
@@ -14,13 +13,9 @@ const Menu = styled.div`
 
 function DisplayMenu(): React.ReactElement {
   const auth = useAuth();
-  const router = useRouter();
 
   const handleLogout = (): void => {
     auth.signOut();
-    if (router.pathname !== '/') {
-      router.push('/');
-    }
   }
 
   return (

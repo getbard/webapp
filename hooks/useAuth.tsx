@@ -67,6 +67,7 @@ function useAuthContext(): AuthContext {
       .signOut()
       .then(() => {
         setUser(null);
+        router.push('/');
       });
   };
 
@@ -104,7 +105,6 @@ function useAuthContext(): AuthContext {
         cookie.remove('token');
         localStorage.removeItem('uid');
         setUserId(null);
-        router.push('/');
       }
     });
 
