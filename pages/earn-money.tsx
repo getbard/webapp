@@ -1,7 +1,11 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { useQuery } from '@apollo/react-hooks';
 
+import { withApollo } from '../lib/apollo';
 import { useAuth } from '../hooks/useAuth';
+
+import StripeUserIdQuery from '../queries/StripeUserIdQuery';
 
 import withLayout from '../components/withLayout';
 import PageHeader from '../components/PageHeader';
@@ -10,13 +14,18 @@ import Button from '../components/Button';
 const EarnMoney: NextPage = (): React.ReactElement => {
   const auth = useAuth();
   const router = useRouter();
+  const { loading, data } = useQuery(StripeUserIdQuery);
 
-  if (!auth.user?.uid) {
+  if (!auth.user?.uid || loading) {
     return <div>Loading...</div>;
   }
+  const { me } = data || {};
+  if (me?.stripeUserId) {
+    router.push('/analytics');
+  }
 
-  const bardRedirectUrl = 'https://connect.stripe.com/connect/default/oauth/test';
-  const clientId = 'ca_GzNbMg8V3fhQJyJOMKriQFdiUAjUPBaR';
+  const bardRedirectUrl = `${window.location.hostname}:3000/stripe-connect`;
+  const clientId = process.env.STRIPE_CLIENT_ID;
   const userEmail = `stripe_user[email]=${auth.user.email}`;
   const stripeRedictUrl = `//connect.stripe.com/express/oauth/authorize?redirect_uri=${bardRedirectUrl}&client_id=${clientId}&state=${auth.user.uid}&stripe_user[business_type]=individual&${userEmail}`;
 
@@ -45,4 +54,4 @@ const EarnMoney: NextPage = (): React.ReactElement => {
   );
 }
 
-export default withLayout(EarnMoney);
+export default withApollo()(withLayout(EarnMoney));
