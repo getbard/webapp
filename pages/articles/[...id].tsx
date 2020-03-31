@@ -15,17 +15,16 @@ import HeaderImage from '../../components/HeaderImage';
 import Button from '../../components/Button';
 
 const GradientBlocker = styled.div`
-  min-height: 25vh;
   width: 100%;
-  background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(0deg, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
 `;
 
 const ContentBlocker = ({ author }: { author: string }): React.ReactElement => {
   return (
-    <div className="absolute top-0 left-0 right-0">
-        <GradientBlocker />
+    <div className="absolute top-0 left-0 right-0 bottom-0">
+        <GradientBlocker className="h-full w-full" />
 
-        <div className="bg-white flex flex-col justify-center items-center pb-5">
+        <div className="bg-white flex flex-col justify-center items-center pb-10 pt-0 -mt-16">
           <div className="mb-2">
             {author} has made this content available to subscribers only.
           </div>
@@ -93,7 +92,7 @@ const Article: NextPage = (): React.ReactElement => {
         {
           article?.subscribersOnly && article?.contentBlocked && (
             <>
-              <div className="text-center font-bold mt-2 text-primary">
+              <div className="text-center font-bold mt-2 text-primary mt-5 p-5">
                 <div>
                   Oh! You edited our HTML. We trimmed the content on the server but nice try!
                 </div>
