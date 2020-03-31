@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { formatDistanceStrict } from 'date-fns';
+import { FiFeather } from 'react-icons/fi';
 
 import { Article } from '../generated/graphql';
 
@@ -9,7 +10,15 @@ const ArticleCardDiv = styled.div`
     h1 {
       color: #616161;
     }
+
+    .sub-only {
+      display: flex;
+    }
   }
+`;
+
+const SubOnlyIcon = styled.div`
+  grid-column: none;
 `;
 
 function SmallArticleCard({ article }: { article: Article }): React.ReactElement {
@@ -19,8 +28,28 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
   return (
     <Link href={articleHref}>
       <ArticleCardDiv className="py-4 px-2 mx-2 rounded-sm hover:cursor-pointer transition duration-150 ease-in">
-        <h1 className="font-serif font-bold transition duration-150 ease-in">{article.title}</h1>
-        {article.summary && <div className="text-gray-600 mt-1 text-sm">{article.summary}</div>}
+        <div className={`${article.subscribersOnly && 'grid grid-cols-8'}`}>
+          <h1 className="col-span-7 font-serif font-bold transition duration-150 ease-in">
+            {article.title}
+          </h1>
+
+          {
+            article.subscribersOnly && (
+              <SubOnlyIcon className="sub-only hidden items-center text-primary">
+                <FiFeather />
+              </SubOnlyIcon>
+            )
+          }
+        </div>
+        
+
+        {
+          article.summary && (
+            <div className="text-gray-600 mt-1 text-sm">
+              {article.summary}
+            </div>
+          )
+        }
         
         <div className="flex justify-between text-xs align-center font-bold mt-2">
           <div className="text-gray-700">
