@@ -13,7 +13,7 @@ const ArticleCardDiv = styled.div`
       color: #616161;
     }
 
-    span {
+    .sub-only {
       display: flex;
     }
   }
@@ -41,7 +41,7 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
           <ArticleCardImage className="flex-grow flex items-end h-40 rounded-t-sm -mt-3 -mx-3 mb-3" url={article.headerImageURL}>
             {
               article?.subscribersOnly && (
-                <span className="bg-white rounded-tr-sm pl-1 pt-1 pr-2 hidden items-center text-xs text-primary font-sans">
+                <span className="sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 hidden items-center text-xs text-primary font-sans">
                   <FiFeather className="mr-1" /> Supporters Only
                 </span>
               )

@@ -26,7 +26,7 @@ const ContentBlocker = ({ author }: { author: string }): React.ReactElement => {
 
         <div className="bg-white flex flex-col justify-center items-center pb-10 pt-0 -mt-16">
           <div className="mb-2">
-            {author} has made this content available to subscribers only.
+            {author} has made this content available to supporters only.
           </div>
 
           <Button>
