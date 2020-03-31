@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Mon Mar 30 2020 13:38:31 GMT-0700 (Pacific Daylight Time)
+# timestamp: Tue Mar 31 2020 15:16:11 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -21,6 +21,7 @@ type Article {
   userId: String!
   subscribersOnly: Boolean!
   slug: String
+  contentBlocked: Boolean
 }
 
 enum CacheControlScope {
@@ -141,8 +142,9 @@ type User {
   username: String!
   email: String!
   profileImageURL: String
-  following: [User]
-  followers: [User]
+  following: [String]
+  followers: [String]
+  subscribers: [String]
   createdAt: String!
   updatedAt: String!
   stripeUserId: String
