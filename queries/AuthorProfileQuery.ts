@@ -8,8 +8,8 @@ const AuthorProfileQuery = gql`
       lastName
       profileImageURL
       createdAt
-      following { username }
-      followers { username }
+      following
+      followers
     }
   }
 `;
