@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
-import { FiCopy } from 'react-icons/fi';
+import { FiCopy, FiFeather } from 'react-icons/fi';
 import { useMutation } from '@apollo/react-hooks';
 
 import { useAuth } from '../hooks/useAuth';
@@ -35,14 +35,26 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
             ? (
               <div className="text-3xl font-serif flex items-center">
                 {article.title}
-                  &nbsp;{article.subscribersOnly && <span className="text-xs uppercase tracking-widest bg-primary rounded-full text-white px-2 py-1 font-sans">Premium</span>}
+                {
+                  article.subscribersOnly && (
+                    <span className="text-2xl uppercase tracking-widest text-primary px-2 py-1 font-sans">
+                      <FiFeather />
+                    </span>
+                  )
+                }
               </div>
             )
             : (
               <Link href={`/articles/i/${article.id}`}>
                 <a className="text-3xl font-serif flex items-center hover:text-primary hover:cursor-pointer transition duration-150 ease-in-out">
                   {article.title}
-                    &nbsp;{article.subscribersOnly && <span className="text-xs uppercase tracking-widest bg-primary rounded-full text-white px-2 py-1 font-sans">Premium</span>}
+                  {
+                    article.subscribersOnly && (
+                      <span className="text-2xl uppercase tracking-widest text-primary px-2 py-1 font-sans">
+                        <FiFeather />
+                      </span>
+                    )
+                  }
                 </a>
               </Link>
             )

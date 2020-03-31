@@ -10,6 +10,7 @@ const DiscoverArticlesQuery = gql`
       content
       slug
       publishedAt
+      subscribersOnly
       author {
         username
         firstName

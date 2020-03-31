@@ -4,6 +4,7 @@ type Props = {
   className?: string;
   thin?: boolean;
   disabled?: boolean;
+  secondary?: boolean;
 }
 
 function Button({
@@ -12,10 +13,16 @@ function Button({
   className,
   thin,
   disabled: isDisabled,
+  secondary,
 }: Props): React.ReactElement {
   const yPadding = thin ? 'py-1' : 'py-2';
-  const disabled = isDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-secondary';
-  const classes = `transition duration-150 ease-in-out bg-primary px-4 ${yPadding} ${disabled} text-white rounded ${className}`
+  const textColor = secondary ? 'text-primary' : 'text-white';
+  const bgColor = secondary ? 'bg-white' : 'bg-primary';
+  const bgHoverColor = secondary ? 'hover:bg-primary' : 'hover:bg-secondary';
+  const borderHoverColor = secondary ? 'hover:border-primary' : 'hover:border-secondary';
+
+  const disabled = isDisabled ? 'opacity-50 cursor-not-allowed' : bgHoverColor;
+  const classes = `border border-primary ${borderHoverColor} transition duration-150 ease-in-out ${bgColor} px-4 ${yPadding} ${disabled} ${textColor} hover:text-white rounded ${className}`
   return (
     <button
       className={classes}
