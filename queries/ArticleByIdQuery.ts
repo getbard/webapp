@@ -10,6 +10,7 @@ const ArticleByIdQuery = gql`
       content
       userId
       subscribersOnly
+      contentBlocked
       publishedAt
       author {
         username

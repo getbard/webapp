@@ -27,8 +27,6 @@ function withLayout(PageComponent: NextPage): NextPage {
         <Nav />
   
         {(isAuthenticated || !protectedRoutes.includes(router.pathname)) && <PageComponent />}
-
-        <div className="pt-5"></div>
       </div>
     );
   }

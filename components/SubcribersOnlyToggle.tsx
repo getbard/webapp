@@ -36,7 +36,7 @@ function SubscribersOnlyToggle({ subscribersOnly, setSubscribersOnly }: Props): 
         </ToggleBackground>
 
         <div className="ml-2">
-          {subscribersOnly ? 'Subscribers Only' : 'Public'}
+          {subscribersOnly ? 'Supporters Only' : 'Public'}
         </div>
       </label>
     </div>

@@ -13,6 +13,7 @@ import ArticlesSummaryQuery from '../queries/ArticlesSummaryQuery';
 import { withApollo } from '../lib/apollo';
 import withLayout from '../components/withLayout';
 import Button from '../components/Button';
+import ButtonLink from '../components/ButtonLink';
 import ProfileSectionSelector from '../components/ProfileSectionSelector';
 import ArticleRow from '../components/ArticleRow';
 
@@ -65,8 +66,8 @@ const Author: NextPage = (): React.ReactElement => {
   } = useQuery(ArticlesSummaryQuery, { variables: { userId: user.id } });
 
   return (
-    <div className="px-5 pt-5 grid grid-cols-3">
-      <div>
+    <div className="px-5 pt-5 grid grid-cols-4">
+      <div className="text-center">
         <div className="text-4xl font-serif font-bold">{user.firstName} {user.lastName}</div>
         <div className="text-xl text-gray-600 mb-2">{username}</div>
         
@@ -76,13 +77,17 @@ const Author: NextPage = (): React.ReactElement => {
           <div>{user?.following?.length || 0} followers</div>
         </div>
 
-        <div>
-          <Button className="mr-4">Donate</Button>
-          <Button>Subscribe</Button>
+        <div className="flex justify-center flex-col items-center">
+          <Button>Become a supporter</Button>
+
+          <div className="mt-2">
+            <Button className="mr-2" secondary>Follow</Button>
+            <Button secondary>One-Time Support</Button>
+          </div>
         </div>
       </div>
 
-      <div className="col-span-2">
+      <div className="col-span-3">
         <div className="mb-6 pb-4 border-b border-gray-300">
           <ProfileSectionSelector
             name="Articles"
