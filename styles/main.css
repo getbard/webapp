@@ -16,6 +16,11 @@ a:hover:not(.logo):not(.button) {
   animation: icon-spin 2s infinite linear;
 }
 
+/* Let the Slate elements breathe */
+[data-slate-editor] > * + * {
+  @apply mt-4;
+}
+
 @-webkit-keyframes icon-spin {
   0% {
     transform: rotate(0deg);

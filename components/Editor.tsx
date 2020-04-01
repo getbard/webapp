@@ -5,7 +5,9 @@ import { withHistory } from 'slate-history';
 
 import { toggleFormatInline } from '../lib/editor';
 
+import withHtml from './withHtml';
 import EditorLeaf from './EditorLeaf';
+import EditorElement from './EditorElement';
 import EditorToolbar from './EditorToolbar';
 
 const emptyValue = [{
@@ -23,7 +25,7 @@ function BardEditor({
   initialValue?: Node[];
 }): React.ReactElement {
   const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const editor = useMemo(() => withHtml(withHistory(withReact(createEditor()))), []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
     if (!e.ctrlKey && !e.metaKey) {
@@ -69,6 +71,7 @@ function BardEditor({
         readOnly={readOnly}
         placeholder="Let the world know what is on your mind."
         renderLeaf={(props): JSX.Element => <EditorLeaf {...props} />}
+        renderElement={(props): JSX.Element => <EditorElement {...props} />}
         onKeyDown={handleKeyDown}
       />
     </Slate>

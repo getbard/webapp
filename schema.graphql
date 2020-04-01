@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Tue Mar 31 2020 18:34:07 GMT-0700 (Pacific Daylight Time)
+# timestamp: Wed Apr 01 2020 14:05:56 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -131,7 +131,7 @@ type Query {
 
 type StripeSession {
   id: ID!
-  status: String!
+  status: String
 }
 
 type UnsplashPhoto {

@@ -13,6 +13,14 @@ const EditorLeaf = ({ attributes, children, leaf }: RenderLeafProps): React.Reac
     children = <u>{children}</u>
   }
 
+  if (leaf.code) {
+    children = <code>{children}</code>
+  }
+
+  if (leaf.strikethrough) {
+    children = <del>{children}</del>
+  }
+
   return <span {...attributes}>{children}</span>
 }
 
