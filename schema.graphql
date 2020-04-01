@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Tue Mar 31 2020 15:16:11 GMT-0700 (Pacific Daylight Time)
+# timestamp: Tue Mar 31 2020 18:34:07 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -70,6 +70,15 @@ type CreateOrUpdateArticlePayload {
   id: ID!
 }
 
+input CreateStripeSessionInput {
+  amount: Int!
+  redirectUrl: String!
+}
+
+type CreateStripeSessionPayload {
+  id: ID!
+}
+
 input CreateUserInput {
   id: ID!
   email: String!
@@ -96,6 +105,7 @@ type Mutation {
   deleteArticle(input: DeleteArticleInput!): DeleteArticlePayload!
   createUser(input: CreateUserInput!): CreateUserPayload!
   connectStripeAccount(input: ConnectStripeAccountInput!): ConnectStripeAccountPayload!
+  createStripeSession(input: CreateStripeSessionInput): CreateStripeSessionPayload!
 }
 
 input PublishArticleInput {
@@ -114,8 +124,14 @@ type Query {
   articleBySlug(slug: String!): Article
   articlesByUser(userId: ID!, drafts: Boolean): [Article]
   me: User!
+  stripeSession(id: ID!): StripeSession!
   user(username: String!): User
   unsplashPhoto(search: String): [UnsplashPhoto]
+}
+
+type StripeSession {
+  id: ID!
+  status: String!
 }
 
 type UnsplashPhoto {
