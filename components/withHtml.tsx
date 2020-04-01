@@ -38,7 +38,8 @@ const TEXT_TAGS: {
 
 const deserialize = (el: any): any => {
   if (el.nodeType === 3) {
-    return el.textContent;
+    // Remove line breaks from the start and end of the text
+    return el.textContent.trim();
   } else if (el.nodeType !== 1) {
     return null;
   } else if (el.nodeName === 'BR') {
@@ -75,23 +76,23 @@ const deserialize = (el: any): any => {
 
 
 const withHtml = (editor: ReactEditor): ReactEditor => {
-  const { insertData, isInline, isVoid } = editor
+  const { insertData, isInline, isVoid } = editor;
 
   editor.isInline = (element: Element): boolean => {
-    return element.type === 'link' ? true : isInline(element)
+    return element.type === 'link' ? true : isInline(element);
   }
 
   editor.isVoid = (element: Element): boolean => {
-    return element.type === 'image' ? true : isVoid(element)
+    return element.type === 'image' ? true : isVoid(element);
   }
 
   editor.insertData = (data: any): void => {
-    const html = data.getData('text/html')
+    const html = data.getData('text/html');
 
     if (html) {
-      const parsed = new DOMParser().parseFromString(html, 'text/html')
-      const fragment = deserialize(parsed.body)
-      Transforms.insertFragment(editor, fragment)
+      const parsed = new DOMParser().parseFromString(html, 'text/html');
+      const fragment = deserialize(parsed.body);
+      Transforms.insertFragment(editor, fragment);
       return;
     }
 
