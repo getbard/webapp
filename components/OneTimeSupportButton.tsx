@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/react-hooks';
 import { useStripe } from '@stripe/react-stripe-js';
+import { useRouter } from 'next/router';
 
 import CreateStripeSessionMutation from '../queries/CreateStripeSessionMutation';
 
@@ -17,11 +18,19 @@ function OneTimeSupportButton(): React.ReactElement {
   const { register, handleSubmit, errors } = useForm<FormData>();
   const [createStripeSession, { data, called, error, loading }] = useMutation(CreateStripeSessionMutation);
   const stripe = useStripe();
+  const router = useRouter();
 
   const onSubmit = ({ donationAmount }: FormData): void => {
-    createStripeSession({ variables: { input: { amount: +donationAmount } } });
+    createStripeSession({
+      variables: {
+        input: {
+          amount: +donationAmount,
+          redirectUrl: `${window.location.origin}/${router.query.username}`,
+        },
+      },
+    });
   }
-  
+
   const redirectToCheckout = async ({ id: sessionId }: { id: string }): Promise<void> => {
     if (stripe) {
       await stripe.redirectToCheckout({ sessionId });
@@ -45,7 +54,7 @@ function OneTimeSupportButton(): React.ReactElement {
             <div className="absolute top-0 bottom-0 left-0 right-0 flex justify-center items-center">
               <div className="p-10 bg-white border border-primary rounded-sm max-w-sm">
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  <div className="mb-8">
+                  <div className="mb-4">
                     <label htmlFor="donationAmount">
                       Donation Amount
                     </label>
@@ -66,11 +75,12 @@ function OneTimeSupportButton(): React.ReactElement {
                     />
                     <span className="tracking-wide text-primary text-xs font-bold">
                       {errors.donationAmount && errors.donationAmount.message}
+                      {error && 'Yikes, something went wrong. Please try again in a minute.'}
                     </span>
                   </div>
 
                   <div className="flex items-center md:justify-between justify-center">
-                    <Button className="w-full md:w-auto">
+                    <Button className="w-full md:w-auto" loading={loading}>
                       Pay now
                     </Button>
                   </div>

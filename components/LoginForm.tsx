@@ -93,12 +93,8 @@ function LoginForm({
         </div>
 
         <div className="flex items-center md:justify-between justify-center">
-          <Button className="w-full md:w-auto">
-            {
-              loading
-                ? <FiLoader className="w-full icon-spin px-2 text-xl" />
-                : 'Login'
-            }
+          <Button className="w-full md:w-auto" loading={loading}>
+            Login
           </Button>
 
           <a className="inline-block align-baseline text-sm hidden md:block text-black" onClick={setFormToForgotPassword}>

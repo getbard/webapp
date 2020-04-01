@@ -202,12 +202,8 @@ function SignupUser(): React.ReactElement {
             </div>
 
             <div className="flex items-center justify-center focus:outline-none">
-              <Button className="w-full">
-                {
-                  loading
-                    ? <FiLoader className="w-full icon-spin text-xl" />
-                    : 'Sign Up'
-                }
+              <Button className="w-full" loading={loading}>
+                Sign Up
               </Button>
             </div>
           </form>
