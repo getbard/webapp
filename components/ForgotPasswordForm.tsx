@@ -72,11 +72,7 @@ function ForgotPasswordForm({
 
         <div className="flex items-center md:justify-between justify-center">
           <Button className="w-full md:w-auto">
-            {
-              loading
-                ? <FiLoader className="w-full icon-spin text-xl px-10" />
-                : 'Reset Password'
-            }
+            Reset Password
           </Button>
 
           <a className="inline-block align-baseline text-sm hidden md:block text-black" onClick={setFormToLogin}>

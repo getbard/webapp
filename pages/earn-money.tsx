@@ -24,7 +24,7 @@ const EarnMoney: NextPage = (): React.ReactElement => {
     router.push('/analytics');
   }
 
-  const bardRedirectUrl = `${window.location.hostname}:3000/stripe-connect`;
+  const bardRedirectUrl = `${window.location.origin}/stripe-connect`;
   const clientId = process.env.STRIPE_CLIENT_ID;
   const userEmail = `stripe_user[email]=${auth.user.email}`;
   const stripeRedictUrl = `//connect.stripe.com/express/oauth/authorize?redirect_uri=${bardRedirectUrl}&client_id=${clientId}&state=${auth.user.uid}&stripe_user[business_type]=individual&${userEmail}`;

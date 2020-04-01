@@ -12,10 +12,12 @@ import ArticlesSummaryQuery from '../queries/ArticlesSummaryQuery';
 
 import { withApollo } from '../lib/apollo';
 import withLayout from '../components/withLayout';
+import withStripe from '../components/withStripe';
 import Button from '../components/Button';
-import ButtonLink from '../components/ButtonLink';
 import ProfileSectionSelector from '../components/ProfileSectionSelector';
 import ArticleRow from '../components/ArticleRow';
+import OneTimeSupportButton from '../components/OneTimeSupportButton';
+import SupportConfirmation from '../components/SupportConfirmation';
 
 function Articles({
   loading,
@@ -45,9 +47,9 @@ function Articles({
 
 const Author: NextPage = (): React.ReactElement => {
   const router = useRouter();
-  const { username } = router.query;
-  const { loading, error, data } = useQuery(AuthorProfileQuery, { variables: { username } });
+  const { username, sessionId } = router.query;
   const [section, setSection] = useState('articles');
+  const { loading, error, data } = useQuery(AuthorProfileQuery, { variables: { username } });
 
   if (error) return <div>Error</div>;
   if (loading) return <div>Loading</div>;
@@ -82,7 +84,7 @@ const Author: NextPage = (): React.ReactElement => {
 
           <div className="mt-2">
             <Button className="mr-2" secondary>Follow</Button>
-            <Button secondary>One-Time Support</Button>
+            <OneTimeSupportButton />
           </div>
         </div>
       </div>
@@ -115,8 +117,10 @@ const Author: NextPage = (): React.ReactElement => {
             : <div>Feed coming soon!</div>
         }
       </div>
+
+      {sessionId && <SupportConfirmation sessionId={sessionId} />}
     </div>
   );
 }
 
-export default withApollo({ ssr: true })(withLayout(Author));
+export default withApollo({ ssr: true })(withStripe(withLayout(Author)));
