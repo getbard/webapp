@@ -69,7 +69,7 @@ const Author: NextPage = (): React.ReactElement => {
 
   return (
     <div className="px-5 pt-5 grid grid-cols-4">
-      <div className="text-center">
+      <div className="text-center break-words">
         <div className="text-4xl font-serif font-bold">{user.firstName} {user.lastName}</div>
         <div className="text-xl text-gray-600 mb-2">{username}</div>
         
@@ -84,7 +84,7 @@ const Author: NextPage = (): React.ReactElement => {
 
           <div className="mt-2">
             <Button className="mr-2" secondary>Follow</Button>
-            <OneTimeSupportButton />
+            <OneTimeSupportButton userId={user.id} />
           </div>
         </div>
       </div>
