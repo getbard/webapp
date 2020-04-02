@@ -6,7 +6,7 @@ import { format } from 'date-fns';
 import { ApolloError } from 'apollo-client';
 import Error from 'next/error';
 
-import { Article } from '../generated/graphql';
+import { Article, User } from '../generated/graphql';
 import AuthorProfileQuery from '../queries/AuthorProfileQuery';
 import ArticlesSummaryQuery from '../queries/ArticlesSummaryQuery';
 
@@ -16,6 +16,7 @@ import withStripe from '../components/withStripe';
 import Button from '../components/Button';
 import ProfileSectionSelector from '../components/ProfileSectionSelector';
 import ArticleRow from '../components/ArticleRow';
+import BecomeSupporterButton from '../components/BecomeSupporterButton';
 import OneTimeSupportButton from '../components/OneTimeSupportButton';
 import SupportConfirmation from '../components/SupportConfirmation';
 
@@ -54,7 +55,7 @@ const Author: NextPage = (): React.ReactElement => {
   if (error) return <div>Error</div>;
   if (loading) return <div>Loading</div>;
 
-  const { user } = data;
+  const { user }: { user: User } = data;
 
   if (!user?.id) {
     return <Error statusCode={404} />;
@@ -80,11 +81,19 @@ const Author: NextPage = (): React.ReactElement => {
         </div>
 
         <div className="flex justify-center flex-col items-center">
-          <Button>Become a supporter</Button>
+          {user?.stripeUserId && user?.stripePlan && (
+            <BecomeSupporterButton
+              authorName={user.firstName}
+              stripeUserId={user.stripeUserId}
+              stripePlan={user.stripePlan}
+            />
+          )}
 
           <div className="mt-2">
             <Button className="mr-2" secondary>Follow</Button>
-            <OneTimeSupportButton userId={user.id} />
+            {user?.stripeUserId && (
+              <OneTimeSupportButton stripeUserId={user.stripeUserId} authorName={user.firstName} />
+            )}
           </div>
         </div>
       </div>
@@ -118,9 +127,11 @@ const Author: NextPage = (): React.ReactElement => {
         }
       </div>
 
-      {sessionId && <SupportConfirmation sessionId={sessionId} />}
+      {sessionId && user?.stripeUserId && (
+        <SupportConfirmation sessionId={sessionId} stripeUserId={user.stripeUserId} />
+      )}
     </div>
   );
 }
 
-export default withApollo({ ssr: true })(withStripe(withLayout(Author)));
+export default withApollo({ ssr: true })(withLayout(Author));

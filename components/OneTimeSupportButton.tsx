@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/react-hooks';
-import { useStripe } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import { useRouter } from 'next/router';
 
 import CreateStripeSessionMutation from '../queries/CreateStripeSessionMutation';
@@ -13,18 +13,24 @@ type FormData = {
   donationAmount: number;
 };
 
-function OneTimeSupportButton({ userId }: { userId: string }): React.ReactElement {
+function OneTimeSupportButton({
+  stripeUserId,
+  authorName,
+}: {
+  stripeUserId: string;
+  authorName: string;
+}): React.ReactElement {
   const [displayDonationPrompt, setDisplayDonationPrompt] = useState(false);
   const { register, handleSubmit, errors } = useForm<FormData>();
   const [createStripeSession, { data, error, loading }] = useMutation(CreateStripeSessionMutation);
-  const stripe = useStripe();
+
   const router = useRouter();
 
   const onSubmit = ({ donationAmount }: FormData): void => {
     createStripeSession({
       variables: {
         input: {
-          userId,
+          stripeUserId,
           amount: +donationAmount,
           redirectUrl: `${window.location.origin}/${router.query.username}`,
         },
@@ -33,6 +39,10 @@ function OneTimeSupportButton({ userId }: { userId: string }): React.ReactElemen
   }
 
   const redirectToCheckout = async ({ id: sessionId }: { id: string }): Promise<void> => {
+    const stripe = await loadStripe(process.env.STRIPE_PUBLISHABLE_KEY || '', {
+      stripeAccount: stripeUserId,
+    });
+
     if (stripe) {
       await stripe.redirectToCheckout({ sessionId });
     }
@@ -50,27 +60,37 @@ function OneTimeSupportButton({ userId }: { userId: string }): React.ReactElemen
       </Button>
 
       <Modal open={displayDonationPrompt} onModalClose={(): void => setDisplayDonationPrompt(false)}>
+        <h2 className="text-xl font-bold mb-2">Thank you!</h2>
+
+        <p className="mb-4">
+          Supporting {authorName} helps them focus on what matters most, their content.
+        </p>
+
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
-            <label htmlFor="donationAmount">
-              Donation Amount
+            <label htmlFor="donationAmount" className="hidden">
+              Donation amount
             </label>
-
+            
             <input
-              className={`border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.donationAmount && 'focus:border-primary'} placeholder-gray-400 ${errors.donationAmount && 'border-red-600'}`}
+              className={`border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.donationAmount && 'focus:border-primary'} placeholder-gray-500 ${errors.donationAmount && 'border-red-600'}`}
               id="donationAmount"
               type="number"
               name="donationAmount"
-              placeholder="Enter an amount greater than $5"
+              placeholder="Enter a donation amount of $5 or more"
               ref={register({
                 required: 'Please enter a donation amount',
                 min: {
                   value: 5,
                   message: 'The minimum donation is $5',
                 },
+                max: {
+                  value: 999999,
+                  message: 'The maximum donation is $999,999',
+                }
               })}
             />
-            <span className="tracking-wide text-primary text-xs font-bold">
+            <span className="tracking-wide text-xs font-bold text-red-600">
               {errors.donationAmount && errors.donationAmount.message}
               {error && 'Yikes, something went wrong. Please try again in a minute.'}
             </span>

@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 const StripeSessionQuery = gql`
-  query stripeSession($id: ID!) {
-    stripeSession(id: $id) {
+  query stripeSession($id: ID!, $stripeUserId: ID!) {
+    stripeSession(id: $id, stripeUserId: $stripeUserId) {
       id
       status
     }

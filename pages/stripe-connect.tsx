@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Error from 'next/error';
 import { useMutation } from '@apollo/react-hooks';
+import Link from 'next/link';
 
 import { withApollo } from '../lib/apollo';
 import { useAuth } from '../hooks/useAuth';
@@ -20,7 +21,9 @@ const SuccessInfo = (): React.ReactElement => {
       
       <p className="mb-4">Readers can now subscribe to support you monthly.</p>
 
-      <p>We have setup a default plan for <strong>$10 USD / month</strong>. You can modify this in the settings at any time.</p>
+      <p>
+        We have setup a default plan for <strong className="text-primary">$10 USD / month</strong>. You can adjust the plan <Link href="/settings"><a>in your settings</a></Link> at any time.
+      </p>
     </div>
   );
 }
