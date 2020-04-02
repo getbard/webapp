@@ -13,7 +13,7 @@ type FormData = {
   donationAmount: number;
 };
 
-function OneTimeSupportButton(): React.ReactElement {
+function OneTimeSupportButton({ userId }: { userId: string }): React.ReactElement {
   const [displayDonationPrompt, setDisplayDonationPrompt] = useState(false);
   const { register, handleSubmit, errors } = useForm<FormData>();
   const [createStripeSession, { data, error, loading }] = useMutation(CreateStripeSessionMutation);
@@ -24,6 +24,7 @@ function OneTimeSupportButton(): React.ReactElement {
     createStripeSession({
       variables: {
         input: {
+          userId,
           amount: +donationAmount,
           redirectUrl: `${window.location.origin}/${router.query.username}`,
         },
