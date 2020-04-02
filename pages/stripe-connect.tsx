@@ -13,6 +13,18 @@ import PageHeader from '../components/PageHeader';
 
 const isAccountAlreadyConnectedError = (error: string): boolean => error.includes('authorization code has already been used');
 
+const SuccessInfo = (): React.ReactElement => {
+  return (
+    <div>
+      <p className="mb-4">Looks like you&apos;re good to go!</p>
+      
+      <p className="mb-4">Readers can now subscribe to support you monthly.</p>
+
+      <p>We have setup a default plan for <strong>$10 USD / month</strong>. You can modify this in the settings at any time.</p>
+    </div>
+  );
+}
+
 const StripeConnect: NextPage = (): React.ReactElement => {
   const auth = useAuth();
   const router = useRouter();
@@ -68,7 +80,7 @@ const StripeConnect: NextPage = (): React.ReactElement => {
           <p>
             {
               stripeResults?.success || accountAlreadyConnected
-                ? 'Looks like you\'re good to go!'
+                ? <SuccessInfo />
                 : 'Something went wrong. Try again later and let us know if you keep having trouble.'
             }
           </p>
