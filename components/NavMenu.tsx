@@ -42,7 +42,7 @@ function DisplayMenu(): React.ReactElement {
 
       <div className="border-b border-gray-200"></div>
 
-      <Link href="/username">
+      <Link href="/me">
         <a className="hover:bg-gray-100 block py-2 pl-2 pr-12">
           Profile
         </a>

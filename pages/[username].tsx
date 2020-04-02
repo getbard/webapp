@@ -12,7 +12,6 @@ import ArticlesSummaryQuery from '../queries/ArticlesSummaryQuery';
 
 import { withApollo } from '../lib/apollo';
 import withLayout from '../components/withLayout';
-import withStripe from '../components/withStripe';
 import Button from '../components/Button';
 import ProfileSectionSelector from '../components/ProfileSectionSelector';
 import ArticleRow from '../components/ArticleRow';
