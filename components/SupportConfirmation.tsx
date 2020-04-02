@@ -12,7 +12,7 @@ function SupportConfirmation({
   stripeUserId: string;
 }): React.ReactElement {
   const { loading, error, data } = useQuery(StripeSessionQuery, { variables: { id: sessionId, stripeUserId } });
-console.log(error);
+
   return (
     <Modal open>
       <div>
