@@ -184,7 +184,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
         <EditorHeaderPhotoSelector setHeaderImageURL={setHeaderImageURL} />
 
         <TextareaAutosize 
-          className="focus:outline-none text-4xl font-serif w-full h-auto resize-none placeholder-gray-400"
+          className="focus:outline-none text-4xl font-serif w-full h-auto resize-none placeholder-gray-500"
           placeholder="Title"
           value={title}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setTitle(e.target.value)}
@@ -192,7 +192,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
         </TextareaAutosize>
 
         <TextareaAutosize 
-          className="focus:outline-none text-xl w-full h-auto resize-none placeholder-gray-400 mb-4 font-medium"
+          className="focus:outline-none text-xl w-full h-auto resize-none placeholder-gray-500 mb-4 font-medium"
           placeholder="Add an optional summary"
           value={summary}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setSummary(e.target.value)}

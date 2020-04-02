@@ -52,7 +52,7 @@ function ForgotPasswordForm({
           </label>
 
           <input
-            className={`border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.email && 'focus:border-primary'} placeholder-gray-400 ${errors.email && 'border-red-600'}`}
+            className={`border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.email && 'focus:border-primary'} placeholder-gray-500 ${errors.email && 'border-red-600'}`}
             id="username"
             placeholder="Email"
             type="email"

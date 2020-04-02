@@ -10,6 +10,13 @@ const AuthorProfileQuery = gql`
       createdAt
       following
       followers
+      stripeUserId
+      stripePlan {
+        id
+        amount
+        currency
+        interval
+      }
     }
   }
 `;
