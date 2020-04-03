@@ -3,6 +3,8 @@ import { useQuery } from '@apollo/react-hooks';
 import styled from '@emotion/styled';
 import debounce from 'lodash/debounce';
 
+import { ArticleHeaderImage } from '../generated/graphql';
+
 import useOnClickOutside from '../hooks/useOnClickOutside';
 
 import { UnsplashPhoto } from '../generated/graphql';
@@ -31,12 +33,17 @@ const UnsplashThumbnail = ({
   onClick,
 }: {
   photo: UnsplashPhoto;
-  onClick: (url: string) => void;
+  onClick: (headerImage: ArticleHeaderImage | null) => void;
 }): React.ReactElement => {
   return (
     <ThumbnailContainer
       className="col-span-1 hover:cursor-pointer"
-      onClick={(): void => onClick(photo.urls.full)}
+      onClick={(): void => onClick({
+        id: photo.id,
+        url: photo.urls.full,
+        photographerName: photo.photographerName,
+        photographerUrl: photo.photographerUrl,
+      })}
     >
       <ImageThumbnail className="w-full h-24" url={photo.urls.thumb} />
       <div className="text-xs">by {photo.photographerName}</div>
@@ -49,7 +56,7 @@ export function PhotoSelector({
   display,
   setDisplay,
 }: {
-  onSelect: (url: string) => void;
+  onSelect: (headerImage: ArticleHeaderImage | null) => void;
   display: boolean;
   setDisplay: (display: boolean) => void;
 }): React.ReactElement {
@@ -65,8 +72,8 @@ export function PhotoSelector({
     }
   });
 
-  const handlePhotoSelect = (url: string): void => {
-    onSelect(url);
+  const handlePhotoSelect = (headerImage: ArticleHeaderImage | null): void => {
+    onSelect(headerImage);
     setDisplay(false);
   }
 

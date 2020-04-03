@@ -5,7 +5,10 @@ const DiscoverArticlesQuery = gql`
     articles {
       id
       title
-      headerImageURL
+      headerImage {
+        id
+        url
+      }
       summary
       content
       slug

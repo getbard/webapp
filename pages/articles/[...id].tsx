@@ -59,11 +59,11 @@ const Article: NextPage = (): React.ReactElement => {
     <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
       <div className="mb-8">
         {
-          article?.headerImageURL && (
+          article?.headerImage?.url && (
             <div className="mb-4">
-              <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-1" url={article.headerImageURL} />
+              <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-1" url={article.headerImage.url} />
               <div className="text-xs text-center">
-                photo insert photo credit here
+                Photo by <a className="underline" href={`${article.headerImage.photographerUrl}?utm_source=bard&utm_medium=referral`}>{article.headerImage.photographerName}</a> on <a className="underline" href="https://unsplash.com?utm_source=bard&utm_medium=referral">Unsplash</a>
               </div>
             </div>
           )

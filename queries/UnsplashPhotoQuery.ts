@@ -5,6 +5,7 @@ const UnsplashPhotoQuery = gql`
     unsplashPhoto(search: $search) {
       id
       photographerName
+      photographerUrl
       urls {
         full
         thumb

@@ -26,7 +26,7 @@ function DiscoverArticles(): React.ReactElement {
   const articlesWithHeader: Article[] = [];
 
   articles.forEach((article: Article) => {
-    if (article.headerImageURL) {
+    if (article.headerImage?.url) {
       articlesWithHeader.push(article);
     } else {
       articlesWithoutHeader.push(article);

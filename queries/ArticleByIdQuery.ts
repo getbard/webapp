@@ -5,7 +5,12 @@ const ArticleByIdQuery = gql`
     article(id: $id) {
       id
       title
-      headerImageURL
+      headerImage {
+        id
+        url
+        photographerName
+        photographerUrl
+      }
       summary
       content
       userId
