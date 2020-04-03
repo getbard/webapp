@@ -49,7 +49,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   const [summary, setSummary] = useState(article?.summary || '');
   const [content, setContent] = useState(article?.content || emptyDocumentString);
   const [subscribersOnly, setSubscribersOnly] = useState(article?.subscribersOnly || false);
-  const [headerImageURL, setHeaderImageURL] = useState(article?.headerImageURL || '');
+  const [headerImage, setHeaderImage] = useState(article?.headerImage || null);
   const [notification, setNotification] = useState('');
   const noContent = !title && !summary && content === emptyDocumentString;
 
@@ -87,7 +87,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
       summary,
       content,
       subscribersOnly,
-      headerImageURL,
+      headerImage,
     };
 
     if (articleId) {
@@ -99,7 +99,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
       input,
       userId,
     });
-  }, [title, summary, content, subscribersOnly, headerImageURL]);
+  }, [title, summary, content, subscribersOnly, headerImage?.url]);
 
   const handleContentChange = (newContent: Node[]): void => {
     const contentString = JSON.stringify(newContent);
@@ -126,7 +126,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
           summary,
           content,
           subscribersOnly,
-          headerImageURL,
+          headerImage,
         }
       };
     } else {
@@ -177,11 +177,14 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
 
       <div className="sm:w-3/5 px-5 container mx-auto">
         {
-          headerImageURL
-          && <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-4" url={headerImageURL} />
+          headerImage?.url
+          && <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-4" url={headerImage?.url} />
         }
 
-        <EditorHeaderPhotoSelector setHeaderImageURL={setHeaderImageURL} />
+        <EditorHeaderPhotoSelector
+          headerImage={headerImage}
+          setHeaderImage={setHeaderImage}
+        />
 
         <TextareaAutosize 
           className="focus:outline-none text-4xl font-serif w-full h-auto resize-none placeholder-gray-500"

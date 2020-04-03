@@ -5,7 +5,12 @@ const ArticleBySlugQuery = gql`
     articleBySlug(slug: $id) {
       id
       title
-      headerImageURL
+      headerImage {
+        id
+        url
+        photographerName
+        photographerUrl
+      }
       summary
       content
       publishedAt

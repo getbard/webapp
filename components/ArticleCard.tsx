@@ -37,8 +37,8 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
     <Link href={articleHref}>
       <ArticleCardDiv className="p-4 border border-gray-300 rounded-sm hover:cursor-pointer transition duration-150 ease-in flex justify-between flex-col">
         {
-          article?.headerImageURL &&
-          <ArticleCardImage className="flex-grow flex items-end h-40 rounded-t-sm -mt-3 -mx-3 mb-3" url={article.headerImageURL}>
+          article?.headerImage?.url &&
+          <ArticleCardImage className="flex-grow flex items-end h-40 rounded-t-sm -mt-3 -mx-3 mb-3" url={article.headerImage.url}>
             {
               article?.subscribersOnly && (
                 <span className="sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 hidden items-center text-xs text-primary font-sans">
