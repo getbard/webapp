@@ -71,7 +71,7 @@ const Author: NextPage = (): React.ReactElement => {
     <div className="px-5 pt-5 grid grid-cols-4">
       <div className="text-center break-words">
         <div className="text-4xl font-serif font-bold">{user.firstName} {user.lastName}</div>
-        <div className="text-xl text-gray-600 mb-2">{username}</div>
+        <div className="text-xl text-gray-600 mb-2">{user.username}</div>
         
         <div className="mb-4">
           Joined {format(new Date(user.createdAt), 'MMM yyyy')}

@@ -6,6 +6,7 @@ const AuthorProfileQuery = gql`
       id
       firstName
       lastName
+      username
       profileImageURL
       createdAt
       following
