@@ -83,7 +83,7 @@ const Article: NextPage = (): React.ReactElement => {
         </div>
 
         <div className="text-sm w-full font-medium">
-          {format(new Date(article.publishedAt), 'MMM do, yyyy')} // {timeToRead(article.wordCount)}
+          {format(new Date(article.publishedAt), 'MMM do, yyyy')} | {timeToRead(article.wordCount)}
         </div>
       </div>
 

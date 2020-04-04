@@ -10,6 +10,7 @@ import { useAuth } from '../hooks/useAuth';
 import { Article } from '../generated/graphql';
 import DeleteArticleMutation from '../queries/DeleteArticleMutation';
 
+import { timeToRead } from '../lib/editor';
 import Tooltip from './Tooltip';
 import Notification from './Notification';
 
@@ -62,6 +63,10 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
 
         <div className="text-lg w-full mb-4">
           {article?.summary}
+        </div>
+
+        <div className="text-xs">
+          {timeToRead(article.wordCount)}
         </div>
 
         <div className="text-xs">

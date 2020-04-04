@@ -63,7 +63,7 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
                 article.publishedAt
                   ? (
                     <span className="text-gray-700">
-                      {format(new Date(article.publishedAt), 'LLL d')} //&nbsp;
+                      {format(new Date(article.publishedAt), 'LLL d')} |&nbsp;
                     </span>
                   )
                   : ''
