@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { formatDistanceStrict } from 'date-fns';
+import { format } from 'date-fns';
 import { FiFeather } from 'react-icons/fi';
 
 import { Article } from '../generated/graphql';
+
+import { timeToRead } from '../lib/editor';
 
 const ArticleCardDiv = styled.div`
   &:hover {
@@ -58,19 +60,26 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
             {article.summary}
           </div>
           
-          <div className="flex justify-between text-xs align-center font-bold mt-2">
+          <div className="text-xs mt-2 font-medium flex justify-between">
             <div className="text-gray-700">
               {authorName}
             </div> 
-            {
-              article.publishedAt
-                ? (
-                  <div className="text-primary">
-                    {formatDistanceStrict(new Date(), new Date(article.publishedAt))} ago
-                  </div>
-                )
-                : ''
-            }
+
+            <div>
+              {
+                article.publishedAt
+                  ? (
+                    <span className="text-gray-700">
+                      {format(new Date(article.publishedAt), 'LLL d')} //&nbsp;
+                    </span>
+                  )
+                  : ''
+              }
+
+              <span className="text-primary">
+                {timeToRead(article.wordCount)}
+              </span>
+            </div>
           </div>
         </div>
       </ArticleCardDiv>
