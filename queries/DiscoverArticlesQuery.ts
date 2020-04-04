@@ -5,19 +5,20 @@ const DiscoverArticlesQuery = gql`
     articles {
       id
       title
-      headerImage {
-        id
-        url
-      }
       summary
       content
       slug
       publishedAt
       subscribersOnly
+      wordCount
       author {
         username
         firstName
         lastName
+      }
+      headerImage {
+        id
+        url
       }
     }
   }

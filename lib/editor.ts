@@ -26,3 +26,10 @@ export const toggleFormatInline = (editor: Editor, format: string): void => {
     Editor.addMark(editor, format, true);
   }
 }
+
+export const timeToRead = (wordCount: number): string => {
+  // The average adult reads 200 - 250 words per minute
+  const t = ~~(wordCount / 200);
+  // const minutes = t.toFixed(0);
+  return `${Math.max(1, t)} min read`;
+}

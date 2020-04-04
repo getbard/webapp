@@ -8,6 +8,7 @@ import styled from '@emotion/styled';
 import ArticleBySlugQuery from '../../queries/ArticleBySlugQuery';
 import ArticleByIdQuery from '../../queries/ArticleByIdQuery';
 
+import { timeToRead } from '../../lib/editor';
 import { withApollo } from '../../lib/apollo';
 import withLayout from '../../components/withLayout';
 import Editor from '../../components/Editor';
@@ -79,7 +80,10 @@ const Article: NextPage = (): React.ReactElement => {
 
         <div className="text-sm w-full font-bold">
           written by <Link href={`/${article.author.username}`} ><a className="underline">{authorName}</a></Link>
-          &nbsp;on {format(new Date(article.publishedAt), 'MMM do, yyyy')}
+        </div>
+
+        <div className="text-sm w-full font-medium">
+          {format(new Date(article.publishedAt), 'MMM do, yyyy')} | {timeToRead(article.wordCount)}
         </div>
       </div>
 

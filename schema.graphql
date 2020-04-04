@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Fri Apr 03 2020 15:34:18 GMT-0700 (Pacific Daylight Time)
+# timestamp: Fri Apr 03 2020 16:35:01 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -13,7 +13,7 @@ type Article {
   categories: [Category]
   comments: [Comment]
   likes: Int!
-  wordLength: Int!
+  wordCount: Int!
   createdAt: String!
   updatedAt: String!
   publishedAt: String
@@ -78,6 +78,7 @@ input CreateOrUpdateArticleInput {
   updatedAt: String
   userId: String
   subscribersOnly: Boolean
+  wordCount: Int
 }
 
 type CreateOrUpdateArticlePayload {

@@ -48,6 +48,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   const [title, setTitle] = useState(article?.title || '');
   const [summary, setSummary] = useState(article?.summary || '');
   const [content, setContent] = useState(article?.content || emptyDocumentString);
+  const [wordCount, setWordCount] = useState(article?.wordCount || 0);
   const [subscribersOnly, setSubscribersOnly] = useState(article?.subscribersOnly || false);
   const [headerImage, setHeaderImage] = useState(article?.headerImage || null);
   const [notification, setNotification] = useState('');
@@ -88,6 +89,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
       content,
       subscribersOnly,
       headerImage,
+      wordCount,
     };
 
     if (articleId) {
@@ -104,6 +106,8 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   const handleContentChange = (newContent: Node[]): void => {
     const contentString = JSON.stringify(newContent);
     setContent(contentString);
+    // Serialize the Slate content and then count the words
+    setWordCount(newContent.flatMap(n => Node.string(n).split(' ')).length);
   }
 
   if (publishData) {
