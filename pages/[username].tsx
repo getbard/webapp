@@ -63,7 +63,7 @@ const Author: NextPage = (): React.ReactElement => {
     return <Error statusCode={404} />;
   }
 
-  const isSubscriber = user?.subscriptions?.some(subscription => subscription?.userId === auth?.userId);
+  const isSubscriber = user?.subscribers?.some(subscriber => subscriber === auth?.userId);
 
   const {
     loading: articlesLoading,
@@ -89,7 +89,7 @@ const Author: NextPage = (): React.ReactElement => {
             <div className="flex justify-center flex-col items-center">
               {isSubscriber && (
                 <span className="font-bold mb-2">
-                  Thanks for the support!
+                  Thanks for being a supporter!
                 </span>
               )}
 
