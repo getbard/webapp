@@ -71,7 +71,7 @@ function BecomeSupporterButton({
           </p>
 
           <p className="mb-4">
-            You will be paying <span className="font-bold text-primary">{formatAmountForDisplay(stripePlan.amount! / 100)} {stripePlan.currency.toUpperCase()} per {stripePlan.interval}</span>.
+            You will be paying <span className="font-bold text-primary">{formatAmountForDisplay(stripePlan.amount!)} {stripePlan.currency.toUpperCase()} per {stripePlan.interval}</span>.
           </p>
 
           {error && (

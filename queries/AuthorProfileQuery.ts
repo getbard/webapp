@@ -11,6 +11,9 @@ const AuthorProfileQuery = gql`
       createdAt
       following
       followers
+      subscriptions {
+        userId
+      }
       stripeUserId
       stripePlan {
         id

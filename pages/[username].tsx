@@ -10,6 +10,8 @@ import { Article, User } from '../generated/graphql';
 import AuthorProfileQuery from '../queries/AuthorProfileQuery';
 import ArticlesSummaryQuery from '../queries/ArticlesSummaryQuery';
 
+import { useAuth } from '../hooks/useAuth';
+
 import { withApollo } from '../lib/apollo';
 import withLayout from '../components/withLayout';
 import Button from '../components/Button';
@@ -47,6 +49,7 @@ function Articles({
 
 const Author: NextPage = (): React.ReactElement => {
   const router = useRouter();
+  const auth = useAuth();
   const { username, sessionId } = router.query;
   const [section, setSection] = useState('articles');
   const { loading, error, data } = useQuery(AuthorProfileQuery, { variables: { username } });
@@ -60,6 +63,8 @@ const Author: NextPage = (): React.ReactElement => {
     return <Error statusCode={404} />;
   }
 
+  const isSubscriber = user?.subscriptions?.some(subscription => subscription?.userId === auth?.userId);
+
   const {
     loading: articlesLoading,
     error: articlesError,
@@ -68,7 +73,7 @@ const Author: NextPage = (): React.ReactElement => {
   } = useQuery(ArticlesSummaryQuery, { variables: { userId: user.id } });
 
   return (
-    <div className="px-5 pt-5 grid grid-cols-4">
+    <div className="px-5 pt-5 grid grid-cols-4 gap-5">
       <div className="text-center break-words">
         <div className="text-4xl font-serif font-bold">{user.firstName} {user.lastName}</div>
         <div className="text-xl text-gray-600 mb-2">{user.username}</div>
@@ -79,22 +84,32 @@ const Author: NextPage = (): React.ReactElement => {
           <div>{user?.following?.length || 0} followers</div>
         </div>
 
-        <div className="flex justify-center flex-col items-center">
-          {user?.stripeUserId && user?.stripePlan && (
-            <BecomeSupporterButton
-              authorName={user.firstName}
-              stripeUserId={user.stripeUserId}
-              stripePlan={user.stripePlan}
-            />
-          )}
+        {
+          user.id !== auth.userId && (
+            <div className="flex justify-center flex-col items-center">
+              {isSubscriber && (
+                <span className="font-bold mb-2">
+                  Thanks for the support!
+                </span>
+              )}
 
-          <div className="mt-2">
-            <Button className="mr-2" secondary>Follow</Button>
-            {user?.stripeUserId && (
-              <OneTimeSupportButton stripeUserId={user.stripeUserId} authorName={user.firstName} />
-            )}
-          </div>
-        </div>
+              {user?.stripeUserId && user?.stripePlan && !isSubscriber && (
+                <BecomeSupporterButton
+                  authorName={user.firstName}
+                  stripeUserId={user.stripeUserId}
+                  stripePlan={user.stripePlan}
+                />
+              )}
+
+              <div className="mt-2">
+                <Button className="mr-2" secondary>Follow</Button>
+                {user?.stripeUserId && (
+                  <OneTimeSupportButton stripeUserId={user.stripeUserId} authorName={user.firstName} />
+                )}
+              </div>
+            </div>
+          )
+        }
       </div>
 
       <div className="col-span-3">

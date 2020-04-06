@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Fri Apr 03 2020 16:35:01 GMT-0700 (Pacific Daylight Time)
+# timestamp: Mon Apr 06 2020 14:02:00 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -41,6 +41,14 @@ input ArticleHeaderImageInput {
 enum CacheControlScope {
   PUBLIC
   PRIVATE
+}
+
+input CancelSubscriptionInput {
+  id: ID!
+}
+
+type CancelSubscriptionPayload {
+  id: ID!
 }
 
 type Category {
@@ -96,6 +104,18 @@ type CreateStripeSessionPayload {
   id: ID!
 }
 
+input CreateSubscriptionInput {
+  stripeUserId: String!
+  stripeSubscriptionId: String!
+  authorId: String!
+}
+
+type CreateSubscriptionPayload {
+  id: ID!
+  stripeSubscriptionId: String!
+  createdAt: String!
+}
+
 input CreateUserInput {
   id: ID!
   email: String!
@@ -123,6 +143,15 @@ type Mutation {
   createUser(input: CreateUserInput!): CreateUserPayload!
   connectStripeAccount(input: ConnectStripeAccountInput!): ConnectStripeAccountPayload!
   createStripeSession(input: CreateStripeSessionInput): CreateStripeSessionPayload!
+  createSubscription(input: CreateSubscriptionInput): CreateSubscriptionPayload!
+  cancelSubscription(input: CancelSubscriptionInput): CancelSubscriptionPayload!
+}
+
+type Plan {
+  id: ID!
+  amount: Int!
+  currency: String!
+  interval: String!
 }
 
 input PublishArticleInput {
@@ -140,8 +169,8 @@ type Query {
   article(id: ID!): Article
   articleBySlug(slug: String!): Article
   articlesByUser(userId: ID!, drafts: Boolean): [Article]
-  me: User!
   stripeSession(id: ID!, stripeUserId: ID!): StripeSession!
+  subscription(id: ID!): Subscription!
   user(username: String!): User
   unsplashPhoto(search: String): [UnsplashPhoto]
 }
@@ -163,6 +192,22 @@ input StripePlanInput {
 type StripeSession {
   id: ID!
   status: String
+  subscription: String
+}
+
+type Subscription {
+  id: ID!
+  stripeSubscriptionId: String!
+  authorId: String!
+  author: User!
+  userId: String!
+  status: String!
+  currentPeriodEnd: Int!
+  cancelAt: Int
+  createdAt: String!
+  updatedAt: String!
+  deletedAt: String
+  plan: Plan!
 }
 
 type UnsplashPhoto {
@@ -193,9 +238,11 @@ type User {
   following: [String]
   followers: [String]
   subscribers: [String]
+  subscriptions: [Subscription]
   createdAt: String!
   updatedAt: String!
   stripeUserId: String
   stripePlanId: String
   stripePlan: StripePlan
+  isSubscriber: Boolean
 }

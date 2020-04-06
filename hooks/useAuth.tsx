@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 
 type AuthContext = {
   user: firebase.User | null;
-  userId: string | null;
+  userId: string | null | undefined;
   signIn: (email: string, password: string) => Promise<firebase.auth.UserCredential | firebase.User | null>;
   signUp: (email: string, password: string) => Promise<firebase.auth.UserCredential | firebase.User | null>;
   signOut: () => Promise<boolean | void>;
@@ -31,7 +31,7 @@ const authContext = createContext<AuthContext>({
 
 function useAuthContext(): AuthContext {
   const router = useRouter();
-  const defaultUserId = typeof window === 'undefined' ? null : localStorage.getItem('uid');
+  const defaultUserId = typeof window === 'undefined' ? null : cookie.get('uid');
   const [userId, setUserId] = useState(defaultUserId);
   const [user, setUser] = useState<firebase.User | null>(null);
 
@@ -97,14 +97,15 @@ function useAuthContext(): AuthContext {
     const unsubscribe = firebase.auth().onAuthStateChanged(async user => {
       if (user) {
         setUser(user);
+        setUserId(user.uid);
         const token = await user.getIdToken();
         cookie.set('token', token);
-        localStorage.setItem('uid', user.uid);
+        cookie.set('uid', user.uid);
       } else {
         setUser(null);
-        cookie.remove('token');
-        localStorage.removeItem('uid');
         setUserId(null);
+        cookie.remove('token');
+        cookie.remove('uid');
       }
     });
 
