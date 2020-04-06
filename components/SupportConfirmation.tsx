@@ -12,13 +12,12 @@ function SupportConfirmation({
   stripeUserId: string;
 }): React.ReactElement {
   const { loading, error, data } = useQuery(StripeSessionQuery, { variables: { id: sessionId, stripeUserId } });
-
   return (
     <Modal open>
       <div>
         {loading && <div>Confirming your payment with Stripe...</div>}
-        {(error || data?.stripeSession?.status !== 'succeeded') && <div>It seems like your payment didn&apos;t work. Try again later.</div>}
-        {data?.stripeSession?.status === 'succeeded' && <div>Thanks for supporting the author!</div>}
+        {(error || (data?.stripeSession?.status !== 'succeeded' && !data?.stripeSession?.subscription)) && <div>It seems like your payment didn&apos;t work. Try again later.</div>}
+        {(data?.stripeSession?.status === 'succeeded' || data?.stripeSession?.subscription) && <div>Thanks for supporting the author!</div>}
       </div>
     </Modal>
   )

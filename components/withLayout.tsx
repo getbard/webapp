@@ -8,6 +8,8 @@ const protectedRoutes = [
   '/write',
   '/edit/[id]',
   '/articles',
+  '/settings',
+  '/analytics',
 ];
 
 import Nav from './Nav';

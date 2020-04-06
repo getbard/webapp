@@ -5,6 +5,7 @@ const StripeSessionQuery = gql`
     stripeSession(id: $id, stripeUserId: $stripeUserId) {
       id
       status
+      subscription
     }
   }
 `;
