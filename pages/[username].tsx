@@ -95,9 +95,7 @@ const Author: NextPage = (): React.ReactElement => {
 
               {user?.stripeUserId && user?.stripePlan && !isSubscriber && (
                 <BecomeSupporterButton
-                  authorName={user.firstName}
-                  stripeUserId={user.stripeUserId}
-                  stripePlan={user.stripePlan}
+                  author={user}
                   displayModal={!!support}
                 />
               )}
