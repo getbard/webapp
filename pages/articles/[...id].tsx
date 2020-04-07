@@ -5,38 +5,49 @@ import { useQuery } from '@apollo/react-hooks';
 import { format } from 'date-fns';
 import styled from '@emotion/styled';
 
+import { User } from '../../generated/graphql';
 import ArticleBySlugQuery from '../../queries/ArticleBySlugQuery';
 import ArticleByIdQuery from '../../queries/ArticleByIdQuery';
+
+import { useAuth } from '../../hooks/useAuth';
 
 import { timeToRead } from '../../lib/editor';
 import { withApollo } from '../../lib/apollo';
 import withLayout from '../../components/withLayout';
 import Editor from '../../components/Editor';
 import HeaderImage from '../../components/HeaderImage';
-import Button from '../../components/Button';
+import ButtonLink from '../../components/ButtonLink';
 
 const GradientBlocker = styled.div`
   width: 100%;
   background: linear-gradient(0deg, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
 `;
 
-const ContentBlocker = ({ author }: { author: string }): React.ReactElement => {
+const ContentBlocker = ({ author }: { author: User }): React.ReactElement => {
+  const auth = useAuth();
+  const buttonText = auth.userId ? `Support ${author.firstName} to read this article` : 'Create an account to read this article';
+  const buttonHref = auth.userId ? `/${author.username}?support=true` : '/signup';
+
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0">
         <GradientBlocker className="h-full w-full" />
 
         <div className="bg-white flex flex-col justify-center items-center pb-10 pt-0 -mt-16">
           <div className="mb-2">
-            {author} has made this content available to supporters only.
+            {author.firstName} has made this content available to supporters only.
           </div>
 
-          <Button>
-            Support {author} to read this article
-          </Button>
+          <ButtonLink href={buttonHref}>
+            {buttonText}
+          </ButtonLink>
 
-          <div className="mt-2">
-            Already a supporter? <Link href="/login"><a>Login to read</a></Link>
-          </div>
+          {
+            !auth.userId && (
+              <div className="mt-2">
+                Already a supporter? <Link href="/login"><a className="underline">Login to read</a></Link>
+              </div>
+            )
+          }
         </div>
     </div>
   );
@@ -106,7 +117,7 @@ const Article: NextPage = (): React.ReactElement => {
                 </div>
               </div>
 
-              <ContentBlocker author={article.author.firstName} />
+              <ContentBlocker author={article.author} />
             </>
           )
         }
