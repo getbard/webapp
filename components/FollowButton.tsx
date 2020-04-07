@@ -66,7 +66,6 @@ function FollowButton({
         secondary
         className={className}
         onClick={handleFollow}
-        loading={followLoading || unfollowLoading}
       >
         {isFollower ? 'Unfollow' : 'Follow'}
       </Button>
