@@ -15,12 +15,14 @@ function BecomeSupporterButton({
   authorName,
   stripeUserId,
   stripePlan,
+  displayModal,
 }: {
   authorName: string;
   stripeUserId: string;
   stripePlan: StripePlan;
+  displayModal?: boolean;
 }): React.ReactElement {
-  const [displayDonationPrompt, setDisplayDonationPrompt] = useState(false);
+  const [displayDonationPrompt, setDisplayDonationPrompt] = useState(displayModal || false);
   const [createStripeSession, { data, error, loading }] = useMutation(CreateStripeSessionMutation);
 
   const router = useRouter();

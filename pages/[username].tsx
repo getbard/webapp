@@ -50,7 +50,7 @@ function Articles({
 const Author: NextPage = (): React.ReactElement => {
   const router = useRouter();
   const auth = useAuth();
-  const { username, sessionId } = router.query;
+  const { username, sessionId, support } = router.query;
   const [section, setSection] = useState('articles');
   const { loading, error, data } = useQuery(AuthorProfileQuery, { variables: { username } });
 
@@ -98,6 +98,7 @@ const Author: NextPage = (): React.ReactElement => {
                   authorName={user.firstName}
                   stripeUserId={user.stripeUserId}
                   stripePlan={user.stripePlan}
+                  displayModal={!!support}
                 />
               )}
 

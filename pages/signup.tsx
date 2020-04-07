@@ -11,7 +11,7 @@ const Signup: NextPage = (): React.ReactElement => {
   const auth = useAuth();
 
   if (auth.user) {
-    router.push('/write');
+    router.push('/');
   }
 
   return (
