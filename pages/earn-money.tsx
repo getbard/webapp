@@ -14,13 +14,14 @@ import Button from '../components/Button';
 const EarnMoney: NextPage = (): React.ReactElement => {
   const auth = useAuth();
   const router = useRouter();
-  const { loading, data } = useQuery(StripeUserIdQuery);
+  const { loading, data } = useQuery(StripeUserIdQuery, { variables: { username: 'me' }});
 
   if (!auth.user?.uid || loading) {
     return <div>Loading...</div>;
   }
-  const { me } = data || {};
-  if (me?.stripeUserId) {
+  
+  const { user } = data || {};
+  if (user?.stripeUserId) {
     router.push('/analytics');
   }
 
