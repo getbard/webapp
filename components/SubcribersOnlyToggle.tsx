@@ -1,4 +1,9 @@
+import { useState } from 'react';
 import styled from '@emotion/styled';
+import { useQuery } from '@apollo/react-hooks';
+import Link from 'next/link';
+
+import StripeUserIdQuery from '../queries/StripeUserIdQuery';
 
 type Props = {
   subscribersOnly: boolean;
@@ -19,18 +24,32 @@ const Toggle = styled.div<ToggleProps>`
 `;
 
 function SubscribersOnlyToggle({ subscribersOnly, setSubscribersOnly }: Props): React.ReactElement {
+  const [disabled, setDisabled] = useState(true);
+  const { data, loading, called } = useQuery(StripeUserIdQuery, { variables: { username: 'me' }});
+  const cursor = disabled ? 'cursor-not-allowed' : 'cursor-pointer';
+
+  const { user } = data || {};
+  if (user?.stripeUserId && disabled) {
+    setDisabled(false);
+  }
+
   return (
-    <div className="flex items-center">
-      <label htmlFor="sub-toggle" className="flex items-center cursor-pointer">
+    <div className="flex flex-col justify-center">
+      <label htmlFor="sub-toggle" className={`flex items-center cursor-pointer ${cursor}`}>
         <ToggleBackground
           className={`relative w-12 h-6 ${subscribersOnly ? 'bg-primary' : 'bg-gray-400'} rounded-full shadow-inner px-1 flex items-center`}
           checked={subscribersOnly}
         >
           <input
+            disabled={disabled}
             id="sub-toggle"
             type="checkbox"
             className="hidden"
-            onChange={(e): void => setSubscribersOnly(e.target.checked)}
+            onChange={(e): void => {
+              if (!disabled) {
+                setSubscribersOnly(e.target.checked);
+              }
+            }}
           />
           <Toggle className="w-4 h-4 bg-white rounded-full shadow" checked={subscribersOnly}></Toggle>
         </ToggleBackground>
@@ -39,6 +58,14 @@ function SubscribersOnlyToggle({ subscribersOnly, setSubscribersOnly }: Props): 
           {subscribersOnly ? 'Supporters Only' : 'Public'}
         </div>
       </label>
+
+      {
+        disabled && !loading && called && (
+          <div className="text-xs">
+            <Link href="/earn-money"><a className="underline">Connect a Stripe account</a></Link> to create supporter only content
+          </div>
+        )
+      }
     </div>
   );
 }
