@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Mon Apr 06 2020 15:36:18 GMT-0700 (Pacific Daylight Time)
+# timestamp: Mon Apr 06 2020 17:05:22 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -136,15 +136,25 @@ type DeleteArticlePayload {
   id: ID!
 }
 
+input FollowUserInput {
+  userId: String!
+}
+
+type FollowUserPayload {
+  userId: String!
+}
+
 type Mutation {
   createOrUpdateArticle(input: CreateOrUpdateArticleInput!): CreateOrUpdateArticlePayload!
   publishArticle(input: PublishArticleInput!): PublishArticlePayload!
   deleteArticle(input: DeleteArticleInput!): DeleteArticlePayload!
   createUser(input: CreateUserInput!): CreateUserPayload!
   connectStripeAccount(input: ConnectStripeAccountInput!): ConnectStripeAccountPayload!
-  createStripeSession(input: CreateStripeSessionInput): CreateStripeSessionPayload!
-  createSubscription(input: CreateSubscriptionInput): CreateSubscriptionPayload!
-  cancelSubscription(input: CancelSubscriptionInput): CancelSubscriptionPayload!
+  createStripeSession(input: CreateStripeSessionInput!): CreateStripeSessionPayload!
+  createSubscription(input: CreateSubscriptionInput!): CreateSubscriptionPayload!
+  cancelSubscription(input: CancelSubscriptionInput!): CancelSubscriptionPayload!
+  followUser(input: FollowUserInput!): FollowUserPayload!
+  unfollowUser(input: UnfollowUserInput!): UnfollowUserPayload!
 }
 
 type Plan {
@@ -210,6 +220,14 @@ type Subscription {
   plan: Plan!
 }
 
+input UnfollowUserInput {
+  userId: String!
+}
+
+type UnfollowUserPayload {
+  userId: String!
+}
+
 type UnsplashPhoto {
   id: ID!
   urls: UnsplashPhotoURLs!
@@ -235,8 +253,10 @@ type User {
   username: String!
   email: String!
   profileImageURL: String
-  following: [String]
-  followers: [String]
+  following: [User]
+  followingIds: [String]
+  followers: [User]
+  followerIds: [String]
   subscribers: [String]
   subscriptions: [Subscription]
   createdAt: String!

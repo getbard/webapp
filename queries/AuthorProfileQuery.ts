@@ -9,8 +9,8 @@ const AuthorProfileQuery = gql`
       username
       profileImageURL
       createdAt
-      following
-      followers
+      followingIds
+      followerIds
       subscribers
       stripeUserId
       stripePlan {
