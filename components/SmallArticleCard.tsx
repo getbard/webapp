@@ -28,7 +28,7 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName[0] + '.'}`;
 
   return (
-    <Link href={articleHref}>
+    <Link href="/articles/[...id]" as={articleHref}>
       <ArticleCardDiv className="py-4 px-2 mx-2 rounded-sm hover:cursor-pointer transition duration-150 ease-in">
         <div className={`${article.subscribersOnly && 'grid grid-cols-8'}`}>
           <h1 className="col-span-7 font-serif font-bold transition duration-150 ease-in">

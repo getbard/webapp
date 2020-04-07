@@ -36,7 +36,7 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName[0] + '.'}`;
   
   return (
-    <Link href={articleHref}>
+    <Link href="/articles/[...id]" as={articleHref}>
       <ArticleCardDiv className="p-4 border border-gray-300 rounded-sm hover:cursor-pointer transition duration-150 ease-in flex justify-between flex-col">
         {
           article?.headerImage?.url &&

@@ -17,7 +17,7 @@ import Notification from './Notification';
 function ArticleRow({ article, refetch }: { article: Article; refetch: () => void }): React.ReactElement {
   const auth = useAuth();
   const [showCopiedTooltip, setShowCopiedTooltip] = useState(false);
-  const articleOwner = auth.user?.uid === article.userId;
+  const articleOwner = auth.userId === article.userId;
   const [deleteArticle, { data, called, error }] = useMutation(DeleteArticleMutation, {
     update() {
       refetch();
