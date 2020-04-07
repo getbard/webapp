@@ -15,6 +15,13 @@ const ArticleBySlugQuery = gql`
         username
         firstName
         lastName
+        stripeUserId
+        stripePlan {
+          id
+          amount
+          currency
+          interval
+        }
       }
       headerImage {
         id

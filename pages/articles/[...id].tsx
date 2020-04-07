@@ -17,6 +17,7 @@ import withLayout from '../../components/withLayout';
 import Editor from '../../components/Editor';
 import HeaderImage from '../../components/HeaderImage';
 import ButtonLink from '../../components/ButtonLink';
+import BecomeSupporterButton from '../../components/BecomeSupporterButton';
 
 const GradientBlocker = styled.div`
   width: 100%;
@@ -37,9 +38,21 @@ const ContentBlocker = ({ author }: { author: User }): React.ReactElement => {
             {author.firstName} has made this content available to supporters only.
           </div>
 
-          <ButtonLink href={buttonHref}>
-            {buttonText}
-          </ButtonLink>
+          {
+            auth.user && author.stripeUserId && author.stripePlan
+              ? (
+                <BecomeSupporterButton
+                  authorName={author.firstName}
+                  stripeUserId={author?.stripeUserId}
+                  stripePlan={author?.stripePlan}
+                />
+              )
+              : (
+                <ButtonLink href={buttonHref}>
+                  {buttonText}
+                </ButtonLink>
+              )
+          }
 
           {
             !auth.userId && (
