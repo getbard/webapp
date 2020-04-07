@@ -14,7 +14,6 @@ import { useAuth } from '../hooks/useAuth';
 
 import { withApollo } from '../lib/apollo';
 import withLayout from '../components/withLayout';
-import Button from '../components/Button';
 import ProfileSectionSelector from '../components/ProfileSectionSelector';
 import ArticleRow from '../components/ArticleRow';
 import FollowButton from '../components/FollowButton';
@@ -53,7 +52,7 @@ const Author: NextPage = (): React.ReactElement => {
   const auth = useAuth();
   const { username, sessionId } = router.query;
   const [section, setSection] = useState('articles');
-  const { loading, error, data, refetch: refetchUser } = useQuery(AuthorProfileQuery, { variables: { username } });
+  const { loading, error, data } = useQuery(AuthorProfileQuery, { variables: { username } });
 
   if (error) return <div>Error</div>;
   if (loading) return <div>Loading</div>;
@@ -107,7 +106,6 @@ const Author: NextPage = (): React.ReactElement => {
                   className="mr-2"
                   user={user}
                   follower={auth.userId || ''}
-                  refetch={refetchUser}
                 />
 
                 {user?.stripeUserId && (

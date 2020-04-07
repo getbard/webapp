@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/react-hooks';
 
 import { User } from '../generated/graphql';
-
+import AuthorProfileQuery from '../queries/AuthorProfileQuery';
 import FollowUserMutation from '../queries/FollowUserMutation';
 import UnfollowUserMutation from '../queries/UnfollowUserMutation';
 
@@ -11,15 +11,45 @@ function FollowButton({
   className,
   user,
   follower,
-  refetch,
 }: {
   user: User;
   follower: string;
   className?: string;
-  refetch?: () =>  void;
 }): React.ReactElement {
-  const [followUser, { loading: followLoading }] = useMutation(FollowUserMutation);
-  const [unfollowUser, { loading: unfollowLoading }] = useMutation(UnfollowUserMutation);
+  const [followUser, { loading: followLoading }] = useMutation(FollowUserMutation, {
+    update(cache) {
+      const data: any = cache.readQuery({
+        query: AuthorProfileQuery,
+        variables: { username: user.username },
+      });
+      cache.writeQuery({
+        query: AuthorProfileQuery,
+        data: {
+          user: {
+            ...data.user,
+            followerIds: [...data.user.followerIds, follower],
+          },
+        },
+      });
+    }
+  });
+  const [unfollowUser, { loading: unfollowLoading }] = useMutation(UnfollowUserMutation, {
+    update(cache) {
+      const data: any = cache.readQuery({
+        query: AuthorProfileQuery,
+        variables: { username: user.username },
+      });
+      cache.writeQuery({
+        query: AuthorProfileQuery,
+        data: {
+          user: {
+            ...data.user,
+            followerIds: data.user.followerIds.filter((followerId: string) => followerId !== follower),
+          },
+        },
+      });
+    }
+  });
   const isFollower = user.followerIds?.includes(follower);
 
   const handleFollow = (): void => {
@@ -27,11 +57,6 @@ function FollowButton({
       unfollowUser({ variables: { input: { userId: user.id } } });
     } else {
       followUser({ variables: { input: { userId: user.id } } });
-    }
-
-    if (refetch && !followLoading && !unfollowLoading) {
-      console.log('refetch!');
-      refetch();
     }
   }
 
