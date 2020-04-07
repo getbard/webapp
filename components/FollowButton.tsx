@@ -19,16 +19,14 @@ function FollowButton({
 }): React.ReactElement {
   const [followUser, { error: followError }] = useMutation(FollowUserMutation, {
     update(cache) {
-      const data: any = cache.readQuery({
-        query: AuthorProfileQuery,
-        variables: { username: user.username },
-      });
+      const userFollowers = user?.followerIds || [];
       cache.writeQuery({
         query: AuthorProfileQuery,
+        variables: { username: user.username },
         data: {
           user: {
-            ...data.user,
-            followerIds: [...data.user.followerIds, follower],
+            ...user,
+            followerIds: [...userFollowers, follower],
           },
         },
       });
