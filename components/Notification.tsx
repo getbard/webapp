@@ -3,7 +3,7 @@ import Portal from './Portal';
 import { ApolloError } from 'apollo-client';
 
 function Notification({ children, showNotification, error, bgColor }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   showNotification: boolean;
   error?: string | ApolloError | undefined;
   bgColor?: string;
@@ -30,11 +30,8 @@ function Notification({ children, showNotification, error, bgColor }: {
     <Portal selector="body">
       <div className={notificationClasses}>
         <span className={`${error ? 'bg-red-600' : notificationBackground} rounded-sm px-4 py-2 mb-2`}>
-          {
-            error
-              ? 'Darn, something went wrong. Try again!'
-              : children
-          }
+          {error && 'Darn, something went wrong. Try again!'}
+          {!error && children}
         </span>
       </div>
     </Portal>

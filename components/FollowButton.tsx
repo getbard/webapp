@@ -6,6 +6,7 @@ import FollowUserMutation from '../queries/FollowUserMutation';
 import UnfollowUserMutation from '../queries/UnfollowUserMutation';
 
 import Button from './Button';
+import Notification from './Notification';
 
 function FollowButton({
   className,
@@ -16,7 +17,7 @@ function FollowButton({
   follower: string;
   className?: string;
 }): React.ReactElement {
-  const [followUser, { loading: followLoading }] = useMutation(FollowUserMutation, {
+  const [followUser, { error: followError }] = useMutation(FollowUserMutation, {
     update(cache) {
       const data: any = cache.readQuery({
         query: AuthorProfileQuery,
@@ -33,7 +34,7 @@ function FollowButton({
       });
     }
   });
-  const [unfollowUser, { loading: unfollowLoading }] = useMutation(UnfollowUserMutation, {
+  const [unfollowUser, { error: unfollowError }] = useMutation(UnfollowUserMutation, {
     update(cache) {
       const data: any = cache.readQuery({
         query: AuthorProfileQuery,
@@ -69,6 +70,11 @@ function FollowButton({
       >
         {isFollower ? 'Unfollow' : 'Follow'}
       </Button>
+
+      <Notification
+        showNotification={!!followError || !!unfollowError}
+        error={followError || unfollowError}
+      />
     </>
   );
 }
