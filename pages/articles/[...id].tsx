@@ -17,6 +17,8 @@ import withLayout from '../../components/withLayout';
 import Editor from '../../components/Editor';
 import HeaderImage from '../../components/HeaderImage';
 import ButtonLink from '../../components/ButtonLink';
+import BecomeSupporterButton from '../../components/BecomeSupporterButton';
+import SupportConfirmation from '../../components/SupportConfirmation';
 
 const GradientBlocker = styled.div`
   width: 100%;
@@ -30,36 +32,42 @@ const ContentBlocker = ({ author }: { author: User }): React.ReactElement => {
 
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0">
-        <GradientBlocker className="h-full w-full" />
+      <GradientBlocker className="h-full w-full" />
 
-        <div className="bg-white flex flex-col justify-center items-center pb-10 pt-0 -mt-16">
-          <div className="mb-2">
-            {author.firstName} has made this content available to supporters only.
-          </div>
-
-          <ButtonLink href={buttonHref}>
-            {buttonText}
-          </ButtonLink>
-
-          {
-            !auth.userId && (
-              <div className="mt-2">
-                Already a supporter? <Link href="/login"><a className="underline">Login to read</a></Link>
-              </div>
-            )
-          }
+      <div className="bg-white flex flex-col justify-center items-center pb-10 pt-0 -mt-16">
+        <div className="mb-2">
+          {author.firstName} has made this content available to supporters only.
         </div>
+
+        {
+          auth.user && author.stripeUserId && author.stripePlan
+            ? <BecomeSupporterButton author={author} />
+            : (
+              <ButtonLink href={buttonHref}>
+                {buttonText}
+              </ButtonLink>
+            )
+        }
+
+        {
+          !auth.userId && (
+            <div className="mt-2">
+              Already a supporter? <Link href="/login"><a className="underline">Login to read</a></Link>
+            </div>
+          )
+        }
+      </div>
     </div>
   );
 }
 
 const Article: NextPage = (): React.ReactElement => {
   const router = useRouter();
-  const { id: idParams } = router.query;
+  const { id: idParams, sessionId } = router.query;
   const [idType, id] = idParams;
   const articleQuery = idType === 's' ? ArticleBySlugQuery : ArticleByIdQuery;
 
-  const { loading, error, data } = useQuery(articleQuery, { variables: { id } });
+  const { loading, error, data, refetch } = useQuery(articleQuery, { variables: { id } });
 
   if (error) return <div>Error</div>;
   if (loading) return <div>Loading</div>;
@@ -122,6 +130,14 @@ const Article: NextPage = (): React.ReactElement => {
           )
         }
       </div>
+
+      {sessionId && article.author?.stripeUserId && (
+        <SupportConfirmation
+          sessionId={sessionId}
+          stripeUserId={article.author.stripeUserId}
+          refetch={refetch}
+        />
+      )}
     </div>
   );
 }

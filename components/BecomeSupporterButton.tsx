@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { loadStripe } from '@stripe/stripe-js';
-import { useRouter } from 'next/router';
 import { FiFeather } from 'react-icons/fi';
 
-import { StripePlan } from '../generated/graphql';
+import { User } from '../generated/graphql';
 import CreateStripeSessionMutation from '../queries/CreateStripeSessionMutation';
 
 import { formatAmountForDisplay } from '../lib/stripe';
@@ -12,20 +11,15 @@ import Button from './Button';
 import Modal from './Modal';
 
 function BecomeSupporterButton({
-  authorName,
-  stripeUserId,
-  stripePlan,
+  author,
   displayModal,
 }: {
-  authorName: string;
-  stripeUserId: string;
-  stripePlan: StripePlan;
+  author: User;
   displayModal?: boolean;
 }): React.ReactElement {
+  const { stripeUserId, stripePlan, firstName } = author;
   const [displayDonationPrompt, setDisplayDonationPrompt] = useState(displayModal || false);
   const [createStripeSession, { data, error, loading }] = useMutation(CreateStripeSessionMutation);
-
-  const router = useRouter();
 
   const handleSubmit = (): void => {
     createStripeSession({
@@ -33,7 +27,7 @@ function BecomeSupporterButton({
         input: {
           stripeUserId,
           plan: { ...stripePlan, __typename: undefined },
-          redirectUrl: `${window.location.origin}/${router.query.username}`,
+          redirectUrl: `${window.location.origin}${window.location.pathname}`,
         },
       },
     });
@@ -41,7 +35,7 @@ function BecomeSupporterButton({
 
   const redirectToCheckout = async ({ id: sessionId }: { id: string }): Promise<void> => {
     const stripe = await loadStripe(process.env.STRIPE_PUBLISHABLE_KEY || '', {
-      stripeAccount: stripeUserId,
+      stripeAccount: stripeUserId || '',
     });
     
     if (stripe) {
@@ -65,7 +59,7 @@ function BecomeSupporterButton({
           <h2 className="text-xl font-bold mb-2">Thank you!</h2>
 
           <p className="mb-4">
-            Supporting {authorName} every {stripePlan.interval} will help them focus on what matters most, their content.
+            Supporting {firstName} every {stripePlan?.interval} will help them focus on what matters most, their content.
           </p>
 
           <p className="mb-4">
@@ -73,7 +67,7 @@ function BecomeSupporterButton({
           </p>
 
           <p className="mb-4">
-            You will be paying <span className="font-bold text-primary">{formatAmountForDisplay(stripePlan.amount!)} {stripePlan.currency.toUpperCase()} per {stripePlan.interval}</span>.
+            You will be paying <span className="font-bold text-primary">{formatAmountForDisplay(stripePlan?.amount! || 1000)} {stripePlan?.currency.toUpperCase() || 'USD'} per {stripePlan?.interval || 'month'}</span>.
           </p>
 
           {error && (
