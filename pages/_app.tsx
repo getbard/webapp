@@ -6,16 +6,16 @@ import '../styles/main.css';
 
 import { AuthProvider } from '../hooks/useAuth';
 
-function App({ Component, pageProps }: AppProps): React.ReactElement {
+function BardApp({ Component, pageProps }: AppProps): React.ReactElement {
   return (
     <>
       <DefaultSeo {...SEO} />
       
-      <AuthProvider>
+      <AuthProvider userId={pageProps.userId}>
         <Component {...pageProps} />
       </AuthProvider>
     </>
   )
 }
 
-export default App;
+export default BardApp;

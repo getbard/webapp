@@ -5,6 +5,7 @@ import { ApolloClient } from 'apollo-client';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { NextPageContext, NextPage } from 'next';
 import createApolloClient from './apolloClient';
+import { Cookie } from 'next-cookie';
 
 interface NextPageContextWithApollo extends NextPageContext {
   apolloClient: ApolloClient<NormalizedCacheObject> | null;
@@ -50,14 +51,14 @@ export const initOnContext = (ctx: NextPageContextApp): NextPageContextApp => {
 
   // We consider installing `withApollo({ ssr: true })` on global App level
   // as antipattern since it disables project wide Automatic Static Optimization.
-  if (process.env.NODE_ENV === 'development') {
-    if (inAppContext) {
-      console.warn(
-        'Warning: You have opted-out of Automatic Static Optimization due to `withApollo` in `pages/_app`.\n' +
-        'Read more: https://err.sh/next.js/opt-out-auto-static-optimization\n',
-      );
-    }
-  }
+  // if (process.env.NODE_ENV === 'development') {
+  //   if (inAppContext) {
+  //     console.warn(
+  //       'Warning: You have opted-out of Automatic Static Optimization due to `withApollo` in `pages/_app`.\n' +
+  //       'Read more: https://err.sh/next.js/opt-out-auto-static-optimization\n',
+  //     );
+  //   }
+  // }
 
   // Initialize ApolloClient if not already done
   // TODO: Add proper types here:
@@ -88,10 +89,10 @@ export const initOnContext = (ctx: NextPageContextApp): NextPageContextApp => {
  * that provides the apolloContext
  * to a next.js Page or AppTree.
  * @param  {Object} withApolloOptions
- * @param  {Boolean} [withApolloOptions.ssr=false]
+ * @param  {Boolean} [withApolloOptions.ssr=true]
  * @returns {(PageComponent: ReactNode) => ReactNode}
  */
-export const withApollo = ({ ssr = false } = {}) => (PageComponent: NextPage): React.ReactNode => {
+export const withApollo = ({ ssr = true } = {}) => (PageComponent: NextPage): React.ReactNode => {
   const WithApollo = ({
     apolloClient,
     apolloState,
@@ -181,12 +182,17 @@ export const withApollo = ({ ssr = false } = {}) => (PageComponent: NextPage): R
         }
       }
 
+      // TODO: Don't do this here...
+      const nextCookie = new Cookie(ctx);
+      const userId = nextCookie.get('uid');
+
       return {
         ...pageProps,
         // Extract query data from the Apollo store
         apolloState: apolloClient?.cache.extract(),
         // Provide the client for ssr. As soon as this payload
         apolloClient: ctx.apolloClient,
+        userId,
       };
     };
   }

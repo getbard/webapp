@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, createContext } from "react";
+import { useState, useEffect, useContext, createContext } from 'react';
 import firebase from '../lib/firebase';
 import cookie from 'js-cookie';
 import { useRouter } from 'next/router';
@@ -29,10 +29,10 @@ const authContext = createContext<AuthContext>({
   confirmPasswordReset: fbConfirmPasswordReset,
 });
 
-function useAuthContext(): AuthContext {
+function useAuthContext(ctxUserId: string): AuthContext {
   const router = useRouter();
   const defaultUserId = typeof window === 'undefined' ? null : cookie.get('uid');
-  const [userId, setUserId] = useState(defaultUserId);
+  const [userId, setUserId] = useState(defaultUserId || ctxUserId || null);
   const [user, setUser] = useState<firebase.User | null>(null);
 
   const signIn = (
@@ -123,8 +123,8 @@ function useAuthContext(): AuthContext {
   };
 }
 
-export function AuthProvider({ children }: React.PropsWithChildren<{}>): React.ReactElement {
-  const auth = useAuthContext();
+export function AuthProvider({ children, userId }: React.PropsWithChildren<{userId: string}>): React.ReactElement {
+  const auth = useAuthContext(userId);
 
   return (
     <authContext.Provider value={auth}>
