@@ -9,6 +9,7 @@ const CommentsByResourceIdQuery = gql`
       createdAt
       updatedAt
       user {
+        id
         username
         firstName
         lastName
@@ -20,6 +21,7 @@ const CommentsByResourceIdQuery = gql`
         createdAt
         updatedAt
         user {
+          id
           username
           firstName
           lastName

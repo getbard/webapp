@@ -10,6 +10,7 @@ import { jsx } from 'slate-hyperscript';
 import { useMutation } from '@apollo/react-hooks';
 
 import CreateCommentMutation from '../queries/CreateCommentMutation';
+import UpdateCommentMutation from '../queries/UpdateCommentMutation';
 
 import useOnClickOutside from '../hooks/useOnClickOutside';
 import { toggleFormatInline } from '../lib/editor';
@@ -40,6 +41,7 @@ const EditorContainer = styled.div`
 function CommentEditor({
   resourceId,
   parentId,
+  commentId,
   readOnly,
   initialValue,
   refetch,
@@ -47,6 +49,7 @@ function CommentEditor({
 }: {
   resourceId: string;
   parentId?: string;
+  commentId?: string;
   readOnly?: boolean;
   initialValue?: Node[];
   refetch?: () => void;
@@ -57,7 +60,22 @@ function CommentEditor({
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-  const [createComment, { data, error, loading, called }] = useMutation(CreateCommentMutation);
+  const [createComment, {
+    data: createData,
+    error: createError,
+    loading: createLoading,
+    called: createCalled,
+  }] = useMutation(CreateCommentMutation);
+  const [updateComment, {
+    data: updateData,
+    error: updateError,
+    loading: updateLoading,
+    called: updateCalled,
+  }] = useMutation(UpdateCommentMutation);
+  const data = createData || updateData;
+  const error = createError || updateError;
+  const loading = createLoading || updateLoading;
+  const called = createCalled || updateCalled;
 
   // Refetch after a load 
   useEffect(() => {
@@ -117,15 +135,26 @@ function CommentEditor({
 
     const message = JSON.stringify(value);
 
-    createComment({
-      variables: {
-        input: {
-          message,
-          resourceId,
-          parentId,
+    if (commentId) {
+      updateComment({
+        variables: {
+          input: {
+            id: commentId,
+            message,
+          },
         },
-      },
-    });
+      });
+    } else {
+      createComment({
+        variables: {
+          input: {
+            message,
+            resourceId,
+            parentId,
+          },
+        },
+      });
+    }
 
     if (onSubmit) {
       onSubmit();
@@ -140,6 +169,7 @@ function CommentEditor({
           readOnly={readOnly || false}
         >
           <Slate
+            key={`${resourceId}-${parentId}-${commentId}-${readOnly}`}
             editor={editor}
             value={value}
             onChange={handleChange}

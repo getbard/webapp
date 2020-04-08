@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import Link from 'next/link';
 
-import { formatPretty } from '../lib/dates';
 import { useAuth } from '../hooks/useAuth';
 
 import { Comment } from '../generated/graphql';
@@ -10,91 +9,7 @@ import { Comment } from '../generated/graphql';
 import CommentsByResourceIdQuery from '../queries/CommentsByResourceIdQuery';
 
 import CommentEditor from './CommentEditor';
-import Button from './Button';
-
-const ReplyRow = ({ reply }: { reply: Comment }): React.ReactElement => {
-  const replierName = `${reply.user?.firstName}${reply.user?.lastName && ' ' + reply.user.lastName}`;
-
-  return (
-    <div className="border bg-white border-gray-300 rounded mt-4">
-      <CommentEditor
-        resourceId={reply.resourceId}
-        initialValue={JSON.parse(reply.message)}
-        readOnly
-      />
-
-      <div className="px-4 py-2 border-t border-gray-300">
-        <Link href={`/${reply.user.username}`}><a className="underline">{replierName}</a></Link>
-        &nbsp;replied {formatPretty(reply.createdAt)}
-      </div>
-    </div>
-  );
-}
-
-const CommentRow = ({
-  comment,
-  refetch,
-}: {
-  comment: Comment;
-  refetch: () => void;
-}): React.ReactElement => {
-  const auth = useAuth();
-  const [showReplyEditor, setShowReplyEditor] = useState(false);
-  const commentorName = `${comment.user.firstName}${comment.user?.lastName && ' ' + comment.user.lastName}`;
-
-  return (
-    <div className="mt-2 border border-gray-300 rounded-sm">
-      <CommentEditor
-        resourceId={comment.resourceId}
-        initialValue={JSON.parse(comment.message)}
-        readOnly
-      />
-
-      {
-        showReplyEditor
-        ? (
-          <div className="m-2 border border-gray-300">
-            <CommentEditor
-              refetch={refetch}
-              resourceId={comment.resourceId}
-              parentId={comment.id || ''}
-              onSubmit={(): void => setShowReplyEditor(false)}
-            />
-          </div>
-        )
-        : (
-          <div className="flex items-center justify-between pl-4 pr-2 p-1 bg-gray-100 border-t border-gray-300">
-            <div>
-              <Link href={`/${comment.user.username}`} ><a className="underline">{commentorName}</a></Link>
-              &nbsp;commented {formatPretty(comment.createdAt)}
-            </div>
-    
-            {
-              auth.userId
-                ? (
-                <Button text onClick={(): void => setShowReplyEditor(true)}>
-                  Reply
-                </Button>
-              )
-              : <div className="h-10"></div>
-            }
-          </div>
-        )
-      }
-
-      {
-        (comment?.replies?.length || false) && (
-          <div className="p-4 pt-0 border-t border-gray-300">
-            {comment.replies.map((reply: Comment | null) => {
-              if (!reply) return;
-              return <ReplyRow key={reply.id || ''} reply={reply} />;
-            })}
-          </div>
-        )
-      }
-    </div>
-  );
-}
+import CommentRow from './CommentRow';
 
 function Comments({
   resourceId,

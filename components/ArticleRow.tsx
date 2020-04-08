@@ -90,7 +90,7 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
                 }}
               >
                 <FiCopy className="block hover:cursor-pointer hover:text-primary mr-4 transition duration-150 ease-in-out" />
-                <Tooltip showTooltip={showCopiedTooltip} selector={`#a-${article.id}-copy`}>
+                <Tooltip showTooltip={showCopiedTooltip} selector={`#a-${article.id}-copy`} mt={20}>
                   A link to the article has been <br/>
                   copied to your clipboard.
                 </Tooltip>
