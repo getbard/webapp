@@ -67,25 +67,27 @@ function CommentEditor({
     called: createCalled,
   }] = useMutation(CreateCommentMutation);
   const [updateComment, {
-    data: updateData,
     error: updateError,
     loading: updateLoading,
     called: updateCalled,
   }] = useMutation(UpdateCommentMutation);
-  const data = createData || updateData;
-  const error = createError || updateError;
-  const loading = createLoading || updateLoading;
-  const called = createCalled || updateCalled;
 
   // Refetch after a load 
   useEffect(() => {
+    const called = createCalled || updateCalled;
+    const loading = createLoading || updateLoading;
+
     if (called && !loading && refetch) {
       refetch();
     }
-  }, [loading]);
+
+    if (called && !loading && onSubmit) {
+      onSubmit();
+    }
+  }, [createLoading, updateLoading]);
 
   // Clear the comment if it was created successfully
-  if (data?.createComment?.message === JSON.stringify(value)) {
+  if (createData?.createComment?.message === JSON.stringify(value)) {
     setValue(emptyValue);
   }
 
@@ -155,10 +157,6 @@ function CommentEditor({
         },
       });
     }
-
-    if (onSubmit) {
-      onSubmit();
-    }
   }
 
   return (
@@ -220,10 +218,10 @@ function CommentEditor({
     
               <Button
                 onClick={handleCreateComment}
-                loading={loading}
+                loading={createLoading || updateLoading}
                 disabled={JSON.stringify(value) === JSON.stringify(emptyValue)}
               >
-                Comment
+                {commentId ? 'Update Comment' : 'Comment'}
               </Button>
             </div>
           )
@@ -231,7 +229,7 @@ function CommentEditor({
 
         <Notification
           showNotification={false}
-          error={error}
+          error={createError || updateError}
           bgColor="bg-primary"
         />
       </div>

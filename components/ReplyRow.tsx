@@ -1,18 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useMutation } from '@apollo/react-hooks';
 
 import { useAuth } from '../hooks/useAuth';
 
 import { Comment } from '../generated/graphql';
+import DeleteCommentMutation from '../queries/DeleteCommentMutation';
 
 import CommentEditor from './CommentEditor';
 import Button from './Button';
 import CommentDateMeta from './CommentDateMeta';
 
-const ReplyRow = ({ reply }: { reply: Comment }): React.ReactElement => {
+const ReplyRow = ({
+  reply,
+  refetch,
+}: {
+  reply: Comment;
+  refetch: () => void;
+}): React.ReactElement => {
   const auth = useAuth();
   const [readOnly, setReadOnly] = useState(true);
   const replierName = `${reply.user?.firstName}${reply.user?.lastName && ' ' + reply.user.lastName}`;
+  const [deleteReply, { loading, called, error }] = useMutation(DeleteCommentMutation);
+
+  // Refetch after a load 
+  useEffect(() => {
+    if (called && !loading) {
+      refetch();
+    }
+  }, [loading]);
+
+  const handleDeleteReply = (): void => {
+    deleteReply({ variables: { input: { id: reply.id } } });
+  }
 
   return (
     <div className="border bg-white border-gray-300 rounded mt-4">
@@ -38,7 +58,7 @@ const ReplyRow = ({ reply }: { reply: Comment }): React.ReactElement => {
                 Edit
               </Button>
 
-              <Button text>
+              <Button text onClick={handleDeleteReply}>
                 Delete
               </Button>
             </div>

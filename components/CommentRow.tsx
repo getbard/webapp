@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useMutation } from '@apollo/react-hooks';
 
 import { useAuth } from '../hooks/useAuth';
 
 import { Comment } from '../generated/graphql';
+import DeleteCommentMutation from '../queries/DeleteCommentMutation';
 
 import CommentEditor from './CommentEditor';
 import Button from './Button';
@@ -21,6 +23,18 @@ const CommentRow = ({
   const [showReplyEditor, setShowReplyEditor] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
   const commentorName = `${comment.user.firstName}${comment.user?.lastName && ' ' + comment.user.lastName}`;
+  const [deleteComment, { loading, called, error }] = useMutation(DeleteCommentMutation);
+
+  // Refetch after a load 
+  useEffect(() => {
+    if (called && !loading) {
+      refetch();
+    }
+  }, [loading]);
+
+  const handleDeleteComment = (): void => {
+    deleteComment({ variables: { input: { id: comment.id } } });
+  }
 
   return (
     <div className="mt-2 border border-gray-300 rounded-sm">
@@ -60,7 +74,7 @@ const CommentRow = ({
                         Edit
                       </Button>
 
-                      <Button text onClick={(): void => setShowReplyEditor(true)}>
+                      <Button text onClick={handleDeleteComment}>
                         Delete
                       </Button>
                     </div>
@@ -86,7 +100,7 @@ const CommentRow = ({
           <div className="p-4 pt-0 border-t border-gray-300">
             {comment.replies.map((reply: Comment | null) => {
               if (!reply) return;
-              return <ReplyRow key={reply.id || ''} reply={reply} />;
+              return <ReplyRow key={reply.id || ''} reply={reply} refetch={refetch} />;
             })}
           </div>
         )
