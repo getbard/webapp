@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import styled from '@emotion/styled';
 import emojis from 'emoji-mart/data/apple.json';
 import { NimblePicker } from 'emoji-mart';
@@ -55,7 +55,14 @@ function CommentEditor({
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-  const [createComment, { data, error, loading }] = useMutation(CreateCommentMutation);
+  const [createComment, { data, error, loading, called }] = useMutation(CreateCommentMutation);
+
+  // Refetch after a load 
+  useEffect(() => {
+    if (called && !loading && refetch) {
+      refetch();
+    }
+  }, [loading]);
 
   // Clear the comment if it was created successfully
   if (data?.createComment?.message === JSON.stringify(value)) {
@@ -117,10 +124,6 @@ function CommentEditor({
         },
       },
     });
-
-    if (refetch) {
-      refetch();
-    }
 
     if (onSubmit) {
       onSubmit();
