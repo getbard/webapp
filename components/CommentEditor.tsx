@@ -18,6 +18,7 @@ import EditorLeaf from './EditorLeaf';
 import EditorElement from './EditorElement';
 import EditorToolbar from './EditorToolbar';
 import Button from './Button';
+import Notification from './Notification';
 
 const emptyValue = [{
   type: 'paragraph',
@@ -192,6 +193,12 @@ function CommentEditor({
             </div>
           )
         }
+
+        <Notification
+          showNotification={false}
+          error={error}
+          bgColor="bg-primary"
+        />
       </div>
     </div>
   );
