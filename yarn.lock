@@ -1978,6 +1978,13 @@
   resolved "https://registry.yarnpkg.com/@types/debounce/-/debounce-1.2.0.tgz#9ee99259f41018c640b3929e1bb32c3dcecdb192"
   integrity sha512-bWG5wapaWgbss9E238T0R6bfo5Fh3OkeoSt245CM7JJwVwpw6MEBCbIxLq5z8KzsE3uJhzcIuQkyiZmzV3M/Dw==
 
+"@types/emoji-mart@^2.11.3":
+  version "2.11.3"
+  resolved "https://registry.yarnpkg.com/@types/emoji-mart/-/emoji-mart-2.11.3.tgz#9949f6a8a231aea47aac1b2d4212597b41140b07"
+  integrity sha512-pRlU6+CFIB+9+FwjGGCVtDQq78u7N0iUijrO0Qh1j9RJ6T23DSNNfe0X6kf81N4ubVhF9jVckCI1M3kHpkwjqA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
@@ -4777,6 +4784,14 @@ elliptic@^6.0.0:
     inherits "^2.0.1"
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
+
+emoji-mart@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/emoji-mart/-/emoji-mart-3.0.0.tgz#eca24a04881e27752a6921e09f65a86ce8539a50"
+  integrity sha512-r5DXyzOLJttdwRYfJmPq/XL3W5tiAE/VsRnS0Hqyn27SqPA/GOYwVUSx50px/dXdJyDSnvmoPbuJ/zzhwSaU4A==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+    prop-types "^15.6.0"
 
 emoji-regex@^7.0.1:
   version "7.0.3"

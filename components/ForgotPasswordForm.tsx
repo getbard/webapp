@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import firebase from '../lib/firebase';
 import { useForm } from 'react-hook-form';
-import { FiLoader } from 'react-icons/fi';
 
 import Button from './Button';
 
@@ -52,7 +51,7 @@ function ForgotPasswordForm({
           </label>
 
           <input
-            className={`border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.email && 'focus:border-primary'} placeholder-gray-500 ${errors.email && 'border-red-600'}`}
+            className={`shadow-inner border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.email && 'focus:border-primary'} placeholder-gray-500 ${errors.email && 'border-red-600'}`}
             id="username"
             placeholder="Email"
             type="email"
@@ -71,7 +70,7 @@ function ForgotPasswordForm({
         </div>
 
         <div className="flex items-center md:justify-between justify-center">
-          <Button className="w-full md:w-auto">
+          <Button className="w-full md:w-auto" loading={loading}>
             Reset Password
           </Button>
 

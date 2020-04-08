@@ -19,6 +19,7 @@ import HeaderImage from '../../components/HeaderImage';
 import ButtonLink from '../../components/ButtonLink';
 import BecomeSupporterButton from '../../components/BecomeSupporterButton';
 import SupportConfirmation from '../../components/SupportConfirmation';
+import Comments from '../../components/Comments';
 
 const GradientBlocker = styled.div`
   width: 100%;
@@ -130,6 +131,8 @@ const Article: NextPage = (): React.ReactElement => {
           )
         }
       </div>
+
+      <Comments resourceId={article.id} />
 
       {sessionId && article.author?.stripeUserId && (
         <SupportConfirmation

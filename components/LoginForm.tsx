@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { FiLoader } from 'react-icons/fi';
 import { useRouter } from 'next/router';
 
 import { useAuth } from '../hooks/useAuth';
@@ -57,7 +56,7 @@ function LoginForm({
           </label>
 
           <input
-            className={`border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.email && 'focus:border-primary'} placeholder-gray-500 ${errors.email && 'border-red-600'}`}
+            className={`shadow-inner border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.email && 'focus:border-primary'} placeholder-gray-500 ${errors.email && 'border-red-600'}`}
             id="username"
             placeholder="Email"
             type="email"
@@ -79,7 +78,7 @@ function LoginForm({
           </label>
 
           <input
-            className={`border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.password && 'focus:border-primary'} placeholder-gray-500 ${errors.password && 'border-red-600'}`}
+            className={`shadow-inner border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.password && 'focus:border-primary'} placeholder-gray-500 ${errors.password && 'border-red-600'}`}
             id="password"
             type="password"
             placeholder="Password"

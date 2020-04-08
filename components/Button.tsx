@@ -8,6 +8,7 @@ type Props = {
   disabled?: boolean;
   secondary?: boolean;
   loading?: boolean;
+  text?: boolean;
 }
 
 function Button({
@@ -18,15 +19,17 @@ function Button({
   disabled: isDisabled,
   secondary,
   loading,
+  text = false,
 }: Props): React.ReactElement {
   const yPadding = thin ? 'py-1' : 'py-2';
-  const textColor = secondary ? 'text-primary' : 'text-white';
+  const textColor = (text || secondary) ? 'text-primary' : 'text-white';
+  const hoverText = text ? 'hover:underline' : 'hover:text-white';
   const bgColor = secondary ? 'bg-white' : 'bg-primary';
   const bgHoverColor = secondary ? 'hover:bg-primary' : 'hover:bg-secondary';
   const borderHoverColor = secondary ? 'hover:border-primary' : 'hover:border-secondary';
+  const disabled = isDisabled && 'opacity-50 cursor-not-allowed';
 
-  const disabled = isDisabled ? 'opacity-50 cursor-not-allowed' : bgHoverColor;
-  const classes = `focus:outline-none inline-flex justify-center items-center border border-primary ${borderHoverColor} transition duration-150 ease-in-out ${bgColor} px-4 ${yPadding} ${disabled} ${textColor} hover:text-white rounded ${className}`
+  const classes = `focus:outline-none inline-flex justify-center items-center ${!text && 'border'} border-primary ${borderHoverColor} transition duration-150 ease-in-out ${!text && bgColor} px-4 ${yPadding} ${disabled} ${textColor} ${hoverText} ${(!disabled && !text) && bgHoverColor} rounded ${className}`
   return (
     <button
       className={classes}
