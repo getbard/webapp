@@ -19,10 +19,14 @@ function BardEditor({
   setContent,
   readOnly,
   initialValue,
+  placeholder,
+  small,
 }: {
   setContent?: (content: Node[]) => void;
   readOnly?: boolean;
   initialValue?: Node[];
+  placeholder?: string;
+  small?: boolean;
 }): React.ReactElement {
   const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
   const editor = useMemo(() => withHtml(withHistory(withReact(createEditor()))), []);
@@ -67,9 +71,9 @@ function BardEditor({
       <EditorToolbar />
 
       <Editable
-        className="text-lg"
+        className={`${!small && 'text-lg'}`}
         readOnly={readOnly}
-        placeholder="Let the world know what is on your mind."
+        placeholder={placeholder || 'Let the world know what is on your mind.'}
         renderLeaf={(props): JSX.Element => <EditorLeaf {...props} />}
         renderElement={(props): JSX.Element => <EditorElement {...props} />}
         onKeyDown={handleKeyDown}
