@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import Link from 'next/link';
 
 import { formatPretty } from '../lib/dates';
+import { useAuth } from '../hooks/useAuth';
 
 import { Comment } from '../generated/graphql';
 
@@ -37,7 +38,8 @@ const CommentRow = ({
   comment: Comment;
   refetch: () => void;
 }): React.ReactElement => {
-  const [isReply, setIsReply] = useState(false);
+  const auth = useAuth();
+  const [showReplyEditor, setShowReplyEditor] = useState(false);
   const commentorName = `${comment.user.firstName}${comment.user?.lastName && ' ' + comment.user.lastName}`;
 
   return (
@@ -49,14 +51,14 @@ const CommentRow = ({
       />
 
       {
-        isReply
+        showReplyEditor
         ? (
           <div className="m-2 border border-gray-300">
             <CommentEditor
               refetch={refetch}
               resourceId={comment.resourceId}
               parentId={comment.id || ''}
-              onSubmit={(): void => setIsReply(false)}
+              onSubmit={(): void => setShowReplyEditor(false)}
             />
           </div>
         )
@@ -67,11 +69,15 @@ const CommentRow = ({
               &nbsp;commented {formatPretty(comment.createdAt)}
             </div>
     
-            <div>
-              <Button text onClick={(): void => setIsReply(true)}>
-                Reply
-              </Button>
-            </div>
+            {
+              auth.userId
+                ? (
+                <Button text onClick={(): void => setShowReplyEditor(true)}>
+                  Reply
+                </Button>
+              )
+              : <div className="h-10"></div>
+            }
           </div>
         )
       }
@@ -95,6 +101,7 @@ function Comments({
 }: {
   resourceId: string;
 } ): React.ReactElement {
+  const auth = useAuth();
   const { loading, error, data, refetch } = useQuery(CommentsByResourceIdQuery, { variables: { resourceId } });
   const [sortBy, setSortBy] = useState('latest');
 
@@ -109,9 +116,23 @@ function Comments({
 
   return (
     <div className="mt-10">
-      <div className="border border-gray-300 rounded-sm">
-        <CommentEditor resourceId={resourceId} refetch={refetch} />
-      </div>
+      {
+        auth.userId
+          ? (
+            <div className="border border-gray-300 rounded-sm">
+              <CommentEditor resourceId={resourceId} refetch={refetch} />
+            </div>
+          )
+          : (
+            <div className="text-center p-16 border border-gray-300 rounded-sm">
+              <Link href="/href">
+                <a className="underline">
+                  Login to comment on this article
+                </a>
+              </Link>
+            </div>
+          )
+      }
 
       <div className="mt-4">
         <div className="text-xs">

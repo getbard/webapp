@@ -13,6 +13,7 @@ import CreateCommentMutation from '../queries/CreateCommentMutation';
 
 import useOnClickOutside from '../hooks/useOnClickOutside';
 import { toggleFormatInline } from '../lib/editor';
+import { useAuth } from '../hooks/useAuth';
 
 import EditorLeaf from './EditorLeaf';
 import EditorElement from './EditorElement';
@@ -51,6 +52,7 @@ function CommentEditor({
   refetch?: () => void;
   onSubmit?: () => void;
 }): React.ReactElement {
+  const auth = useAuth();
   const emojiRef = useRef(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
@@ -156,7 +158,7 @@ function CommentEditor({
         </EditorContainer>
 
         {
-          !readOnly && (
+          !readOnly && auth.userId && (
             <div className="flex justify-between p-2 bg-gray-100 border-t border-gray-300">
               <div
                 ref={emojiRef}
