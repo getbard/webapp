@@ -94,11 +94,16 @@ function Comments({
   resourceId: string;
 } ): React.ReactElement {
   const { loading, error, data, refetch } = useQuery(CommentsByResourceIdQuery, { variables: { resourceId } });
+  const [sortBy, setSortBy] = useState('latest');
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Something went wrong...</div>;
 
   const { commentsByResourceId } = data;
+
+  const changeSort = (): void => {
+    setSortBy(sortBy === 'latest' ? 'oldest' : 'latest');
+  }
 
   return (
     <div className="mt-10">
@@ -106,9 +111,26 @@ function Comments({
         <CommentEditor resourceId={resourceId} refetch={refetch} />
       </div>
 
-      {commentsByResourceId.map((comment: Comment) => {
-        return <CommentRow key={comment.id || ''} comment={comment} refetch={refetch} />;
-      })}
+      <div className="mt-4">
+        <div className="text-xs">
+          Showing <span className="underline hover:text-primary hover:cursor-pointer" onClick={changeSort}>
+            {sortBy}
+          </span> comments first
+        </div>
+
+        {commentsByResourceId.sort((a: Comment, b: Comment) => {
+          const aCreatedAt = new Date(a.createdAt);
+          const bCreatedAt = new Date(b.createdAt);
+
+          if (sortBy === 'latest') {
+            return bCreatedAt.getTime() - aCreatedAt.getTime();
+          } else {
+            return aCreatedAt.getTime() - bCreatedAt.getTime();
+          }
+        }).map((comment: Comment) => {
+          return <CommentRow key={comment.id || ''} comment={comment} refetch={refetch} />;
+        })}
+      </div>
     </div>
   );
 }
