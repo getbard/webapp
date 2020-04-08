@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
-import { FiLoader } from 'react-icons/fi';
 import { useRouter } from 'next/router';
 import { useMutation } from '@apollo/react-hooks';
 

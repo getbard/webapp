@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import firebase from '../lib/firebase';
 import { useForm } from 'react-hook-form';
-import { FiLoader } from 'react-icons/fi';
 
 import Button from './Button';
 
@@ -71,7 +70,7 @@ function ForgotPasswordForm({
         </div>
 
         <div className="flex items-center md:justify-between justify-center">
-          <Button className="w-full md:w-auto">
+          <Button className="w-full md:w-auto" loading={loading}>
             Reset Password
           </Button>
 
