@@ -2,8 +2,8 @@ import { useState, useRef, useMemo, useEffect } from 'react';
 import styled from '@emotion/styled';
 import emojis from 'emoji-mart/data/apple.json';
 import { NimblePicker } from 'emoji-mart';
-import { Slate, Editable, withReact } from 'slate-react';
-import { createEditor, Node, Transforms } from 'slate';
+import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
+import { createEditor, Node, Transforms, Editor } from 'slate';
 import { withHistory } from 'slate-history';
 import { BaseEmoji } from 'emoji-mart';
 import { jsx } from 'slate-hyperscript';
@@ -97,8 +97,14 @@ function CommentEditor({
     }
   });
 
+  const focusEditor = (): void => {
+    ReactEditor.focus(editor);
+    Transforms.select(editor, Editor.end(editor, []));
+  }
+
   const handleEmojiSelection = (emoji: BaseEmoji): void => {
     Transforms.insertNodes(editor, [jsx('text', {}, emoji.native)]);
+    focusEditor();
     setShowEmojiPicker(false);
   }
 
@@ -161,78 +167,75 @@ function CommentEditor({
 
   return (
     <div>
-      <div>
-        <EditorContainer
-          className={`p-4 ${!readOnly && 'shadow-inner'}`}
-          readOnly={readOnly || false}
+      <EditorContainer
+        className={`p-4 ${!readOnly && 'shadow-inner'}`}
+        readOnly={readOnly || false}
+      >
+        <Slate
+          key={`${resourceId}-${parentId}-${commentId}-${readOnly}`}
+          editor={editor}
+          value={value}
+          onChange={handleChange}
+          native={true}
         >
-          <Slate
-            key={`${resourceId}-${parentId}-${commentId}-${readOnly}`}
-            editor={editor}
-            value={value}
-            onChange={handleChange}
-            native={true}
-          >
-            <EditorToolbar />
+          <EditorToolbar />
 
-            <Editable
-              readOnly={readOnly}
-              placeholder="What did you think of the article?"
-              renderLeaf={(props): JSX.Element => <EditorLeaf {...props} />}
-              renderElement={(props): JSX.Element => <EditorElement {...props} />}
-              onKeyDown={handleKeyDown}
-            />
-          </Slate>
-        </EditorContainer>
+          <Editable
+            readOnly={readOnly}
+            placeholder="What did you think of the article?"
+            renderLeaf={(props): JSX.Element => <EditorLeaf {...props} />}
+            renderElement={(props): JSX.Element => <EditorElement {...props} />}
+            onKeyDown={handleKeyDown}
+          />
+        </Slate>
+      </EditorContainer>
 
-        {
-          !readOnly && auth.userId && (
-            <div className="flex justify-between p-2 bg-gray-100 border-t border-gray-300">
-              <div
-                ref={emojiRef}
-                className="text-2xl hover:cursor-pointer relative"
+      {
+        !readOnly && auth.userId && (
+          <div className="flex justify-between p-2 bg-gray-100 border-t border-gray-300">
+            <div
+              ref={emojiRef}
+              className="text-2xl hover:cursor-pointer relative"
+            >
+              {showEmojiPicker && (
+                <NimblePicker
+                  set="apple"
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                  // @ts-ignore
+                  data={emojis}
+                  style={{ position: 'absolute', bottom: '2.5rem' }}
+                  color="#004346"
+                  emoji="point_up"
+                  title=""
+                  onSelect={handleEmojiSelection}
+                />
+              )}
+              <span
+                className="px-1"
+                onMouseDown={(e): void => {
+                  e.preventDefault();
+                  setShowEmojiPicker(!showEmojiPicker);
+                }}
               >
-                {showEmojiPicker && (
-                  <NimblePicker
-                    set="apple"
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-                    // @ts-ignore
-                    data={emojis}
-                    style={{ position: 'absolute', bottom: '2.5rem' }}
-                    color="#004346"
-                    emoji="point_up"
-                    title=""
-                    onSelect={handleEmojiSelection}
-                  />
-                )}
-                <span
-                  className="px-1"
-                  onMouseDown={(e): void => {
-                    e.preventDefault();
-                    setShowEmojiPicker(!showEmojiPicker);
-                  }}
-                >
-                  {showEmojiPicker ? '😀' : '🙂'}
-                </span>
-              </div>
-    
-              <Button
-                onClick={handleCreateComment}
-                loading={createLoading || updateLoading}
-                disabled={JSON.stringify(value) === JSON.stringify(emptyValue)}
-              >
-                {commentId ? 'Update Comment' : 'Comment'}
-              </Button>
+                {showEmojiPicker ? '😀' : '🙂'}
+              </span>
             </div>
-          )
-        }
+  
+            <Button
+              onClick={handleCreateComment}
+              loading={createLoading || updateLoading}
+              disabled={JSON.stringify(value) === JSON.stringify(emptyValue)}
+            >
+              {commentId ? 'Update Comment' : 'Comment'}
+            </Button>
+          </div>
+        )
+      }
 
-        <Notification
-          showNotification={false}
-          error={createError || updateError}
-          bgColor="bg-primary"
-        />
-      </div>
+      <Notification
+        showNotification={false}
+        error={createError || updateError}
+      />
     </div>
   );
 }

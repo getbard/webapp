@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useMutation } from '@apollo/react-hooks';
 
 import { useAuth } from '../hooks/useAuth';
+import useOnClickOutside from '../hooks/useOnClickOutside';
 
 import { Comment } from '../generated/graphql';
 import DeleteCommentMutation from '../queries/DeleteCommentMutation';
@@ -11,6 +12,7 @@ import CommentEditor from './CommentEditor';
 import Button from './Button';
 import CommentDateMeta from './CommentDateMeta';
 import ReplyRow from './ReplyRow';
+import Notification from './Notification';
 
 const CommentRow = ({
   comment,
@@ -20,9 +22,12 @@ const CommentRow = ({
   refetch: () => void;
 }): React.ReactElement => {
   const auth = useAuth();
+  const replyEditorRef = useRef(null);
   const [showReplyEditor, setShowReplyEditor] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
-  const commentorName = `${comment.user.firstName}${comment.user?.lastName && ' ' + comment.user.lastName}`;
+  const commentorName = auth.userId === comment.user.id
+    ? 'You'
+    : `${comment.user.firstName}${comment.user?.lastName && ' ' + comment.user.lastName}`;
   const [deleteComment, { loading, called, error }] = useMutation(DeleteCommentMutation);
 
   // Refetch after a load 
@@ -31,6 +36,10 @@ const CommentRow = ({
       refetch();
     }
   }, [loading]);
+
+  useOnClickOutside(replyEditorRef, (): void => {
+    setShowReplyEditor(false);
+  });
 
   const handleDeleteComment = (): void => {
     deleteComment({ variables: { input: { id: comment.id } } });
@@ -49,7 +58,10 @@ const CommentRow = ({
       {
         showReplyEditor
           ? (
-            <div className="m-2 border border-gray-300">
+            <div
+              ref={replyEditorRef}
+              className="m-2 border border-gray-300"
+            >
               <CommentEditor
                 refetch={refetch}
                 resourceId={comment.resourceId}
@@ -105,6 +117,11 @@ const CommentRow = ({
           </div>
         )
       }
+
+      <Notification
+        showNotification={false}
+        error={error}
+      />
     </div>
   );
 }

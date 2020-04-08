@@ -49,26 +49,36 @@ function Comments({
           )
       }
 
-      <div className="mt-4">
-        <div className="text-xs">
-          Showing <span className="underline hover:text-primary hover:cursor-pointer" onClick={changeSort}>
-            {sortBy}
-          </span> comments first
-        </div>
-
-        {commentsByResourceId.sort((a: Comment, b: Comment) => {
-          const aCreatedAt = new Date(a.createdAt);
-          const bCreatedAt = new Date(b.createdAt);
-
-          if (sortBy === 'latest') {
-            return bCreatedAt.getTime() - aCreatedAt.getTime();
-          } else {
-            return aCreatedAt.getTime() - bCreatedAt.getTime();
-          }
-        }).map((comment: Comment) => {
-          return <CommentRow key={comment.id || ''} comment={comment} refetch={refetch} />;
-        })}
-      </div>
+      {
+        commentsByResourceId.length
+          ? (
+            <div className="mt-4">
+              <div className="text-xs">
+                Showing <span className="underline hover:text-primary hover:cursor-pointer" onClick={changeSort}>
+                  {sortBy}
+                </span> comments first
+              </div>
+      
+              {commentsByResourceId.sort((a: Comment, b: Comment) => {
+                const aCreatedAt = new Date(a.createdAt);
+                const bCreatedAt = new Date(b.createdAt);
+      
+                if (sortBy === 'latest') {
+                  return bCreatedAt.getTime() - aCreatedAt.getTime();
+                } else {
+                  return aCreatedAt.getTime() - bCreatedAt.getTime();
+                }
+              }).map((comment: Comment) => {
+                return <CommentRow key={comment.id || ''} comment={comment} refetch={refetch} />;
+              })}
+            </div>
+          )
+          : (
+            <div className="pt-5 text-center">
+              No one has commented on this article. Be the first to start a discussion!
+            </div>
+          )
+      }
     </div>
   );
 }

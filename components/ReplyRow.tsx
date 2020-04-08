@@ -10,6 +10,7 @@ import DeleteCommentMutation from '../queries/DeleteCommentMutation';
 import CommentEditor from './CommentEditor';
 import Button from './Button';
 import CommentDateMeta from './CommentDateMeta';
+import Notification from './Notification';
 
 const ReplyRow = ({
   reply,
@@ -20,7 +21,9 @@ const ReplyRow = ({
 }): React.ReactElement => {
   const auth = useAuth();
   const [readOnly, setReadOnly] = useState(true);
-  const replierName = `${reply.user?.firstName}${reply.user?.lastName && ' ' + reply.user.lastName}`;
+  const replierName = auth.userId === reply.user.id
+    ? 'You'
+    : `${reply.user?.firstName}${reply.user?.lastName && ' ' + reply.user.lastName}`;
   const [deleteReply, { loading, called, error }] = useMutation(DeleteCommentMutation);
 
   // Refetch after a load 
@@ -65,6 +68,11 @@ const ReplyRow = ({
           )
         }
       </div>
+
+      <Notification
+        showNotification={false}
+        error={error}
+      />
     </div>
   );
 }
