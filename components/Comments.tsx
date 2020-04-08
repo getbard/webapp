@@ -2,99 +2,21 @@ import { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import Link from 'next/link';
 
-import { formatPretty } from '../lib/dates';
+import { useAuth } from '../hooks/useAuth';
 
 import { Comment } from '../generated/graphql';
 
 import CommentsByResourceIdQuery from '../queries/CommentsByResourceIdQuery';
 
 import CommentEditor from './CommentEditor';
-import Button from './Button';
-
-const ReplyRow = ({ reply }: { reply: Comment }): React.ReactElement => {
-  const replierName = `${reply.user?.firstName}${reply.user?.lastName && ' ' + reply.user.lastName}`;
-
-  return (
-    <div className="border bg-white border-gray-300 rounded mt-4">
-      <CommentEditor
-        resourceId={reply.resourceId}
-        initialValue={JSON.parse(reply.message)}
-        readOnly
-      />
-
-      <div className="px-4 py-2 border-t border-gray-300">
-        <Link href={`/${reply.user.username}`}><a className="underline">{replierName}</a></Link>
-        &nbsp;replied {formatPretty(reply.createdAt)}
-      </div>
-    </div>
-  );
-}
-
-const CommentRow = ({
-  comment,
-  refetch,
-}: {
-  comment: Comment;
-  refetch: () => void;
-}): React.ReactElement => {
-  const [isReply, setIsReply] = useState(false);
-  const commentorName = `${comment.user.firstName}${comment.user?.lastName && ' ' + comment.user.lastName}`;
-
-  return (
-    <div className="mt-2 border border-gray-300 rounded-sm">
-      <CommentEditor
-        resourceId={comment.resourceId}
-        initialValue={JSON.parse(comment.message)}
-        readOnly
-      />
-
-      {
-        isReply
-        ? (
-          <div className="m-2 border border-gray-300">
-            <CommentEditor
-              refetch={refetch}
-              resourceId={comment.resourceId}
-              parentId={comment.id || ''}
-              onSubmit={(): void => setIsReply(false)}
-            />
-          </div>
-        )
-        : (
-          <div className="flex items-center justify-between pl-4 pr-2 p-1 bg-gray-100 border-t border-gray-300">
-            <div>
-              <Link href={`/${comment.user.username}`} ><a className="underline">{commentorName}</a></Link>
-              &nbsp;commented {formatPretty(comment.createdAt)}
-            </div>
-    
-            <div>
-              <Button text onClick={(): void => setIsReply(true)}>
-                Reply
-              </Button>
-            </div>
-          </div>
-        )
-      }
-
-      {
-        (comment?.replies?.length || false) && (
-          <div className="p-4 pt-0 border-t border-gray-300">
-            {comment.replies.map((reply: Comment | null) => {
-              if (!reply) return;
-              return <ReplyRow key={reply.id || ''} reply={reply} />;
-            })}
-          </div>
-        )
-      }
-    </div>
-  );
-}
+import CommentRow from './CommentRow';
 
 function Comments({
   resourceId,
 }: {
   resourceId: string;
 } ): React.ReactElement {
+  const auth = useAuth();
   const { loading, error, data, refetch } = useQuery(CommentsByResourceIdQuery, { variables: { resourceId } });
   const [sortBy, setSortBy] = useState('latest');
 
@@ -109,30 +31,54 @@ function Comments({
 
   return (
     <div className="mt-10">
-      <div className="border border-gray-300 rounded-sm">
-        <CommentEditor resourceId={resourceId} refetch={refetch} />
-      </div>
+      {
+        auth.userId
+          ? (
+            <div className="border border-gray-300 rounded-sm">
+              <CommentEditor resourceId={resourceId} refetch={refetch} />
+            </div>
+          )
+          : (
+            <div className="text-center p-16 border border-gray-300 rounded-sm">
+              <Link href="/href">
+                <a className="underline">
+                  Login to comment on this article
+                </a>
+              </Link>
+            </div>
+          )
+      }
 
-      <div className="mt-4">
-        <div className="text-xs">
-          Showing <span className="underline hover:text-primary hover:cursor-pointer" onClick={changeSort}>
-            {sortBy}
-          </span> comments first
-        </div>
-
-        {commentsByResourceId.sort((a: Comment, b: Comment) => {
-          const aCreatedAt = new Date(a.createdAt);
-          const bCreatedAt = new Date(b.createdAt);
-
-          if (sortBy === 'latest') {
-            return bCreatedAt.getTime() - aCreatedAt.getTime();
-          } else {
-            return aCreatedAt.getTime() - bCreatedAt.getTime();
-          }
-        }).map((comment: Comment) => {
-          return <CommentRow key={comment.id || ''} comment={comment} refetch={refetch} />;
-        })}
-      </div>
+      {
+        commentsByResourceId.length
+          ? (
+            <div className="mt-4">
+              <div className="text-xs">
+                Showing <span className="underline hover:text-primary hover:cursor-pointer" onClick={changeSort}>
+                  {sortBy}
+                </span> comments first
+              </div>
+      
+              {commentsByResourceId.sort((a: Comment, b: Comment) => {
+                const aCreatedAt = new Date(a.createdAt);
+                const bCreatedAt = new Date(b.createdAt);
+      
+                if (sortBy === 'latest') {
+                  return bCreatedAt.getTime() - aCreatedAt.getTime();
+                } else {
+                  return aCreatedAt.getTime() - bCreatedAt.getTime();
+                }
+              }).map((comment: Comment) => {
+                return <CommentRow key={comment.id || ''} comment={comment} refetch={refetch} />;
+              })}
+            </div>
+          )
+          : (
+            <div className="pt-5 text-center">
+              No one has commented on this article. Be the first to start a discussion!
+            </div>
+          )
+      }
     </div>
   );
 }

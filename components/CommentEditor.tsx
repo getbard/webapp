@@ -1,18 +1,20 @@
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import styled from '@emotion/styled';
 import emojis from 'emoji-mart/data/apple.json';
 import { NimblePicker } from 'emoji-mart';
-import { Slate, Editable, withReact } from 'slate-react';
-import { createEditor, Node, Transforms } from 'slate';
+import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
+import { createEditor, Node, Transforms, Editor } from 'slate';
 import { withHistory } from 'slate-history';
 import { BaseEmoji } from 'emoji-mart';
 import { jsx } from 'slate-hyperscript';
 import { useMutation } from '@apollo/react-hooks';
 
 import CreateCommentMutation from '../queries/CreateCommentMutation';
+import UpdateCommentMutation from '../queries/UpdateCommentMutation';
 
 import useOnClickOutside from '../hooks/useOnClickOutside';
 import { toggleFormatInline } from '../lib/editor';
+import { useAuth } from '../hooks/useAuth';
 
 import EditorLeaf from './EditorLeaf';
 import EditorElement from './EditorElement';
@@ -39,6 +41,7 @@ const EditorContainer = styled.div`
 function CommentEditor({
   resourceId,
   parentId,
+  commentId,
   readOnly,
   initialValue,
   refetch,
@@ -46,19 +49,45 @@ function CommentEditor({
 }: {
   resourceId: string;
   parentId?: string;
+  commentId?: string;
   readOnly?: boolean;
   initialValue?: Node[];
   refetch?: () => void;
   onSubmit?: () => void;
 }): React.ReactElement {
+  const auth = useAuth();
   const emojiRef = useRef(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-  const [createComment, { data, error, loading }] = useMutation(CreateCommentMutation);
+  const [createComment, {
+    data: createData,
+    error: createError,
+    loading: createLoading,
+    called: createCalled,
+  }] = useMutation(CreateCommentMutation);
+  const [updateComment, {
+    error: updateError,
+    loading: updateLoading,
+    called: updateCalled,
+  }] = useMutation(UpdateCommentMutation);
+
+  // Refetch after a load 
+  useEffect(() => {
+    const called = createCalled || updateCalled;
+    const loading = createLoading || updateLoading;
+
+    if (called && !loading && refetch) {
+      refetch();
+    }
+
+    if (called && !loading && onSubmit) {
+      onSubmit();
+    }
+  }, [createLoading, updateLoading]);
 
   // Clear the comment if it was created successfully
-  if (data?.createComment?.message === JSON.stringify(value)) {
+  if (createData?.createComment?.message === JSON.stringify(value)) {
     setValue(emptyValue);
   }
 
@@ -68,8 +97,14 @@ function CommentEditor({
     }
   });
 
+  const focusEditor = (): void => {
+    ReactEditor.focus(editor);
+    Transforms.select(editor, Editor.end(editor, []));
+  }
+
   const handleEmojiSelection = (emoji: BaseEmoji): void => {
     Transforms.insertNodes(editor, [jsx('text', {}, emoji.native)]);
+    focusEditor();
     setShowEmojiPicker(false);
   }
 
@@ -108,98 +143,99 @@ function CommentEditor({
 
     const message = JSON.stringify(value);
 
-    createComment({
-      variables: {
-        input: {
-          message,
-          resourceId,
-          parentId,
+    if (commentId) {
+      updateComment({
+        variables: {
+          input: {
+            id: commentId,
+            message,
+          },
         },
-      },
-    });
-
-    if (refetch) {
-      refetch();
-    }
-
-    if (onSubmit) {
-      onSubmit();
+      });
+    } else {
+      createComment({
+        variables: {
+          input: {
+            message,
+            resourceId,
+            parentId,
+          },
+        },
+      });
     }
   }
 
   return (
     <div>
-      <div>
-        <EditorContainer
-          className={`p-4 ${!readOnly && 'shadow-inner'}`}
-          readOnly={readOnly || false}
+      <EditorContainer
+        className={`p-4 ${!readOnly && 'shadow-inner'}`}
+        readOnly={readOnly || false}
+      >
+        <Slate
+          key={`${resourceId}-${parentId}-${commentId}-${readOnly}`}
+          editor={editor}
+          value={value}
+          onChange={handleChange}
+          native={true}
         >
-          <Slate
-            editor={editor}
-            value={value}
-            onChange={handleChange}
-            native={true}
-          >
-            <EditorToolbar />
+          <EditorToolbar />
 
-            <Editable
-              readOnly={readOnly}
-              placeholder="What did you think of the article?"
-              renderLeaf={(props): JSX.Element => <EditorLeaf {...props} />}
-              renderElement={(props): JSX.Element => <EditorElement {...props} />}
-              onKeyDown={handleKeyDown}
-            />
-          </Slate>
-        </EditorContainer>
+          <Editable
+            readOnly={readOnly}
+            placeholder="What did you think of the article?"
+            renderLeaf={(props): JSX.Element => <EditorLeaf {...props} />}
+            renderElement={(props): JSX.Element => <EditorElement {...props} />}
+            onKeyDown={handleKeyDown}
+          />
+        </Slate>
+      </EditorContainer>
 
-        {
-          !readOnly && (
-            <div className="flex justify-between p-2 bg-gray-100 border-t border-gray-300">
-              <div
-                ref={emojiRef}
-                className="text-2xl hover:cursor-pointer relative"
+      {
+        !readOnly && auth.userId && (
+          <div className="flex justify-between p-2 bg-gray-100 border-t border-gray-300">
+            <div
+              ref={emojiRef}
+              className="text-2xl hover:cursor-pointer relative"
+            >
+              {showEmojiPicker && (
+                <NimblePicker
+                  set="apple"
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                  // @ts-ignore
+                  data={emojis}
+                  style={{ position: 'absolute', bottom: '2.5rem' }}
+                  color="#004346"
+                  emoji="point_up"
+                  title=""
+                  onSelect={handleEmojiSelection}
+                />
+              )}
+              <span
+                className="px-1"
+                onMouseDown={(e): void => {
+                  e.preventDefault();
+                  setShowEmojiPicker(!showEmojiPicker);
+                }}
               >
-                {showEmojiPicker && (
-                  <NimblePicker
-                    set="apple"
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-                    // @ts-ignore
-                    data={emojis}
-                    style={{ position: 'absolute', bottom: '2.5rem' }}
-                    color="#004346"
-                    emoji="point_up"
-                    title=""
-                    onSelect={handleEmojiSelection}
-                  />
-                )}
-                <span
-                  className="px-1"
-                  onMouseDown={(e): void => {
-                    e.preventDefault();
-                    setShowEmojiPicker(!showEmojiPicker);
-                  }}
-                >
-                  {showEmojiPicker ? '😀' : '🙂'}
-                </span>
-              </div>
-    
-              <Button
-                onClick={handleCreateComment}
-                loading={loading}
-                disabled={JSON.stringify(value) === JSON.stringify(emptyValue)}
-              >
-                Comment
-              </Button>
+                {showEmojiPicker ? '😀' : '🙂'}
+              </span>
             </div>
-          )
-        }
+  
+            <Button
+              onClick={handleCreateComment}
+              loading={createLoading || updateLoading}
+              disabled={JSON.stringify(value) === JSON.stringify(emptyValue)}
+            >
+              {commentId ? 'Update Comment' : 'Comment'}
+            </Button>
+          </div>
+        )
+      }
 
-        <Notification
-          showNotification={false}
-          error={error}
-          bgColor="bg-primary"
-        />
-      </div>
+      <Notification
+        showNotification={false}
+        error={createError || updateError}
+      />
     </div>
   );
 }
