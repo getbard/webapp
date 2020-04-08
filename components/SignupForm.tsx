@@ -115,7 +115,7 @@ function SignupUser(): React.ReactElement {
                 </label>
 
               <input
-                className={`border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.email && 'focus:border-primary'} placeholder-gray-500 ${errors.email && 'border-red-600'}`}
+                className={`shadow-inner border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.email && 'focus:border-primary'} placeholder-gray-500 ${errors.email && 'border-red-600'}`}
                 id="email"
                 placeholder="e.hemingway@hemingwayapp.com"
                 type="email"
@@ -137,7 +137,7 @@ function SignupUser(): React.ReactElement {
                 </label>
 
               <input
-                className={`border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.firstName && 'focus:border-primary'} placeholder-gray-500 ${errors.firstName && 'border-red-600'}`}
+                className={`shadow-inner border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.firstName && 'focus:border-primary'} placeholder-gray-500 ${errors.firstName && 'border-red-600'}`}
                 id="first-name"
                 type="text"
                 placeholder="Ernest"
@@ -153,7 +153,7 @@ function SignupUser(): React.ReactElement {
                 </label>
 
               <input
-                className={`border rounded-sm w-full py-2 px-3 focus:outline-none focus:border-primary placeholder-gray-500`}
+                className={`shadow-inner border rounded-sm w-full py-2 px-3 focus:outline-none focus:border-primary placeholder-gray-500`}
                 id="last-name"
                 type="text"
                 placeholder="Hemingway"
@@ -168,7 +168,7 @@ function SignupUser(): React.ReactElement {
                 </label>
 
               <input
-                className={`border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.password && 'focus:border-primary'} placeholder-gray-500 ${errors.password && 'border-red-600'}`}
+                className={`shadow-inner border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.password && 'focus:border-primary'} placeholder-gray-500 ${errors.password && 'border-red-600'}`}
                 id="password"
                 type="password"
                 placeholder="Password"
@@ -187,7 +187,7 @@ function SignupUser(): React.ReactElement {
                 </label>
 
               <input
-                className={`border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.passwordConfirmation && 'focus:border-primary'} placeholder-gray-500 ${errors.passwordConfirmation && 'border-red-600'}`}
+                className={`shadow-inner border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.passwordConfirmation && 'focus:border-primary'} placeholder-gray-500 ${errors.passwordConfirmation && 'border-red-600'}`}
                 id="confirm-password"
                 type="password"
                 placeholder="Confirm Password"

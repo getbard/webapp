@@ -1,122 +1,114 @@
-import { useState, useRef, useMemo } from 'react';
-import styled from '@emotion/styled';
-import { Picker } from 'emoji-mart';
-import { Slate, Editable, withReact } from 'slate-react';
-import { createEditor, Node, Transforms } from 'slate';
-import { withHistory } from 'slate-history';
-import { BaseEmoji } from 'emoji-mart';
-import { jsx } from 'slate-hyperscript';
+import { useState } from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import { format } from 'date-fns';
+import Link from 'next/link';
 
-import useOnClickOutside from '../hooks/useOnClickOutside';
-import { toggleFormatInline } from '../lib/editor';
+import { Comment } from '../generated/graphql';
 
-import EditorLeaf from './EditorLeaf';
-import EditorElement from './EditorElement';
-import EditorToolbar from './EditorToolbar';
-import Editor from './Editor';
+import CommentsByResourceIdQuery from '../queries/CommentsByResourceIdQuery';
+
+import CommentEditor from './CommentEditor';
 import Button from './Button';
 
-const emptyValue = [{
-  type: 'paragraph',
-  children: [{ text: '' }],
-}];
+const ReplyRow = ({ reply }: { reply: Comment }): React.ReactElement => {
+  const replierName = `${reply.user?.firstName}${reply.user?.lastName && ' ' + reply.user.lastName}`;
 
-const EditorContainer = styled.div`
-  min-height: 6rem;
-`;
+  return (
+    <div className="border bg-white border-gray-300 rounded mt-4">
+      <CommentEditor
+        resourceId={reply.resourceId}
+        initialValue={JSON.parse(reply.message)}
+        readOnly
+      />
 
-function Comments({ comments }: { comments: Comment[] } ): React.ReactElement {
-  const emojiRef = useRef(null);
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [value, setValue] = useState<Node[]>(emptyValue);
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+      <div className="p-2 border-t border-gray-300">
+        <Link href={`/${reply.user.username}`}><a className="underline">{replierName}</a></Link>
+        &nbsp;replied on {format(new Date(reply.createdAt), 'MMM do, yyyy')}
+      </div>
+    </div>
+  );
+}
 
-  useOnClickOutside(emojiRef, () => {
-    if (showEmojiPicker) {
-      setShowEmojiPicker(false);
-    }
-  });
+const CommentRow = ({
+  comment,
+  refetch,
+}: {
+  comment: Comment;
+  refetch: () => void;
+}): React.ReactElement => {
+  const [isReply, setIsReply] = useState(false);
+  const commentorName = `${comment.user.firstName}${comment.user?.lastName && ' ' + comment.user.lastName}`;
 
-  const handleEmojiSelection = (emoji: BaseEmoji): void => {
-    Transforms.insertNodes(editor, [jsx('text', {}, emoji.native)]);
-  }
+  return (
+    <div className="mt-2 border border-gray-300 rounded-sm">
+      <CommentEditor
+        resourceId={comment.resourceId}
+        initialValue={JSON.parse(comment.message)}
+        readOnly
+      />
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
-    if (!e.ctrlKey && !e.metaKey) {
-      return;
-    }
+      {
+        isReply
+        ? (
+          <div className="m-2 border border-gray-300">
+            <CommentEditor
+              refetch={refetch}
+              resourceId={comment.resourceId}
+              parentId={comment.id || ''}
+            />
+          </div>
+        )
+        : (
+          <div className="flex items-center justify-between pl-4 pr-2 p-1 bg-gray-100 border-t border-gray-300">
+            <div>
+              <Link href={`/${comment.user.username}`} ><a className="underline">{commentorName}</a></Link>
+              &nbsp;commented on {format(new Date(comment.createdAt), 'MMM do, yyyy')}
+            </div>
     
-    switch(e.key) {
-      case 'b': {
-        e.preventDefault();
-        toggleFormatInline(editor, 'bold');
-        break;
+            <div>
+              <Button text onClick={(): void => setIsReply(true)}>
+                Reply
+              </Button>
+            </div>
+          </div>
+        )
       }
-      case 'i': {
-        e.preventDefault();
-        toggleFormatInline(editor, 'italic');
-        break;
-      }
-      case 'u': {
-        e.preventDefault();
-        toggleFormatInline(editor, 'underline');
-        break;
-      }
-    }
-  }
 
-  const handleChange = (value: Node[]): void => {
-    setValue(value);
-  }
+      {
+        (comment?.replies?.length || false) && (
+          <div className="p-4 pt-0 border-t border-gray-300">
+            {comment.replies.map((reply: Comment | null) => {
+              if (!reply) return;
+              return <ReplyRow key={reply.id || ''} reply={reply} />;
+            })}
+          </div>
+        )
+      }
+    </div>
+  );
+}
+
+function Comments({
+  resourceId,
+}: {
+  resourceId: string;
+} ): React.ReactElement {
+  const { loading, error, data, refetch } = useQuery(CommentsByResourceIdQuery, { variables: { resourceId } });
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Something went wrong...</div>;
+
+  const { commentsByResourceId } = data;
 
   return (
     <div className="mt-10">
-      COMMENTS
-
       <div className="border border-gray-300 rounded-sm">
-        <EditorContainer className="p-2 border-b border-gray-300">
-          <Slate
-            editor={editor}
-            value={value}
-            onChange={handleChange}
-            native={true}
-          >
-            <EditorToolbar />
-
-            <Editable
-              placeholder="What did you think of the article?"
-              renderLeaf={(props): JSX.Element => <EditorLeaf {...props} />}
-              renderElement={(props): JSX.Element => <EditorElement {...props} />}
-              onKeyDown={handleKeyDown}
-            />
-          </Slate>
-        </EditorContainer>
-
-        <div className="flex justify-between p-2 bg-gray-100">
-          <div
-            className="text-2xl hover:cursor-pointer relative"
-            onClick={(): void => setShowEmojiPicker(!showEmojiPicker)}
-            ref={emojiRef}
-          >
-            {showEmojiPicker && (
-              <Picker
-                style={{ position: 'absolute', bottom: '2.5rem' }}
-                color="#004346"
-                emoji="point_up"
-                title=""
-                onSelect={handleEmojiSelection}
-              />
-            )}
-            <span className="px-1">
-              {showEmojiPicker ? '😀' : '🙂'}
-            </span>
-          </div>
-
-          <Button>
-            Comment
-          </Button>
-        </div>
+        <CommentEditor resourceId={resourceId} refetch={refetch} />
       </div>
+
+      {commentsByResourceId.map((comment: Comment) => {
+        return <CommentRow key={comment.id || ''} comment={comment} refetch={refetch} />;
+      })}
     </div>
   );
 }

@@ -132,7 +132,7 @@ const Article: NextPage = (): React.ReactElement => {
         }
       </div>
 
-      <Comments comments={article?.comments} />
+      <Comments resourceId={article.id} />
 
       {sessionId && article.author?.stripeUserId && (
         <SupportConfirmation
