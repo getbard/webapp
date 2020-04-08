@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { format } from 'date-fns';
 import Link from 'next/link';
+
+import { formatPretty } from '../lib/dates';
 
 import { Comment } from '../generated/graphql';
 
@@ -21,9 +22,9 @@ const ReplyRow = ({ reply }: { reply: Comment }): React.ReactElement => {
         readOnly
       />
 
-      <div className="p-2 border-t border-gray-300">
+      <div className="px-4 py-2 border-t border-gray-300">
         <Link href={`/${reply.user.username}`}><a className="underline">{replierName}</a></Link>
-        &nbsp;replied on {format(new Date(reply.createdAt), 'MMM do, yyyy')}
+        &nbsp;replied {formatPretty(reply.createdAt)}
       </div>
     </div>
   );
@@ -55,6 +56,7 @@ const CommentRow = ({
               refetch={refetch}
               resourceId={comment.resourceId}
               parentId={comment.id || ''}
+              onSubmit={(): void => setIsReply(false)}
             />
           </div>
         )
@@ -62,7 +64,7 @@ const CommentRow = ({
           <div className="flex items-center justify-between pl-4 pr-2 p-1 bg-gray-100 border-t border-gray-300">
             <div>
               <Link href={`/${comment.user.username}`} ><a className="underline">{commentorName}</a></Link>
-              &nbsp;commented on {format(new Date(comment.createdAt), 'MMM do, yyyy')}
+              &nbsp;commented {formatPretty(comment.createdAt)}
             </div>
     
             <div>

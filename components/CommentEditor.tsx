@@ -41,12 +41,14 @@ function CommentEditor({
   readOnly,
   initialValue,
   refetch,
+  onSubmit,
 }: {
   resourceId: string;
   parentId?: string;
   readOnly?: boolean;
   initialValue?: Node[];
   refetch?: () => void;
+  onSubmit?: () => void;
 }): React.ReactElement {
   const emojiRef = useRef(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -117,6 +119,10 @@ function CommentEditor({
 
     if (refetch) {
       refetch();
+    }
+
+    if (onSubmit) {
+      onSubmit();
     }
   }
 
