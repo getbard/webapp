@@ -8,6 +8,10 @@ import ArticleCard from './ArticleCard';
 import SmallArticleCard from './SmallArticleCard';
 
 const ArticleChunkContainer = styled.div`
+  > div:not(:first-child) {
+    padding-top: 0.5rem;
+  }
+
   > div:not(:last-child) {
     border-bottom: 1px solid;
     border-color: #e0e0e0;
@@ -43,7 +47,7 @@ function DiscoverArticles({ category }: { category: string }): React.ReactElemen
 
   const articleChunkBlocks = articleChunks.map((articleChunk: Article[], index: number) => {
     return (
-        <ArticleChunkContainer className="row-span-2 col-span-1 border border-gray-300 p-1" key={index}>
+        <ArticleChunkContainer className="row-span-2 col-span-1 border border-gray-300 p-2" key={index}>
           {articleChunk.map((article: Article) => {
             return (
               <SmallArticleCard key={article.id} article={article} />
@@ -81,7 +85,7 @@ function DiscoverArticles({ category }: { category: string }): React.ReactElemen
   }
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3">
       {blocks}
     </div>
   );

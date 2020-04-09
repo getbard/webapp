@@ -7,7 +7,7 @@ import { Article } from '../generated/graphql';
 
 import { timeToRead } from '../lib/editor';
 
-const ArticleCardContainer = styled.a`
+const ArticleCardContainer = styled.div`
   &:hover {
     h1 {
       color: #616161;
@@ -15,6 +15,10 @@ const ArticleCardContainer = styled.a`
 
     .sub-only {
       display: flex;
+    }
+
+    .time-to-read {
+      color: #004346;
     }
   }
 `;
@@ -29,7 +33,7 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
 
   return (
     <Link href="/articles/[...id]" as={articleHref} passHref={true}>
-      <ArticleCardContainer className="py-4 px-2 mx-2 rounded-sm hover:cursor-pointer transition duration-150 ease-in">
+      <ArticleCardContainer className="pt-1 pb-2 px-2 rounded-sm hover:cursor-pointer transition duration-150 ease-in">
         <div className={`${article.subscribersOnly && 'grid grid-cols-8'}`}>
           <h1 className="col-span-7 font-serif font-bold transition duration-150 ease-in">
             {article.title}
@@ -69,7 +73,7 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
                   : ''
               }
 
-              <span>
+              <span className="time-to-read">
                 {timeToRead(article.wordCount)}
               </span>
             </div>
