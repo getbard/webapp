@@ -9,7 +9,7 @@ import DeleteCommentMutation from '../queries/DeleteCommentMutation';
 
 import CommentEditor from './CommentEditor';
 import Button from './Button';
-import CommentDateMeta from './CommentDateMeta';
+import DateMeta from './DateMeta';
 import Notification from './Notification';
 
 const ReplyRow = ({
@@ -48,10 +48,10 @@ const ReplyRow = ({
       />
 
       <div className="px-4 py-1 border-t border-gray-300 flex justify-between items-center">
-        <div className="relative">
+        <div className="relative text-xs">
           <Link href={`/${reply.user.username}`}><a className="underline">{replierName}</a></Link>
           &nbsp;
-          <CommentDateMeta comment={reply} action="replied" />
+          <DateMeta resource={reply} action="replied" />
         </div>
 
         {

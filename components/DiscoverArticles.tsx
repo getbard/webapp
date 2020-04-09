@@ -14,8 +14,8 @@ const ArticleChunkContainer = styled.div`
   }
 `;
 
-function DiscoverArticles(): React.ReactElement {
-  const { loading, error, data } = useQuery(DiscoverArticlesQuery);
+function DiscoverArticles({ category }: { category: string }): React.ReactElement {
+  const { loading, error, data } = useQuery(DiscoverArticlesQuery, { variables: { category } });
 
   if (error) return <div>Error</div>;
   if (loading) return <div>Loading</div>;

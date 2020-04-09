@@ -9,8 +9,10 @@ const ArticleBySlugQuery = gql`
       summary
       content
       publishedAt
+      updatedAt
       subscribersOnly
       contentBlocked
+      category
       author {
         username
         firstName

@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Thu Apr 09 2020 08:18:11 GMT-0700 (Pacific Daylight Time)
+# timestamp: Thu Apr 09 2020 10:08:27 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -10,7 +10,7 @@ type Article {
   content: String
   headerImage: ArticleHeaderImage
   author: User!
-  categories: [Category]
+  category: Category
   comments: [Comment]
   likes: Int!
   wordCount: Int!
@@ -51,11 +51,20 @@ type CancelSubscriptionPayload {
   id: ID!
 }
 
-type Category {
-  id: ID!
-  name: String!
-  createdAt: String!
-  updatedAt: String!
+enum Category {
+  arts
+  books
+  business
+  design
+  food
+  health
+  opinion
+  politics
+  science
+  sports
+  technology
+  travel
+  world
 }
 
 type Comment {
@@ -104,6 +113,7 @@ input CreateOrUpdateArticleInput {
   userId: String
   subscribersOnly: Boolean
   wordCount: Int
+  category: String
 }
 
 type CreateOrUpdateArticlePayload {
@@ -204,7 +214,7 @@ type PublishArticlePayload {
 }
 
 type Query {
-  articles: [Article]
+  articles(category: String): [Article]
   article(id: ID!): Article
   articleBySlug(slug: String!): Article
   articlesByUser(userId: ID!, drafts: Boolean): [Article]

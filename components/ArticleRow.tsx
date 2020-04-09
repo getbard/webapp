@@ -1,7 +1,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { formatDistanceToNow } from 'date-fns';
 import { FiCopy, FiFeather } from 'react-icons/fi';
 import { useMutation } from '@apollo/react-hooks';
 
@@ -13,6 +12,7 @@ import DeleteArticleMutation from '../queries/DeleteArticleMutation';
 import { timeToRead } from '../lib/editor';
 import Tooltip from './Tooltip';
 import Notification from './Notification';
+import DateMeta from './DateMeta';
 
 function ArticleRow({ article, refetch }: { article: Article; refetch: () => void }): React.ReactElement {
   const auth = useAuth();
@@ -65,13 +65,12 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
           {article?.summary}
         </div>
 
-        <div className="text-xs">
-          {timeToRead(article.wordCount)}
-        </div>
+        {/* <div className="text-xs">
+          
+        </div> */}
 
-        <div className="text-xs">
-          { article?.publishedAt ? `Published ${formatDistanceToNow(new Date(article.updatedAt))} ago | ` : ''}
-          Updated {formatDistanceToNow(new Date(article.updatedAt))} ago
+        <div className="text-xs relative">
+          <DateMeta resource={article} action="Published" dateParam="publishedAt" /> | {timeToRead(article.wordCount)}
         </div>
       </div>
 
@@ -90,7 +89,7 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
                 }}
               >
                 <FiCopy className="block hover:cursor-pointer hover:text-primary mr-4 transition duration-150 ease-in-out" />
-                <Tooltip showTooltip={showCopiedTooltip} selector={`#a-${article.id}-copy`} mt={20}>
+                <Tooltip showTooltip={showCopiedTooltip} selector={`#a-${article.id}-copy`} top="-3.5" pos="right-0">
                   A link to the article has been <br/>
                   copied to your clipboard.
                 </Tooltip>
@@ -99,17 +98,18 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
           }
 
           <Link href={`/edit/${article.id}`}>
-            <a className="inline hover:text-primary hover:cursor-pointer font-medium mr-4 transition duration-150 ease-in-out">
+            <a className="inline text-primary hover:underline hover:cursor-pointer mr-4 transition duration-150 ease-in-out">
               Edit
             </a>
           </Link>
 
           <div
-            className="inline text-red-600 hover:text-red-900 hover:cursor-pointer font-medium transition duration-150 ease-in-out"
+            className="inline text-primary hover:underline hover:cursor-pointer transition duration-150 ease-in-out"
             onClick={handleDelete}
           >
             Delete
           </div>
+
           <Notification showNotification={(data && called) || !!error} error={error}>
             Deleted
           </Notification>

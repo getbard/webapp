@@ -12,6 +12,8 @@ const ArticleByIdQuery = gql`
       subscribersOnly
       contentBlocked
       publishedAt
+      updatedAt
+      category
       author {
         username
         firstName

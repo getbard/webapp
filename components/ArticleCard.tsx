@@ -7,7 +7,7 @@ import { Article } from '../generated/graphql';
 
 import { timeToRead } from '../lib/editor';
 
-const ArticleCardDiv = styled.div`
+const ArticleCardContainer = styled.a`
   &:hover {
     border-color: #bdbdbd;
 
@@ -36,8 +36,8 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName[0] + '.'}`;
   
   return (
-    <Link href="/articles/[...id]" as={articleHref}>
-      <ArticleCardDiv className="p-4 border border-gray-300 rounded-sm hover:cursor-pointer transition duration-150 ease-in flex justify-between flex-col">
+    <Link href="/articles/[...id]" as={articleHref} passHref={true}>
+      <ArticleCardContainer className="p-4 border border-gray-300 rounded-sm hover:cursor-pointer transition duration-150 ease-in flex justify-between flex-col">
         {
           article?.headerImage?.url &&
           <ArticleCardImage className="flex-grow flex items-end h-40 rounded-t-sm -mt-3 -mx-3 mb-3" url={article.headerImage.url}>
@@ -82,7 +82,7 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
             </div>
           </div>
         </div>
-      </ArticleCardDiv>
+      </ArticleCardContainer>
     </Link>
   );
 }

@@ -117,7 +117,7 @@ const Author: NextPage = (): React.ReactElement => {
       </div>
 
       <div className="col-span-3">
-        <div className="mb-6 pb-4 border-b border-gray-300">
+        <div className="mb-2 pb-4 border-b border-gray-300">
           <ProfileSectionSelector
             name="Articles"
             setSection={setSection}

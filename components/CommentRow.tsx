@@ -10,7 +10,7 @@ import DeleteCommentMutation from '../queries/DeleteCommentMutation';
 
 import CommentEditor from './CommentEditor';
 import Button from './Button';
-import CommentDateMeta from './CommentDateMeta';
+import DateMeta from './DateMeta';
 import ReplyRow from './ReplyRow';
 import Notification from './Notification';
 
@@ -72,10 +72,10 @@ const CommentRow = ({
           )
           : (
             <div className="flex items-center justify-between pl-4 pr-2 py-1 bg-gray-100 border-t border-gray-300">
-              <div className="relative">
+              <div className="relative text-xs">
                 <Link href={`/${comment.user.username}`} ><a className="underline">{commentorName}</a></Link>
                 &nbsp;
-                <CommentDateMeta comment={comment} />
+                <DateMeta resource={comment} />
               </div>
 
               <div className="flex">

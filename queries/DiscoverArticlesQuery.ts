@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 const DiscoverArticlesQuery = gql`
-  query articles {
-    articles {
+  query articles($category: String) {
+    articles(category: $category) {
       id
       title
       summary

@@ -7,7 +7,7 @@ import { Article } from '../generated/graphql';
 
 import { timeToRead } from '../lib/editor';
 
-const ArticleCardDiv = styled.div`
+const ArticleCardContainer = styled.a`
   &:hover {
     h1 {
       color: #616161;
@@ -28,8 +28,8 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName[0] + '.'}`;
 
   return (
-    <Link href="/articles/[...id]" as={articleHref}>
-      <ArticleCardDiv className="py-4 px-2 mx-2 rounded-sm hover:cursor-pointer transition duration-150 ease-in">
+    <Link href="/articles/[...id]" as={articleHref} passHref={true}>
+      <ArticleCardContainer className="py-4 px-2 mx-2 rounded-sm hover:cursor-pointer transition duration-150 ease-in">
         <div className={`${article.subscribersOnly && 'grid grid-cols-8'}`}>
           <h1 className="col-span-7 font-serif font-bold transition duration-150 ease-in">
             {article.title}
@@ -74,7 +74,7 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
               </span>
             </div>
           </div>
-      </ArticleCardDiv>
+      </ArticleCardContainer>
     </Link>
   );
 }
