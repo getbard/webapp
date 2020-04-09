@@ -80,8 +80,8 @@ const Author: NextPage = (): React.ReactElement => {
         
         <div className="mb-4">
           Joined {format(new Date(user.createdAt), 'MMM yyyy')}
-          <div>{user?.followerIds?.length || 0} following</div>
-          <div>{user?.followingIds?.length || 0} followers</div>
+          <div>{user?.followingIds?.length || 0} following</div>
+          <div>{user?.followerIds?.length || 0} followers</div>
         </div>
 
         {
