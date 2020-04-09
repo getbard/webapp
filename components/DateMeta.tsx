@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
+import { isWithinInterval, subMinutes, addMinutes } from 'date-fns';
 
 import { formatPretty } from '../lib/dates';
 
-import { Comment } from '../generated/graphql';
+import { Comment, Article } from '../generated/graphql';
 
 import Tooltip from './Tooltip';
 
@@ -15,22 +16,31 @@ const CommentDateMetaContainer = styled.span`
   text-decoration-style: ${(props: CommentDateMetaContainerProps): string => props.edited ? 'dashed' : 'none'};
 `;
 
-const CommentDateMeta = ({
-  comment,
+const DateMeta = ({
+  resource,
   action = 'commented',
+  dateParam = 'createdAt',
 }: {
-  comment: Comment;
+  resource: Comment | Article;
   action?: string;
+  dateParam?: string;
 }): React.ReactElement => {
-  const edited = comment.createdAt !== comment.updatedAt;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  const mainDate = resource[dateParam];
+  // Check to see if the updatedAt time is close to the created/published time
+  const edited = !isWithinInterval(new Date(resource.updatedAt), {
+    start: subMinutes(new Date(mainDate), 1),
+    end: addMinutes(new Date(mainDate), 1),
+  });
   const [showEditedAt, setShowEditedAt] = useState(false);
 
   return (
     <>
       <CommentDateMetaContainer
-        id={`comment-${comment.id}-edited-at`}
+        id={`resource-${resource.id}-edited-at`}
         edited={edited}
-        className={`${edited && 'underline'}`}
+        className={`${edited && 'underline'} relative`}
         onMouseEnter={(): void => {
           if (edited) {
             setShowEditedAt(true);
@@ -42,16 +52,17 @@ const CommentDateMeta = ({
           }
         }}
       >
-        {action} {formatPretty(comment.createdAt)}
+        {action} {formatPretty(mainDate, !action)}
       </CommentDateMetaContainer>
+
       <Tooltip
         showTooltip={showEditedAt}
-        selector={`#comment-${comment.id}-edited-at`}
+        selector={`#resource-${resource.id}-edited-at`}
       >
-        Edited {formatPretty(comment.updatedAt)}
+        Edited {formatPretty(resource.updatedAt)}
       </Tooltip>
     </>
   );
 }
 
-export default CommentDateMeta;
+export default DateMeta;

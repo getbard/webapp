@@ -1,14 +1,16 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import styled from '@emotion/styled';
 import debounce from 'lodash/debounce';
 
 import { ArticleHeaderImage } from '../generated/graphql';
 
-import useOnClickOutside from '../hooks/useOnClickOutside';
-
 import { UnsplashPhoto } from '../generated/graphql';
 import UnsplashPhotoQuery from '../queries/UnsplashPhotoQuery';
+
+const UnsplashContainer = styled.div`
+  width: max-content;
+`;
 
 type ImageThumbnailProps = {
   url: string;
@@ -53,24 +55,15 @@ const UnsplashThumbnail = ({
 
 export function PhotoSelector({
   onSelect,
-  display,
   setDisplay,
 }: {
   onSelect: (headerImage: ArticleHeaderImage | null) => void;
-  display: boolean;
   setDisplay: (display: boolean) => void;
 }): React.ReactElement {
-  const selectorRef = useRef(null);
   const [search, setSearch] = useState('');
   const { loading, error, data } = useQuery(UnsplashPhotoQuery, { variables: { search } });
 
   const debouncedSetSearch = debounce(setSearch, 1000);
-
-  useOnClickOutside(selectorRef, () => {
-    if (display) {
-      setDisplay(!display);
-    }
-  });
 
   const handlePhotoSelect = (headerImage: ArticleHeaderImage | null): void => {
     onSelect(headerImage);
@@ -83,7 +76,7 @@ export function PhotoSelector({
   const { unsplashPhoto } = data;
 
   return (
-    <div className="absolute top-0 z-10 mt-10 bg-gray-100 p-2 rounded-sm border border-gray-300" ref={selectorRef}>
+    <UnsplashContainer className="absolute top-0 -ml-2 z-10 mt-8 bg-gray-100 p-2 rounded-sm border border-gray-300">
       <input
         className="w-full mb-2 border border-gray-300 rounded-sm py-2 px-3 focus:outline-none focus:border-primary"
         placeholder="Don&apos;t like what you see? Try searching to narrow your results."
@@ -95,7 +88,7 @@ export function PhotoSelector({
           return <UnsplashThumbnail key={photo.id} photo={photo} onClick={handlePhotoSelect} />;
         })}
       </div>
-    </div>
+    </UnsplashContainer>
   );
 }
 

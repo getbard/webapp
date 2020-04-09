@@ -20,6 +20,7 @@ import ButtonLink from '../../components/ButtonLink';
 import BecomeSupporterButton from '../../components/BecomeSupporterButton';
 import SupportConfirmation from '../../components/SupportConfirmation';
 import Comments from '../../components/Comments';
+import DateMeta from '../../components/DateMeta';
 
 const GradientBlocker = styled.div`
   width: 100%;
@@ -90,20 +91,30 @@ const Article: NextPage = (): React.ReactElement => {
           )
         }
         
-        <div className="text-4xl w-full font-serif">
+        {
+          article?.category && (
+            <Link href={`/?category=${article.category}`}>
+              <a className="capitalize text-lg text-gray-500 w-full font-serif font-bold">
+                {article.category}
+              </a>
+            </Link>
+          )
+        }
+        
+        <div className="text-4xl w-full font-serif font-bold">
           {article.title}
         </div>
 
-        <div className="text-xl w-full mb-4">
+        <div className="text-xl w-full mb-6 font-serif">
           {article?.summary}
         </div>
 
         <div className="text-sm w-full font-bold">
-          written by <Link href={`/${article.author.username}`} ><a className="underline">{authorName}</a></Link>
+          By <Link href={`/${article.author.username}`} ><a className="underline">{authorName}</a></Link>
         </div>
 
-        <div className="text-sm w-full font-medium">
-          {format(new Date(article.publishedAt), 'MMM do, yyyy')} | {timeToRead(article.wordCount)}
+        <div className="text-xs w-full relative">
+          <DateMeta resource={article} dateParam="publishedAt" action="" /> | {timeToRead(article.wordCount)}
         </div>
       </div>
 

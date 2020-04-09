@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { FiImage } from 'react-icons/fi';
 
 import { ArticleHeaderImage } from '../generated/graphql';
+
+import useOnClickOutside from '../hooks/useOnClickOutside';
 
 import PhotoSelector from './PhotoSelector';
 
@@ -12,10 +14,17 @@ export function EditorHeaderPhotoSelector({
   headerImage: ArticleHeaderImage | null;
   setHeaderImage: (headerImage: ArticleHeaderImage | null) => void;
 }): React.ReactElement {
+  const selectorRef = useRef(null);
   const [display, setDisplay] = useState(false);
 
+  useOnClickOutside(selectorRef, () => {
+    if (display) {
+      setDisplay(!display);
+    }
+  });
+
   return (
-    <div className="relative">
+    <div className="relative inline-block">
       <button
         className="flex items-center hover:bg-gray-200 text-gray-500 hover:text-gray-800 w-auto px-2 py-1 -ml-2 rounded-sm transition duration-500 focus:outline-none"
         onClick={(): void => setDisplay(!display)}
@@ -24,7 +33,11 @@ export function EditorHeaderPhotoSelector({
       </button>
       {
         display
-        && <PhotoSelector onSelect={setHeaderImage} display={display} setDisplay={setDisplay} />
+        && (
+          <div ref={selectorRef}>
+            <PhotoSelector onSelect={setHeaderImage} setDisplay={setDisplay} />
+          </div>
+        )
       }
     </div>
   );

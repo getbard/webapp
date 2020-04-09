@@ -41,7 +41,7 @@ const Articles: NextPage = (): React.ReactElement => {
         Your articles
       </PageHeader>
 
-      <div className="mb-6 pb-4 border-b border-gray-300">
+      <div className="mb-2 pb-4 border-b border-gray-300">
         <ArticleTypeSelector
           name="Drafts"
           count={drafts.length}

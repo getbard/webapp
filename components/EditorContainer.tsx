@@ -12,6 +12,7 @@ import Editor from './Editor';
 import Button from './Button';
 import SubscribersOnlyToggle from './SubcribersOnlyToggle';
 import EditorHeaderPhotoSelector from './EditorHeaderPhotoSelector';
+import EditorCategorySelector from './EditorCategorySelector';
 import HeaderImage from './HeaderImage';
 import Notification from './Notification';
 
@@ -51,6 +52,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   const [wordCount, setWordCount] = useState(article?.wordCount || 0);
   const [subscribersOnly, setSubscribersOnly] = useState(article?.subscribersOnly || false);
   const [headerImage, setHeaderImage] = useState(article?.headerImage || null);
+  const [category, setCategory] = useState(article?.category || null);
   const [notification, setNotification] = useState('');
   const noContent = !title && !summary && content === emptyDocumentString;
 
@@ -90,6 +92,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
       subscribersOnly,
       headerImage,
       wordCount,
+      category,
     };
 
     if (articleId) {
@@ -101,7 +104,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
       input,
       userId,
     });
-  }, [title, summary, content, subscribersOnly, headerImage?.url]);
+  }, [title, summary, content, subscribersOnly, headerImage?.url, category]);
 
   const handleContentChange = (newContent: Node[]): void => {
     const contentString = JSON.stringify(newContent);
@@ -123,6 +126,10 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
 
     let input: PublishArticleInput;
     if (article?.publishedAt) {
+      if (headerImage?.__typename) {
+        delete headerImage.__typename;
+      }
+
       input = {
         id: articleId,
         article: {
@@ -185,13 +192,20 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
           && <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-4" url={headerImage?.url} />
         }
 
-        <EditorHeaderPhotoSelector
-          headerImage={headerImage}
-          setHeaderImage={setHeaderImage}
-        />
+        <div className="w-full">
+          <EditorHeaderPhotoSelector
+            headerImage={headerImage}
+            setHeaderImage={setHeaderImage}
+          />
+          
+          <EditorCategorySelector
+            category={category}
+            setCategory={setCategory}
+          />
+        </div>
 
         <TextareaAutosize 
-          className="focus:outline-none text-4xl font-serif w-full h-auto resize-none placeholder-gray-500"
+          className="focus:outline-none text-4xl font-serif w-full h-auto resize-none placeholder-gray-500 font-bold"
           placeholder="Title"
           value={title}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setTitle(e.target.value)}
@@ -199,7 +213,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
         </TextareaAutosize>
 
         <TextareaAutosize 
-          className="focus:outline-none text-xl w-full h-auto resize-none placeholder-gray-500 mb-4 font-medium"
+          className="focus:outline-none text-xl w-full h-auto resize-none placeholder-gray-500 mb-6 font-serif"
           placeholder="Add an optional summary"
           value={summary}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setSummary(e.target.value)}
