@@ -192,7 +192,7 @@ function CommentEditor({
 
       {
         !readOnly && auth.userId && (
-          <div className="flex justify-between p-2 bg-gray-100 border-t border-gray-300">
+          <div className="flex items-center justify-between p-2 bg-gray-100 border-t border-gray-300">
             <div
               ref={emojiRef}
               className="text-2xl hover:cursor-pointer relative"
