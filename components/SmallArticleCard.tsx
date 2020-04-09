@@ -69,7 +69,7 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
                   : ''
               }
 
-              <span className="text-primary">
+              <span>
                 {timeToRead(article.wordCount)}
               </span>
             </div>

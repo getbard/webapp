@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Wed Apr 08 2020 08:54:37 GMT-0700 (Pacific Daylight Time)
+# timestamp: Thu Apr 09 2020 08:18:11 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -208,6 +208,7 @@ type Query {
   article(id: ID!): Article
   articleBySlug(slug: String!): Article
   articlesByUser(userId: ID!, drafts: Boolean): [Article]
+  commentsByResourceId(resourceId: ID!): [Comment]
   stripeSession(id: ID!, stripeUserId: ID!): StripeSession!
   subscription(id: ID!): Subscription!
   user(username: String!): User

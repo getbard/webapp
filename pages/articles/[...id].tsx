@@ -90,19 +90,19 @@ const Article: NextPage = (): React.ReactElement => {
           )
         }
         
-        <div className="text-4xl w-full font-serif">
+        <div className="text-4xl w-full font-serif font-bold">
           {article.title}
         </div>
 
-        <div className="text-xl w-full mb-4">
+        <div className="text-xl w-full mb-6 font-serif">
           {article?.summary}
         </div>
 
-        <div className="text-sm w-full font-bold">
-          written by <Link href={`/${article.author.username}`} ><a className="underline">{authorName}</a></Link>
+        <div className="text-sm w-full font-bold ">
+          By <Link href={`/${article.author.username}`} ><a className="underline">{authorName}</a></Link>
         </div>
 
-        <div className="text-sm w-full font-medium">
+        <div className="text-xs w-full">
           {format(new Date(article.publishedAt), 'MMM do, yyyy')} | {timeToRead(article.wordCount)}
         </div>
       </div>
