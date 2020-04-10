@@ -2,8 +2,8 @@ import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
-import { format } from 'date-fns';
 import styled from '@emotion/styled';
+import ProgressiveImage from 'react-progressive-image';
 
 import { User } from '../../generated/graphql';
 import ArticleBySlugQuery from '../../queries/ArticleBySlugQuery';
@@ -83,7 +83,14 @@ const Article: NextPage = (): React.ReactElement => {
         {
           article?.headerImage?.url && (
             <div className="mb-4">
-              <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-1" url={article.headerImage.url} />
+              <ProgressiveImage
+                delay={500}
+                src={article.headerImage.url}
+                placeholder={`${article.headerImage.url}&w=400&blur=80`}
+              >
+                {(src: string): React.ReactElement => <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-1" url={src} />}
+              </ProgressiveImage>
+
               <div className="text-xs text-center">
                 Photo by <a className="underline" href={`${article.headerImage.photographerUrl}?utm_source=bard&utm_medium=referral`}>{article.headerImage.photographerName}</a> on <a className="underline" href="https://unsplash.com?utm_source=bard&utm_medium=referral">Unsplash</a>
               </div>
