@@ -46,8 +46,8 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
             src={`${article.headerImage.url}&w=400`}
             placeholder={`${article.headerImage.url}&w=200&blur=80`}
           >
-            { (src: string): React.ReactElement => 
-                <ArticleCardImage className="flex-grow flex items-end h-40 rounded-t-sm -mt-3 -mx-3 mb-3" url={src}>
+            {(src: string): React.ReactElement => 
+              <ArticleCardImage className="flex-grow flex items-end h-40 rounded-t-sm -mt-3 -mx-3 mb-3" url={src}>
                 {
                   article?.subscribersOnly && (
                     <span className="sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 hidden items-center text-xs text-primary font-sans">
