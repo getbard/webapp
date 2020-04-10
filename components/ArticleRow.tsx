@@ -65,10 +65,6 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
           {article?.summary}
         </div>
 
-        {/* <div className="text-xs">
-          
-        </div> */}
-
         <div className="text-xs relative">
           <DateMeta resource={article} action="Published" dateParam="publishedAt" /> | {timeToRead(article.wordCount)}
         </div>

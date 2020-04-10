@@ -88,7 +88,7 @@ const Article: NextPage = (): React.ReactElement => {
                 src={article.headerImage.url}
                 placeholder={`${article.headerImage.url}&w=400&blur=80`}
               >
-                {(src: string): React.ReactElement => <HeaderImage className="shadow w-auto -mx-5 sm:-mx-40 mb-1" url={src} />}
+                {(src: string): React.ReactElement => <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-1" url={src} />}
               </ProgressiveImage>
 
               <div className="text-xs text-center">
