@@ -1,5 +1,5 @@
 import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
@@ -10,6 +10,12 @@ import { Cookie } from 'next-cookie';
 import jwt from 'jsonwebtoken';
 
 import firebase from '../lib/firebase';
+
+import introspectionQueryResultData from '../generated/fragmentTypes.json';
+
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData
+});
 
 const httpLink = createHttpLink({
   uri: process.env.GRAPHQL_URI, 
@@ -55,6 +61,6 @@ export default function createApolloClient(
   return new ApolloClient({
     ssrMode: Boolean(ctx),
     link: authLink.concat(httpLink),
-    cache: new InMemoryCache().restore(initialState),
+    cache: new InMemoryCache({ fragmentMatcher }).restore(initialState),
   });
 }

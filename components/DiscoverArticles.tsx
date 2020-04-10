@@ -8,7 +8,7 @@ import ArticleCard from './ArticleCard';
 import SmallArticleCard from './SmallArticleCard';
 
 const ArticleChunkContainer = styled.div`
-  > div:not(:first-child) {
+  > div:not(:first-of-type) {
     padding-top: 0.5rem;
   }
 

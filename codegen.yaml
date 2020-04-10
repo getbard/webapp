@@ -5,3 +5,6 @@ generates:
   generated/graphql.ts:
     plugins:
       - typescript
+  generated/fragmentTypes.json:
+    plugins:
+      - fragment-matcher

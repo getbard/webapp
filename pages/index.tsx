@@ -7,6 +7,7 @@ import { Category } from '../generated/graphql';
 import { withApollo } from '../lib/apollo';
 import withLayout from '../components/withLayout';
 import DiscoverArticles from '../components/DiscoverArticles';
+import Feed from '../components/Feed';
 
 const Discover: NextPage = (): React.ReactElement => {
   const router = useRouter();
@@ -40,7 +41,11 @@ const Discover: NextPage = (): React.ReactElement => {
         }
       </div>
 
-      <DiscoverArticles category={selectedCategory} />
+      {
+        selectedCategory === 'my feed'
+          ? <Feed />
+          : <DiscoverArticles category={selectedCategory} />
+      }
     </div>
   );
 }
