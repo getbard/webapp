@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { FiFeather } from 'react-icons/fi';
+import ProgressiveImage from 'react-progressive-image';
 
 import { Article } from '../generated/graphql';
 
@@ -40,15 +41,23 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
       <ArticleCardContainer className="p-4 border border-gray-300 rounded-sm hover:cursor-pointer transition duration-150 ease-in flex justify-between flex-col">
         {
           article?.headerImage?.url &&
-          <ArticleCardImage className="flex-grow flex items-end h-40 rounded-t-sm -mt-3 -mx-3 mb-3" url={article.headerImage.url}>
-            {
-              article?.subscribersOnly && (
-                <span className="sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 hidden items-center text-xs text-primary font-sans">
-                  <FiFeather className="mr-1" /> Supporters Only
-                </span>
-              )
+          <ProgressiveImage
+            delay={500}
+            src={`${article.headerImage.url}&w=400`}
+            placeholder={`${article.headerImage.url}&w=200&blur=80`}
+          >
+            { (src: string): React.ReactElement => 
+                <ArticleCardImage className="flex-grow flex items-end h-40 rounded-t-sm -mt-3 -mx-3 mb-3" url={src}>
+                {
+                  article?.subscribersOnly && (
+                    <span className="sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 hidden items-center text-xs text-primary font-sans">
+                      <FiFeather className="mr-1" /> Supporters Only
+                    </span>
+                  )
+                }
+              </ArticleCardImage>
             }
-          </ArticleCardImage>
+          </ProgressiveImage>
         }
       
         <div>
