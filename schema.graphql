@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Thu Apr 09 2020 10:08:27 GMT-0700 (Pacific Daylight Time)
+# timestamp: Fri Apr 10 2020 14:48:40 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -68,10 +68,11 @@ enum Category {
 }
 
 type Comment {
-  id: ID
+  id: ID!
   userId: String!
   user: User!
   resourceId: String!
+  resource: Article!
   message: String!
   parentId: String
   replies: [Comment]
@@ -172,6 +173,32 @@ type DeleteCommentPayload {
   deletedAt: String!
 }
 
+type Feed {
+  next: String!
+  results: [FeedItem]!
+  unseen: Int!
+  unread: Int!
+}
+
+type FeedActivity {
+  id: ID!
+  actor: User!
+  verb: String!
+  time: String!
+  object: FeedActivityObject
+}
+
+union FeedActivityObject = Article | Comment | User
+
+type FeedItem {
+  id: ID!
+  is_read: Boolean!
+  is_seen: Boolean!
+  verb: String!
+  actor_count: Int!
+  activities: [FeedActivity]!
+}
+
 input FollowUserInput {
   userId: String!
 }
@@ -219,6 +246,7 @@ type Query {
   articleBySlug(slug: String!): Article
   articlesByUser(userId: ID!, drafts: Boolean): [Article]
   commentsByResourceId(resourceId: ID!): [Comment]
+  feed: Feed
   stripeSession(id: ID!, stripeUserId: ID!): StripeSession!
   subscription(id: ID!): Subscription!
   user(username: String!): User

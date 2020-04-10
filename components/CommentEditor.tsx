@@ -224,7 +224,7 @@ function CommentEditor({
             <Button
               onClick={handleCreateComment}
               loading={createLoading || updateLoading}
-              disabled={JSON.stringify(value) === JSON.stringify(emptyValue)}
+              disabled={createLoading || updateLoading || JSON.stringify(value) === JSON.stringify(emptyValue)}
             >
               {commentId ? 'Update Comment' : 'Comment'}
             </Button>
