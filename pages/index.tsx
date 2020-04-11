@@ -4,15 +4,23 @@ import { useRouter } from 'next/router';
 
 import { Category } from '../generated/graphql';
 
+import { useAuth } from '../hooks/useAuth';
+
 import { withApollo } from '../lib/apollo';
 import withLayout from '../components/withLayout';
 import DiscoverArticles from '../components/DiscoverArticles';
 import Feed from '../components/Feed';
 
 const Discover: NextPage = (): React.ReactElement => {
+  const auth = useAuth();
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState(router?.query?.category as string || 'all');
-  const categories = ['my feed', 'all'];
+  const categories = ['all'];
+
+  if (auth.userId) {
+    categories.unshift('my feed');
+  }
+
   for (const category in Category) {
     categories.push(category.toLowerCase());
   }

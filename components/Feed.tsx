@@ -1,6 +1,10 @@
 import { useQuery } from '@apollo/react-hooks';
 import Link from 'next/link';
 import { formatPretty } from '../lib/dates';
+import { zonedTimeToUtc } from 'date-fns-tz';
+
+const timezoneOffset = new Date().getTimezoneOffset();
+
 
 import { FeedItem, FeedActivity, Article } from '../generated/graphql';
 
@@ -61,7 +65,7 @@ function Item({ item }: { item: FeedItem }): React.ReactElement {
         </div>
 
         <div className="text-xs">
-          {formatPretty(time)}
+          {formatPretty(zonedTimeToUtc(time, timezoneOffset.toString()).toString())}
         </div>
       </div>
 

@@ -28,6 +28,7 @@
     "apollo-link-context": "^1.0.19",
     "apollo-link-http": "^1.5.16",
     "date-fns": "^2.11.0",
+    "date-fns-tz": "^1.0.10",
     "emoji-mart": "^3.0.0",
     "firebase": "^7.11.0",
     "graphql": "^14.6.0",
