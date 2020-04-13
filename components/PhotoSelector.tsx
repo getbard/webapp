@@ -47,7 +47,7 @@ const UnsplashThumbnail = ({
         photographerUrl: photo.photographerUrl,
       })}
     >
-      <ImageThumbnail className="w-full h-24" url={photo.urls.thumb} />
+      <ImageThumbnail className="h-24 w-40" url={photo.urls.thumb} />
       <div className="text-xs">by {photo.photographerName}</div>
     </ThumbnailContainer>
   );
