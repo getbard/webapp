@@ -6,6 +6,7 @@ import { Article } from '../generated/graphql';
 import DiscoverArticlesQuery from '../queries/DiscoverArticlesQuery';
 
 import DiscoverArticlesFallback from './DiscoverArticlesFallback';
+import EmptyState from './EmptyState';
 import ArticleCard from './ArticleCard';
 import SmallArticleCard from './SmallArticleCard';
 
@@ -33,16 +34,12 @@ function DiscoverArticles({ category }: { category: string }): React.ReactElemen
 
   if (!articles.length) {
     return (
-      <div className="flex justify-center items-center flex-col p-40">
-        <div className="text-5xl font-serif">
-          We&apos;re at a loss for words...
-        </div>
-
-        <div className="text-lg">
+      <EmptyState title="We're at a loss for words...">
+        <div>
           We couldn&apos;t find any {category !== 'all' && category} articles.
         </div>
 
-        <div className="text-lg">
+        <div>
           Perhaps you&apos;d like to&nbsp;
           <Link href="/write">
             <a className="underline">
@@ -50,7 +47,7 @@ function DiscoverArticles({ category }: { category: string }): React.ReactElemen
             </a>
           </Link>
         </div>
-      </div>
+      </EmptyState>
     );
   }
 
