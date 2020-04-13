@@ -21,6 +21,7 @@ import BecomeSupporterButton from '../components/BecomeSupporterButton';
 import OneTimeSupportButton from '../components/OneTimeSupportButton';
 import SupportConfirmation from '../components/SupportConfirmation';
 import ArticlesFallback from '../components/ArticlesFallback';
+import UserProfileFallback from '../components/UserProfileFallback';
 
 function Articles({
   loading,
@@ -56,7 +57,7 @@ const Author: NextPage = (): React.ReactElement => {
   const { loading, error, data } = useQuery(AuthorProfileQuery, { variables: { username } });
 
   if (error) return <div>Error</div>;
-  if (loading) return <div>Loading</div>;
+  if (true) return <UserProfileFallback />;
 
   const { user }: { user: User } = data;
 
@@ -109,7 +110,7 @@ const Author: NextPage = (): React.ReactElement => {
                 />
 
                 {user?.stripeUserId && (
-                  <OneTimeSupportButton stripeUserId={user.stripeUserId} authorName={user.firstName} />
+                  <OneTimeSupportButton stripeUserId={user?.stripeUserId || ''} authorName={user.firstName} />
                 )}
               </div>
             </div>
@@ -147,7 +148,7 @@ const Author: NextPage = (): React.ReactElement => {
       </div>
 
       {sessionId && user?.stripeUserId && (
-        <SupportConfirmation sessionId={sessionId} stripeUserId={user.stripeUserId} />
+        <SupportConfirmation sessionId={sessionId} stripeUserId={user?.stripeUserId || ''} />
       )}
     </div>
   );

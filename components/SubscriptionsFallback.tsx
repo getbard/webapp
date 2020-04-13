@@ -2,13 +2,13 @@ const SubscriptionRow = (): React.ReactElement => {
   return (
     <div className="border border-gray-200 rounded-sm p-4 mb-4">
       {/* Supporting since... */}
-      <div className="bg-gray-200 h-6 w-64 mb-2"></div>
+      <div className="bg-gray-100 h-6 w-64 mb-2"></div>
 
       {/* Amount Per Month */}
-      <div className="bg-gray-200 h-6 w-40 mb-2"></div>
+      <div className="bg-gray-100 h-6 w-40 mb-2"></div>
 
       {/* Next Charge */}
-      <div className="bg-gray-200 h-6 w-56"></div>
+      <div className="bg-gray-100 h-6 w-56"></div>
     </div>
   );
 }
