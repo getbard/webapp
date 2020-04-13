@@ -11,6 +11,7 @@ import ConnectStripeAccountMutation from '../queries/ConnectStripeAccountMutatio
 
 import withLayout from '../components/withLayout';
 import PageHeader from '../components/PageHeader';
+import GenericLoader from '../components/GenericLoader';
 
 const isAccountAlreadyConnectedError = (error: string): boolean => error.includes('authorization code has already been used');
 
@@ -18,7 +19,7 @@ const SuccessInfo = (): React.ReactElement => {
   return (
     <div>
       <p className="mb-4">Looks like you&apos;re good to go!</p>
-      
+
       <p className="mb-4">Readers can now subscribe to support you monthly.</p>
 
       <p>
@@ -35,8 +36,8 @@ const StripeConnect: NextPage = (): React.ReactElement => {
   const [connectStripeAccount, { data, loading, called, error }] = useMutation(ConnectStripeAccountMutation);
   const accountAlreadyConnected = error && isAccountAlreadyConnectedError(error?.message);
 
-  if (!auth.user?.uid || (!code && !state)) {
-    return <div>Loading...</div>;
+  if (!auth.user?.uid || (!code && !state) || loading) {
+    return <GenericLoader />;
   }
 
   if (state !== auth.user.uid) {
@@ -72,23 +73,13 @@ const StripeConnect: NextPage = (): React.ReactElement => {
         Connecting with Stripe
       </PageHeader>
 
-      {
-        loading
-        ? (
-          <p>
-            Talking to the wonderful folks at Stripe...
-          </p>
-        )
-        : (
-          <p>
-            {
-              stripeResults?.success || accountAlreadyConnected
-                ? <SuccessInfo />
-                : 'Something went wrong. Try again later and let us know if you keep having trouble.'
-            }
-          </p>
-        )
-      }
+      <p>
+        {
+          stripeResults?.success || accountAlreadyConnected
+            ? <SuccessInfo />
+            : 'Something went wrong. Try again later and let us know if you keep having trouble.'
+        }
+      </p>
     </div>
   );
 }
