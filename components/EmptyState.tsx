@@ -7,7 +7,7 @@ function EmptyState({
 }): React.ReactElement {
   return (
     <div className="flex justify-center items-center flex-col p-40 text-lg">
-      <div className="text-5xl font-serif">
+      <div className="text-4xl font-serif">
         {title}
       </div>
 

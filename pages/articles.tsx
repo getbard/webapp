@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
 import { useQuery } from '@apollo/react-hooks';
 import { useState } from 'react';
+import Link from 'next/link';
 
 import { Article } from '../generated/graphql';
 import ArticlesSummaryQuery from '../queries/ArticlesSummaryQuery';
@@ -12,15 +13,24 @@ import withLayout from '../components/withLayout';
 import ArticleTypeSelector from '../components/ArticleTypeSelector';
 import ArticleRow from '../components/ArticleRow';
 import PageHeader from '../components/PageHeader';
+import ArticlesFallback from '../components/ArticlesFallback';
+import EmptyState from '../components/EmptyState';
 
-const Articles: NextPage = (): React.ReactElement => {
+function ArticlesDisplay({
+  articleType,
+  setDraftCount,
+  setPublishedCount,
+}: {
+  articleType: string;
+  setDraftCount: (count: number) => void;
+  setPublishedCount: (count: number) => void;
+}): React.ReactElement {
   const auth = useAuth();
   const userId = auth.userId || auth.user?.uid;
   const { loading, error, data, refetch } = useQuery(ArticlesSummaryQuery, { variables: { userId, drafts: true } });
-  const [articleType, setArticleType] = useState('drafts');
 
   if (error) return <div>Error</div>;
-  if (loading) return <div>Loading</div>;
+  if (loading) return <ArticlesFallback />;
 
   const { articlesByUser } = data;
 
@@ -33,7 +43,42 @@ const Articles: NextPage = (): React.ReactElement => {
       drafts.push(article);
     }
   });
-  const articlesToDisplay = articleType === 'drafts' ? drafts : published;
+
+  setDraftCount(drafts.length);
+  setPublishedCount(published.length);
+
+  const isDrafts = articleType === 'drafts';
+  const articlesToDisplay = isDrafts ? drafts : published;
+
+  if (!articlesToDisplay.length) {
+    return (
+      <EmptyState title="Ready to share your thoughts?">
+        <div>
+          You don&apos;t have any {isDrafts ? 'draft' : 'published'} articles.
+        </div>
+
+        <Link href="/write">
+          <a className="underline">
+            Write one today!
+          </a>
+        </Link>
+      </EmptyState>
+    );
+  }
+
+  return (
+    <>
+      {articlesToDisplay.map((article: Article) => {
+        return <ArticleRow key={article.id} article={article} refetch={refetch} />;
+      })}
+    </>
+  );
+}
+
+const Articles: NextPage = (): React.ReactElement => {
+  const [draftCount, setDraftCount] = useState(0);
+  const [publishedCount, setPublishedCount] = useState(0);
+  const [articleType, setArticleType] = useState('drafts');
 
   return (
     <div className="px-5 pt-5 container mx-auto relative">
@@ -44,22 +89,24 @@ const Articles: NextPage = (): React.ReactElement => {
       <div className="mb-2 pb-4 border-b border-gray-300">
         <ArticleTypeSelector
           name="Drafts"
-          count={drafts.length}
+          count={draftCount}
           setArticleType={setArticleType}
           articleType={articleType}
         />
 
         <ArticleTypeSelector
           name="Published"
-          count={published.length}
+          count={publishedCount}
           setArticleType={setArticleType}
           articleType={articleType}
         />
       </div>
 
-      {articlesToDisplay.map((article: Article) => {
-        return <ArticleRow key={article.id} article={article} refetch={refetch} />;
-      })}
+      <ArticlesDisplay
+        articleType={articleType}
+        setDraftCount={setDraftCount}
+        setPublishedCount={setPublishedCount}
+      />
     </div>
   );
 }
