@@ -57,7 +57,7 @@ const Author: NextPage = (): React.ReactElement => {
   const { loading, error, data } = useQuery(AuthorProfileQuery, { variables: { username } });
 
   if (error) return <div>Error</div>;
-  if (true) return <UserProfileFallback />;
+  if (loading) return <UserProfileFallback />;
 
   const { user }: { user: User } = data;
 
