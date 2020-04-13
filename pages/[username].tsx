@@ -20,6 +20,7 @@ import FollowButton from '../components/FollowButton';
 import BecomeSupporterButton from '../components/BecomeSupporterButton';
 import OneTimeSupportButton from '../components/OneTimeSupportButton';
 import SupportConfirmation from '../components/SupportConfirmation';
+import ArticlesFallback from '../components/ArticlesFallback';
 
 function Articles({
   loading,
@@ -34,7 +35,7 @@ function Articles({
 }): React.ReactElement {
 
   if (error) return <div>Error loading articles!</div>;
-  if (loading) return <div>Loading articles...</div>;
+  if (loading) return <ArticlesFallback />;
 
   const { articlesByUser } = articlesData;
 
