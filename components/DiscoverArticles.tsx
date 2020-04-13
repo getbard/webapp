@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/react-hooks';
 import styled from '@emotion/styled';
+import Link from 'next/link';
 
 import { Article } from '../generated/graphql';
 import DiscoverArticlesQuery from '../queries/DiscoverArticlesQuery';
@@ -29,6 +30,29 @@ function DiscoverArticles({ category }: { category: string }): React.ReactElemen
   const articleChunks: Article[][] = [];
   const articlesWithoutHeader: Article[] = [];
   const articlesWithHeader: Article[] = [];
+
+  if (!articles.length) {
+    return (
+      <div className="flex justify-center items-center flex-col p-40">
+        <div className="text-5xl font-serif">
+          We&apos;re at a loss for words...
+        </div>
+
+        <div className="text-lg">
+          We couldn&apos;t find any {category !== 'all' && category} articles.
+        </div>
+
+        <div className="text-lg">
+          Perhaps you&apos;d like to&nbsp;
+          <Link href="/write">
+            <a className="underline">
+              write one?
+            </a>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   articles.forEach((article: Article) => {
     if (article.headerImage?.url) {
