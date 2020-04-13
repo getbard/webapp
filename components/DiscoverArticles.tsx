@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { Article } from '../generated/graphql';
 import DiscoverArticlesQuery from '../queries/DiscoverArticlesQuery';
 
+import DiscoverArticlesFallback from './DiscoverArticlesFallback';
 import ArticleCard from './ArticleCard';
 import SmallArticleCard from './SmallArticleCard';
 
@@ -22,7 +23,7 @@ function DiscoverArticles({ category }: { category: string }): React.ReactElemen
   const { loading, error, data } = useQuery(DiscoverArticlesQuery, { variables: { category } });
 
   if (error) return <div>Error</div>;
-  if (loading) return <div>Loading</div>;
+  if (loading) return <DiscoverArticlesFallback />;
 
   const { articles } = data;
   const articleChunks: Article[][] = [];
