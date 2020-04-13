@@ -10,17 +10,18 @@ import CommentsByResourceIdQuery from '../queries/CommentsByResourceIdQuery';
 
 import CommentEditor from './CommentEditor';
 import CommentRow from './CommentRow';
+import CommentsFallback from './CommentsFallback';
 
 function Comments({
   resourceId,
 }: {
   resourceId: string;
-} ): React.ReactElement {
+}): React.ReactElement {
   const auth = useAuth();
   const { loading, error, data, refetch } = useQuery(CommentsByResourceIdQuery, { variables: { resourceId } });
   const [sortBy, setSortBy] = useState('latest');
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <CommentsFallback />;
   if (error) return <div>Something went wrong...</div>;
 
   const { commentsByResourceId } = data;

@@ -1,9 +1,12 @@
 import { useQuery } from '@apollo/react-hooks';
 import styled from '@emotion/styled';
+import Link from 'next/link';
 
 import { Article } from '../generated/graphql';
 import DiscoverArticlesQuery from '../queries/DiscoverArticlesQuery';
 
+import DiscoverArticlesFallback from './DiscoverArticlesFallback';
+import EmptyState from './EmptyState';
 import ArticleCard from './ArticleCard';
 import SmallArticleCard from './SmallArticleCard';
 
@@ -22,12 +25,31 @@ function DiscoverArticles({ category }: { category: string }): React.ReactElemen
   const { loading, error, data } = useQuery(DiscoverArticlesQuery, { variables: { category } });
 
   if (error) return <div>Error</div>;
-  if (loading) return <div>Loading</div>;
+  if (loading) return <DiscoverArticlesFallback />;
 
   const { articles } = data;
   const articleChunks: Article[][] = [];
   const articlesWithoutHeader: Article[] = [];
   const articlesWithHeader: Article[] = [];
+
+  if (!articles.length) {
+    return (
+      <EmptyState title="We're at a loss for words...">
+        <div>
+          We couldn&apos;t find any {category !== 'all' && category} articles.
+        </div>
+
+        <div>
+          Perhaps you&apos;d like to&nbsp;
+          <Link href="/write">
+            <a className="underline">
+              write one?
+            </a>
+          </Link>
+        </div>
+      </EmptyState>
+    );
+  }
 
   articles.forEach((article: Article) => {
     if (article.headerImage?.url) {

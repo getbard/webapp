@@ -21,6 +21,7 @@ import BecomeSupporterButton from '../../components/BecomeSupporterButton';
 import SupportConfirmation from '../../components/SupportConfirmation';
 import Comments from '../../components/Comments';
 import DateMeta from '../../components/DateMeta';
+import ArticleFallback from '../../components/ArticleFallback';
 
 const GradientBlocker = styled.div`
   width: 100%;
@@ -72,7 +73,7 @@ const Article: NextPage = (): React.ReactElement => {
   const { loading, error, data, refetch } = useQuery(articleQuery, { variables: { id } });
 
   if (error) return <div>Error</div>;
-  if (loading) return <div>Loading</div>;
+  if (loading) return <ArticleFallback />;
 
   const article = data?.article || data?.articleBySlug;
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName}`;

@@ -10,6 +10,7 @@ import StripeUserIdQuery from '../queries/StripeUserIdQuery';
 import withLayout from '../components/withLayout';
 import PageHeader from '../components/PageHeader';
 import Button from '../components/Button';
+import GenericLoader from '../components/GenericLoader';
 
 const EarnMoney: NextPage = (): React.ReactElement => {
   const auth = useAuth();
@@ -17,9 +18,9 @@ const EarnMoney: NextPage = (): React.ReactElement => {
   const { loading, data } = useQuery(StripeUserIdQuery, { variables: { username: 'me' }});
 
   if (!auth.user?.uid || loading) {
-    return <div>Loading...</div>;
+    return <GenericLoader />;
   }
-  
+
   const { user } = data || {};
   if (user?.stripeUserId) {
     router.push('/analytics');
@@ -27,8 +28,8 @@ const EarnMoney: NextPage = (): React.ReactElement => {
 
   const bardRedirectUrl = `${window.location.origin}/stripe-connect`;
   const clientId = process.env.STRIPE_CLIENT_ID;
-  const userEmail = `stripe_user[email]=${auth.user.email}`;
-  const stripeRedictUrl = `//connect.stripe.com/express/oauth/authorize?redirect_uri=${bardRedirectUrl}&client_id=${clientId}&state=${auth.user.uid}&stripe_user[business_type]=individual&${userEmail}&suggested_capabilities[]=card_payments&suggested_capabilities[]=transfers`;
+  const userEmail = `stripe_user[email]=${auth?.user?.email}`;
+  const stripeRedictUrl = `//connect.stripe.com/express/oauth/authorize?redirect_uri=${bardRedirectUrl}&client_id=${clientId}&state=${auth?.user?.uid}&stripe_user[business_type]=individual&${userEmail}&suggested_capabilities[]=card_payments&suggested_capabilities[]=transfers`;
 
   const handleClick = (): void => {
     router.push(stripeRedictUrl);
