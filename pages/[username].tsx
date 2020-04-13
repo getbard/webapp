@@ -22,23 +22,40 @@ import OneTimeSupportButton from '../components/OneTimeSupportButton';
 import SupportConfirmation from '../components/SupportConfirmation';
 import ArticlesFallback from '../components/ArticlesFallback';
 import UserProfileFallback from '../components/UserProfileFallback';
+import EmptyState from '../components/EmptyState';
 
 function Articles({
   loading,
   error,
   articlesData,
   refetch,
+  name,
 }: {
   loading: boolean;
   error: ApolloError | undefined;
   articlesData: { articlesByUser: Article[] };
   refetch: () => void;
+  name: string;
 }): React.ReactElement {
 
   if (error) return <div>Error loading articles!</div>;
   if (loading) return <ArticlesFallback />;
 
   const { articlesByUser } = articlesData;
+
+  if (!articlesByUser.length) {
+    return (
+      <EmptyState title={`They're working on it.`}>
+        <div>
+          {name} hasn&apos;t written anything yet.
+        </div>
+
+        <div>
+          Follow them to be notified when they publish an article!
+        </div>
+      </EmptyState>
+    );
+  }
 
   return (
     <>
@@ -137,6 +154,7 @@ const Author: NextPage = (): React.ReactElement => {
           section === 'articles'
             ? (
               <Articles
+                name={user.firstName}
                 loading={articlesLoading}
                 error={articlesError}
                 articlesData={articlesData}
