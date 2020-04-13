@@ -23,6 +23,7 @@ import SupportConfirmation from '../components/SupportConfirmation';
 import ArticlesFallback from '../components/ArticlesFallback';
 import UserProfileFallback from '../components/UserProfileFallback';
 import EmptyState from '../components/EmptyState';
+import ProfileFeed from '../components/ProfileFeed';
 
 function Articles({
   loading,
@@ -161,7 +162,7 @@ const Author: NextPage = (): React.ReactElement => {
                 refetch={refetch}
               />
             )
-            : <div>Feed coming soon!</div>
+            : <ProfileFeed userId={user.id} />
         }
       </div>
 
