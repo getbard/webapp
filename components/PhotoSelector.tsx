@@ -30,6 +30,10 @@ const ImageThumbnail = styled.div`
   background-image: url(${(props: ImageThumbnailProps): string => props.url});
 `;
 
+const EmptyPhotoResults = styled.div`
+  min-width: 28rem;
+`;
+
 const UnsplashThumbnail = ({
   photo,
   onClick,
@@ -47,8 +51,9 @@ const UnsplashThumbnail = ({
         photographerUrl: photo.photographerUrl,
       })}
     >
-      <ImageThumbnail className="w-full h-24" url={photo.urls.thumb} />
-      <div className="text-xs">by {photo.photographerName}</div>
+      <ImageThumbnail className="h-24 w-40" url={photo.urls.thumb} />
+
+      <div className="text-xs w-40">by {photo.photographerName}</div>
     </ThumbnailContainer>
   );
 }
@@ -84,9 +89,28 @@ export function PhotoSelector({
       />
 
       <div className="grid grid-cols-5 gap-2">
-        {unsplashPhoto.map((photo: UnsplashPhoto): React.ReactElement => {
-          return <UnsplashThumbnail key={photo.id} photo={photo} onClick={handlePhotoSelect} />;
-        })}
+        {
+          !unsplashPhoto.length && (
+            <EmptyPhotoResults className="col-span-5 flex flex-col justify-center items-center py-10">
+              <div className="text-center">
+                We couldn&apos;t find any photos.
+              </div>
+
+              <div className="text-center">
+                Change your search and try again.
+              </div>
+            </EmptyPhotoResults>
+          )
+        }
+
+        {
+          unsplashPhoto.length > 0 &&
+            unsplashPhoto.map((photo: UnsplashPhoto): React.ReactElement => {
+              return <UnsplashThumbnail key={photo.id} photo={photo} onClick={handlePhotoSelect} />;
+            }
+          )
+        }
+        {}
       </div>
     </UnsplashContainer>
   );
