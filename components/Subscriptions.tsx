@@ -11,6 +11,8 @@ import CancelSubscriptionMutation from '../queries/CancelSubscriptionMutation';
 
 import Button from './Button';
 import Notification from './Notification';
+import SubscriptionsFalback from './SubscriptionsFallback';
+import EmptyState from './EmptyState';
 
 const SubscriptionRow = ({
   subscription,
@@ -66,8 +68,26 @@ const SubscriptionRow = ({
 const Subscriptions = (): React.ReactElement => {
   const { loading, data, error, refetch } = useQuery(UserSubscriptionsQuery, { variables: { username: 'me' } });
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <SubscriptionsFalback />;
   if (error) return <div>Something went wrong. Sorry about that.</div>;
+
+  if (!data?.user?.subscriptions.length) {
+    return (
+      <div>
+        <div>
+          We didn&apos;t find any subscriptions.
+        </div>
+
+        <div>
+          Supporting authors you love helps them write great content. That&apos;s what Bard is all about.
+        </div>
+
+        <div>
+          While it isn&apos;t necessarily required, we highly encourage it.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
