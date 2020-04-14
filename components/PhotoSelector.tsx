@@ -47,6 +47,7 @@ const UnsplashThumbnail = ({
       onClick={(): void => onClick({
         id: photo.id,
         url: photo.urls.full,
+        downloadUrl: photo.urls.download_location,
         photographerName: photo.photographerName,
         photographerUrl: photo.photographerUrl,
       })}
@@ -110,7 +111,6 @@ export function PhotoSelector({
             }
           )
         }
-        {}
       </div>
     </UnsplashContainer>
   );
