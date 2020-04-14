@@ -44,7 +44,7 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
           <ProgressiveImage
             delay={500}
             src={`${article.headerImage.url}&w=400`}
-            placeholder={`${article.headerImage.url}&w=200&blur=80`}
+            placeholder={`${article.headerImage.url}&w=200&q=50&blur=80`}
           >
             {(src: string): React.ReactElement => 
               <ArticleCardImage className="flex-grow flex items-end h-40 rounded-t-sm -mt-3 -mx-3 mb-3" url={src}>

@@ -1,10 +1,20 @@
 import { RenderElementProps } from 'slate-react';
+import ProgressiveImage from 'react-progressive-image';
 
 const ImageElement = ({ attributes, children, element }: RenderElementProps): React.ReactElement => {
   return (
     <div {...attributes}>
       {children}
-      <img src={element.url} />
+      
+      <ProgressiveImage
+        delay={500}
+        src={`${element.url}`}
+        placeholder={`${element.url}&q=50&blur=80`}
+      >
+        {(src: string): React.ReactElement => 
+          <img src={src} className="mx-auto" />
+        }
+      </ProgressiveImage>
     </div>
   );
 };

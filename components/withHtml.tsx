@@ -74,7 +74,6 @@ const deserialize = (el: any): any => {
   return children;
 }
 
-
 const withHtml = (editor: ReactEditor): ReactEditor => {
   const { insertData, isInline, isVoid } = editor;
 

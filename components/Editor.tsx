@@ -6,9 +6,11 @@ import { withHistory } from 'slate-history';
 import { toggleFormatInline } from '../lib/editor';
 
 import withHtml from './withHtml';
+import withImages from './withImages';
 import EditorLeaf from './EditorLeaf';
 import EditorElement from './EditorElement';
 import EditorToolbar from './EditorToolbar';
+import EditorImageInserter from './EditorImageInserter';
 
 const emptyValue = [{
   type: 'paragraph',
@@ -27,7 +29,7 @@ function BardEditor({
   placeholder?: string;
 }): React.ReactElement {
   const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
-  const editor = useMemo(() => withHtml(withHistory(withReact(createEditor()))), []);
+  const editor = useMemo(() => withImages(withHtml(withHistory(withReact(createEditor())))), []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
     if (!e.ctrlKey && !e.metaKey) {
@@ -67,6 +69,8 @@ function BardEditor({
       onChange={handleChange}
     >
       <EditorToolbar />
+
+      <EditorImageInserter />
 
       <Editable
         className="text-lg"
