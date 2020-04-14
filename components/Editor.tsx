@@ -9,6 +9,7 @@ import withHtml from './withHtml';
 import EditorLeaf from './EditorLeaf';
 import EditorElement from './EditorElement';
 import EditorToolbar from './EditorToolbar';
+import EditorImageInserter from './EditorImageInserter';
 
 const emptyValue = [{
   type: 'paragraph',
@@ -67,6 +68,8 @@ function BardEditor({
       onChange={handleChange}
     >
       <EditorToolbar />
+
+      <EditorImageInserter />
 
       <Editable
         className="text-lg"
