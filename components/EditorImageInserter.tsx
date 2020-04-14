@@ -15,7 +15,7 @@ import Portal from './Portal';
 import Modal from './Modal';
 
 const Menu = styled.div`
-  margin-top: -5.2px;
+  margin-top: -6px;
   transition-property: background-color, color;
   transition-duration: 500ms;
 `;

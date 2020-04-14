@@ -9,6 +9,7 @@ const UnsplashPhotoQuery = gql`
       urls {
         full
         thumb
+        download_location
       }
     }
   }
