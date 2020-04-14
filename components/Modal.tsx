@@ -40,7 +40,7 @@ function Modal({
     {
       isOpen && (
         <Portal selector="body">
-          <ModalBackground className="fixed top-0 bottom-0 left-0 right-0 flex justify-center items-center">
+          <ModalBackground className="z-50 fixed top-0 bottom-0 left-0 right-0 flex justify-center items-center">
             <div
               className="p-10 bg-white border border-primary rounded-sm relative"
               ref={modalRef}
