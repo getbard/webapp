@@ -10,7 +10,7 @@ function Notification({ children, showNotification, error, bgColor }: {
 }): React.ReactElement {
   const [display, setDisplay] = useState(false);
   const opacity = display ? '100' : '0';
-  const notificationClasses = `opacity-${opacity} fixed bottom-0 left-0 right-0 flex justify-center z-30 text-white transition duration-300 ease-in-out`;
+  const notificationClasses = `opacity-${opacity} fixed bottom-0 left-0 right-0 flex justify-center z-30 text-white transition duration-300 ease-in-out pointer-events-none`;
   const notificationBackground = bgColor || 'bg-black';
 
   useEffect(() => {

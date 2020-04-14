@@ -222,7 +222,11 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
 
         <Editor initialValue={JSON.parse(content)} setContent={handleContentChange} />
 
-        <Notification showNotification={mutationLoading} error={mutationError || publishError} bgColor="bg-primary">
+        <Notification
+          showNotification={mutationLoading}
+          error={mutationError || publishError}
+          bgColor="bg-primary"
+        >
           {notification}
         </Notification>
       </div>

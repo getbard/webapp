@@ -84,7 +84,7 @@ function HoveringToolbar(): React.ReactElement {
         <FormatButton format="underline" />
       </Menu>
     </Portal>
-  )
+  );
 }
 
 export default HoveringToolbar;

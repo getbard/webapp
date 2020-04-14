@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Mon Apr 13 2020 14:42:29 GMT-0700 (Pacific Daylight Time)
+# timestamp: Tue Apr 14 2020 08:44:50 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -221,6 +221,7 @@ type Mutation {
   createComment(input: CreateCommentInput!): CreateCommentPayload!
   updateComment(input: UpdateCommentInput!): UpdateCommentPayload!
   deleteComment(input: DeleteCommentInput!): DeleteCommentPayload!
+  uploadImage(input: UploadImageInput!): UploadImagePayload!
 }
 
 type Plan {
@@ -228,6 +229,11 @@ type Plan {
   amount: Int!
   currency: String!
   interval: String!
+}
+
+type ProfileFeed {
+  next: String!
+  results: [FeedActivity]!
 }
 
 input PublishArticleInput {
@@ -247,7 +253,7 @@ type Query {
   articlesByUser(userId: ID!, drafts: Boolean): [Article]
   commentsByResourceId(resourceId: ID!): [Comment]
   feed: Feed
-  profileFeed(userId: ID): Feed
+  profileFeed(userId: ID): ProfileFeed
   stripeSession(id: ID!, stripeUserId: ID!): StripeSession!
   subscription(id: ID!): Subscription!
   user(username: String!): User
@@ -324,6 +330,14 @@ type UpdateCommentPayload {
 
 """The `Upload` scalar type represents a file upload."""
 scalar Upload
+
+input UploadImageInput {
+  image: String!
+}
+
+type UploadImagePayload {
+  url: String!
+}
 
 type User {
   id: ID!
