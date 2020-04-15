@@ -4,7 +4,7 @@ import * as Sentry from '@sentry/browser';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
-  // enabled: process.env.NODE_ENV === 'production',
+  enabled: process.env.NODE_ENV === 'production',
 });
 
 import SEO from '../seo.config.js';
