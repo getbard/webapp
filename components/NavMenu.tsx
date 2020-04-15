@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { FiSettings } from 'react-icons/fi';
 import styled from '@emotion/styled'
 import Link from 'next/link';
+import { useApolloClient } from '@apollo/react-hooks';
 
 import { useAuth } from '../hooks/useAuth';
 import useOnClickOutside from '../hooks/useOnClickOutside';
@@ -13,8 +14,10 @@ const Menu = styled.div`
 
 function DisplayMenu(): React.ReactElement {
   const auth = useAuth();
+  const apolloClient = useApolloClient();
 
   const handleLogout = (): void => {
+    apolloClient.clearStore();
     auth.signOut();
   }
 
