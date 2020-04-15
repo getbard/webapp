@@ -16,11 +16,9 @@ import { AuthProvider } from '../hooks/useAuth';
 
 class BardApp extends App {
   render(): React.ReactElement {
-    const { Component, pageProps } = this.props;
-
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
-    const { err } = this.props;
+    const { Component, pageProps, err } = this.props;
     const modifiedPageProps = { ...pageProps, err };
 
     return (
