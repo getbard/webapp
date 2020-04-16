@@ -25,11 +25,11 @@ module.exports = withSourceMaps({
       config.resolve.alias['@sentry/node'] = '@sentry/browser';
     }
 
+    // TODO: Get this to run; RELEASE is not passed in at this time
+    // as I could not get it working on Google Cloud Build
     if (SENTRY_DSN && SENTRY_ORG && SENTRY_PROJECT && RELEASE) {
-      console.log('YOLO', RELEASE);
       config.plugins.push(
         new SentryWebpackPlugin({
-          debug: true,
           version: `${RELEASE}`,
           include: '.next',
           ignore: ['node_modules'],

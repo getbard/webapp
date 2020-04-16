@@ -8,10 +8,8 @@ WORKDIR /build
 COPY . ./
 RUN yarn
 
-ARG RELEASE
-
 # Build the project
-RUN RELEASE=$RELEASE yarn build
+RUN yarn build && rm -rf .next/cache
 
 
 ########
