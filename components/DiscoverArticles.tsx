@@ -108,9 +108,6 @@ function DiscoverArticles({ category }: { category: string }): React.ReactElemen
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3">
-      <div onClick={() => {
-        throw new Error('Whoops');
-      }}>Test Error</div>
       {blocks}
     </div>
   );
