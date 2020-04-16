@@ -21,10 +21,9 @@ import EmptyState from './EmptyState';
 function Activity({ activity }: { activity: FeedActivity }): React.ReactElement {
   const auth = useAuth();
   const { actor, time, object, verb } = activity;
-console.log('HELLO?!');
   const actorName = actor.lastName ? `${actor.firstName} ${actor.lastName}` : actor.lastName;
   const action = verb === 'commented' ? 'commented on' : verb;
-console.log(auth.userId, actor.id);
+
   return (
     <div className="rounded-sm p-5 border border-gray-300 my-4">
       <div>
