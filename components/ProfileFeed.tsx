@@ -78,7 +78,7 @@ function Activity({ activity }: { activity: FeedActivity }): React.ReactElement 
 
       {
         object?.__typename === 'Comment' && (
-          <div className="mt-4 border-l-2 border-primary bg-gray-100 text-md italic">
+          <div className="mt-4 border-l-2 border-primary bg-gray-100 text-md">
             <CommentEditor
               resourceId={object.resourceId}
               initialValue={JSON.parse(object.message)}

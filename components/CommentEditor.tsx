@@ -1,18 +1,16 @@
-import { useState, useRef, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import styled from '@emotion/styled';
-import emojis from 'emoji-mart/data/apple.json';
-import { NimblePicker } from 'emoji-mart';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { createEditor, Node, Transforms, Editor } from 'slate';
 import { withHistory } from 'slate-history';
 import { BaseEmoji } from 'emoji-mart';
 import { jsx } from 'slate-hyperscript';
 import { useMutation } from '@apollo/react-hooks';
+import dynamic from 'next/dynamic';
 
 import CreateCommentMutation from '../queries/CreateCommentMutation';
 import UpdateCommentMutation from '../queries/UpdateCommentMutation';
 
-import useOnClickOutside from '../hooks/useOnClickOutside';
 import { toggleFormatInline } from '../lib/editor';
 import { useAuth } from '../hooks/useAuth';
 
@@ -21,6 +19,7 @@ import EditorElement from './EditorElement';
 import EditorToolbar from './EditorToolbar';
 import Button from './Button';
 import Notification from './Notification';
+const EmojiPicker = dynamic(() => import('./EmojiPicker'));
 
 const emptyValue = [{
   type: 'paragraph',
@@ -56,8 +55,6 @@ function CommentEditor({
   onSubmit?: () => void;
 }): React.ReactElement {
   const auth = useAuth();
-  const emojiRef = useRef(null);
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const [createComment, {
@@ -91,12 +88,6 @@ function CommentEditor({
     setValue(emptyValue);
   }
 
-  useOnClickOutside(emojiRef, () => {
-    if (showEmojiPicker) {
-      setShowEmojiPicker(false);
-    }
-  });
-
   const focusEditor = (): void => {
     ReactEditor.focus(editor);
     Transforms.select(editor, Editor.end(editor, []));
@@ -105,7 +96,6 @@ function CommentEditor({
   const handleEmojiSelection = (emoji: BaseEmoji): void => {
     Transforms.insertNodes(editor, [jsx('text', {}, emoji.native)]);
     focusEditor();
-    setShowEmojiPicker(false);
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
@@ -193,33 +183,7 @@ function CommentEditor({
       {
         !readOnly && auth.userId && (
           <div className="flex items-center justify-between p-2 bg-gray-100 border-t border-gray-300">
-            <div
-              ref={emojiRef}
-              className="text-2xl hover:cursor-pointer relative"
-            >
-              {showEmojiPicker && (
-                <NimblePicker
-                  set="apple"
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-                  // @ts-ignore
-                  data={emojis}
-                  style={{ position: 'absolute', bottom: '2.5rem' }}
-                  color="#004346"
-                  emoji="point_up"
-                  title=""
-                  onSelect={handleEmojiSelection}
-                />
-              )}
-              <span
-                className="px-1"
-                onMouseDown={(e): void => {
-                  e.preventDefault();
-                  setShowEmojiPicker(!showEmojiPicker);
-                }}
-              >
-                {showEmojiPicker ? '😀' : '🙂'}
-              </span>
-            </div>
+            <EmojiPicker handleEmojiSelection={handleEmojiSelection} />
   
             <Button
               onClick={handleCreateComment}
