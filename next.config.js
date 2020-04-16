@@ -3,10 +3,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 const withSourceMaps = require('@zeit/next-source-maps')();
+const SentryWebpackPlugin = require('@sentry/webpack-plugin');
 
 require('dotenv').config();
 
-module.exports = withSourceMaps({
+const { SENTRY_DSN, SENTRY_ORG, SENTRY_PROJECT } = process.env;
+
+module.exports = withSourceMaps(withBundleAnalyzer({
   webpack: (config, options) => {
     // Handle local .env file
     const env = Object.keys(process.env).reduce((acc, curr) => {
@@ -22,6 +25,16 @@ module.exports = withSourceMaps({
       config.resolve.alias['@sentry/node'] = '@sentry/browser';
     }
 
+    if (SENTRY_DSN && SENTRY_ORG && SENTRY_PROJECT) {
+      config.plugins.push(
+        new SentryWebpackPlugin({
+          include: '.next',
+          ignore: ['node_modules'],
+          urlPrefix: '~/_next',
+        })
+      )
+    }
+
     return config;
   },
-});
+}));
