@@ -28,6 +28,7 @@ module.exports = withSourceMaps(withBundleAnalyzer({
     if (SENTRY_DSN && SENTRY_ORG && SENTRY_PROJECT) {
       config.plugins.push(
         new SentryWebpackPlugin({
+          version: process.env.RELEASE_VERSION,
           include: '.next',
           ignore: ['node_modules'],
           urlPrefix: '~/_next',
