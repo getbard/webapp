@@ -8,6 +8,9 @@ WORKDIR /build
 COPY package.json yarn.lock ./
 RUN yarn
 
+ARG RELEASE_VERSION
+ENV RELEASE_VERSION=${RELEASE_VERSION}
+
 # Build the project
 COPY . ./
 RUN yarn build && rm -rf .next/cache
@@ -18,9 +21,6 @@ RUN yarn build && rm -rf .next/cache
 ########
 FROM node:12-alpine
 WORKDIR /usr/src/app
-
-ARG RELEASE_VERSION
-ENV RELEASE_VERSION=${RELEASE_VERSION}
 
 # Install dependencies
 COPY package.json yarn.lock ./
