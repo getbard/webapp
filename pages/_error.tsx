@@ -11,7 +11,6 @@ const BardError = ({
   hasGetInitialPropsRun: boolean;
   err: Error;
 }): React.ReactElement => {
-  console.log('Hello?', hasGetInitialPropsRun, err);
   if (!hasGetInitialPropsRun && err) {
     Sentry.captureException(err);
   }
