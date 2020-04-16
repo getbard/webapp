@@ -5,15 +5,13 @@ FROM node:12-alpine AS builder
 WORKDIR /build
 
 # Install dependencies
-COPY package.json yarn.lock ./
+COPY . ./
 RUN yarn
 
-ARG RELEASE_VERSION
-ENV RELEASE_VERSION=${RELEASE_VERSION}
+ARG RELEASE
 
 # Build the project
-COPY . ./
-RUN yarn build && rm -rf .next/cache
+RUN RELEASE=$RELEASE yarn build
 
 
 ########

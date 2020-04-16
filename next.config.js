@@ -7,9 +7,9 @@ const SentryWebpackPlugin = require('@sentry/webpack-plugin');
 
 require('dotenv').config();
 
-const { SENTRY_DSN, SENTRY_ORG, SENTRY_PROJECT } = process.env;
+const { SENTRY_DSN, SENTRY_ORG, SENTRY_PROJECT, RELEASE } = process.env;
 
-module.exports = withSourceMaps(withBundleAnalyzer({
+module.exports = withSourceMaps({
   webpack: (config, options) => {
     // Handle local .env file
     const env = Object.keys(process.env).reduce((acc, curr) => {
@@ -25,10 +25,12 @@ module.exports = withSourceMaps(withBundleAnalyzer({
       config.resolve.alias['@sentry/node'] = '@sentry/browser';
     }
 
-    if (SENTRY_DSN && SENTRY_ORG && SENTRY_PROJECT) {
+    if (SENTRY_DSN && SENTRY_ORG && SENTRY_PROJECT && RELEASE) {
+      console.log('YOLO', RELEASE);
       config.plugins.push(
         new SentryWebpackPlugin({
-          version: process.env.RELEASE_VERSION,
+          debug: true,
+          version: `${RELEASE}`,
           include: '.next',
           ignore: ['node_modules'],
           urlPrefix: '~/_next',
@@ -38,4 +40,4 @@ module.exports = withSourceMaps(withBundleAnalyzer({
 
     return config;
   },
-}));
+});
