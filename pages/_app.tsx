@@ -6,6 +6,7 @@ Sentry.init({
   dsn: process.env.SENTRY_DSN,
   enabled: process.env.NODE_ENV === 'production',
   release: process.env.RELEASE,
+  environment: process.env.ENV,
 });
 
 import SEO from '../seo.config.js';
