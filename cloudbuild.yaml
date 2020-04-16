@@ -9,7 +9,12 @@ steps:
             gcloud beta secrets versions access --secret=webapp-$PROJECT_ID-env latest > .env
   # build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/webapp:$COMMIT_SHA', '.']
+    args: [
+      'build',
+      '-t', 'gcr.io/$PROJECT_ID/webapp:$COMMIT_SHA',
+      '--build-arg', 'RELEASE=webapp:$COMMIT_SHA',
+      '.'
+    ]
   # push the container image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/webapp:$COMMIT_SHA']

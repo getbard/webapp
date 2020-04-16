@@ -4,6 +4,8 @@
 FROM node:12-alpine AS builder
 WORKDIR /build
 
+ARG RELEASE
+
 # Install dependencies
 COPY . ./
 RUN yarn
@@ -17,6 +19,10 @@ RUN yarn build && rm -rf .next/cache
 ########
 FROM node:12-alpine
 WORKDIR /usr/src/app
+
+# Set release in env
+ARG RELEASE
+ENV RELEASE=$RELEASE
 
 # Install dependencies
 COPY package.json yarn.lock ./

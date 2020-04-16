@@ -4,5 +4,4 @@ set -a
 . /build/.env
 set +a
 
-./node_modules/.bin/sentry-cli releases new -p backend $RELEASE
-./node_modules/.bin/sentry-cli releases set-commits $RELEASE --commit "getbard/webapp@$RELEASE"
+./node_modules/.bin/sentry-cli releases new -p webapp $RELEASE
