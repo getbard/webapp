@@ -4,7 +4,9 @@
 FROM node:12-alpine AS builder
 WORKDIR /build
 
+# Set release in env
 ARG RELEASE
+ENV RELEASE=$RELEASE
 
 # Install dependencies
 COPY . ./
