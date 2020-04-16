@@ -162,7 +162,7 @@ const Author: NextPage = (): React.ReactElement => {
                 refetch={refetch}
               />
             )
-            : <ProfileFeed userId={user.id} />
+            : <ProfileFeed userId={user.id} name={user.firstName} />
         }
       </div>
 

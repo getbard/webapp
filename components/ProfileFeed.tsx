@@ -92,7 +92,7 @@ function Activity({ activity }: { activity: FeedActivity }): React.ReactElement 
   );
 }
 
-function ProfileFeed({ userId }: { userId: string }): React.ReactElement {
+function ProfileFeed({ userId, name }: { userId: string; name: string }): React.ReactElement {
   const { loading, error, data } = useQuery(ProfileFeedQuery, { variables: { userId } });
 
   if (error) return <div>Error</div>;
@@ -104,7 +104,7 @@ function ProfileFeed({ userId }: { userId: string }): React.ReactElement {
     return (
       <EmptyState title={"It's awfully quiet in here."}>
         <div>
-          When people you follow read, post, or comment, we&apos;ll let you know.
+          When {name} reads, posts, or comments, you&apos;ll see it here.
         </div>
       </EmptyState>
     )
