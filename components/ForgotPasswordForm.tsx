@@ -25,7 +25,8 @@ function ForgotPasswordForm({
     firebase
       .auth()
       .sendPasswordResetEmail(email).then(() => {
-        // Email sent.
+        setLoading(false);
+        setResetSent(true);
       }).catch(({ code }) => {
         setLoading(false);
 
@@ -52,6 +53,7 @@ function ForgotPasswordForm({
 
           <input
             className={`shadow-inner border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.email && 'focus:border-primary'} placeholder-gray-500 ${errors.email && 'border-red-600'}`}
+            onChange={(): void => setResetSent(false)}
             id="username"
             placeholder="Email"
             type="email"
