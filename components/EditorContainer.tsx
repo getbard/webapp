@@ -147,6 +147,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
           content,
           subscribersOnly,
           headerImage,
+          category,
         }
       };
     } else {
