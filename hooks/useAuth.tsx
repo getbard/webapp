@@ -56,6 +56,7 @@ function useAuthContext(ctxUserId: string): AuthContext {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(response => {
+        response.user?.sendEmailVerification();
         setUser(response.user);
         return response.user;
       });
