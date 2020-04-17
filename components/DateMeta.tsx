@@ -28,6 +28,7 @@ const DateMeta = ({
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   const mainDate = resource[dateParam];
+
   // Check to see if the updatedAt time is close to the created/published time
   const edited = !isWithinInterval(new Date(resource.updatedAt), {
     start: subMinutes(new Date(mainDate), 1),

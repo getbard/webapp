@@ -27,7 +27,9 @@ function ArticlesDisplay({
 }): React.ReactElement {
   const auth = useAuth();
   const userId = auth.userId || auth.user?.uid;
-  const { loading, error, data, refetch } = useQuery(ArticlesSummaryQuery, { variables: { userId, drafts: true } });
+  const { loading, error, data, refetch } = useQuery(ArticlesSummaryQuery, {
+    variables: { userId, drafts: true },
+  });
 
   if (error) return <div>Error</div>;
   if (loading) return <ArticlesFallback />;
