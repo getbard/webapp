@@ -6,6 +6,7 @@ const ArticlesSummaryQuery = gql`
       id
       title
       summary
+      createdAt
       updatedAt
       publishedAt
       subscribersOnly
