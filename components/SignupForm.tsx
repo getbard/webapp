@@ -77,18 +77,18 @@ function SignupUser(): React.ReactElement {
 
         <div className="text-sm">
           <div className="pb-5">
-            <p className="font-bold pb-2 text-black">Read the Internet&apos;s best writing</p>
-            <p>Build your writing habit by one day at a time. Set a daily goal and work your way up to it.</p>
-          </div>
-
-          <div className="pb-5">
             <p className="font-bold pb-2 text-black">Directly support writers</p>
-            <p>For every 7 day streak you maintain, we donate a dollar to mental health research.</p>
+            <p>Support and interact with the writers you love through one-time donations and monthly subscriptions.</p>
           </div>
 
           <div className="pb-5">
-            <p className="font-bold pb-2 text-black">Earn money with your work</p>
-            <p>See if you like us, risk free. After 30 days, subscribe monthly for the price of a coffee.</p>
+            <p className="font-bold pb-2 text-black">Earn money from your words</p>
+            <p>Get rewarded based on the value you provide, not on how many clicks you get. The end of clickbait has arrived.</p>
+          </div>
+
+          <div className="pb-5">
+            <p className="font-bold pb-2 text-black">Enjoy creative freedom</p>
+            <p>Unleash your own voice. No algorithm determines how you get paid, your audience does. Bard gives you the infrastructure you need to focus on what matters most: your writing.</p>
           </div>
         </div>
       </div>

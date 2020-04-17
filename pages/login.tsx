@@ -17,7 +17,7 @@ const Login: NextPage = (): React.ReactElement => {
   const Component = formComponents[form];
 
   return (
-    <div className="flex flex-col justify-center items-center pt-16">
+    <div className="flex flex-col justify-center items-center pt-16 p-4">
       <div className="pb-5">
         <Link href="/">
           <a className="logo font-extrabold text-4xl text-primary font-serif">
