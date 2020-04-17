@@ -12,7 +12,6 @@ import CancelSubscriptionMutation from '../queries/CancelSubscriptionMutation';
 import Button from './Button';
 import Notification from './Notification';
 import SubscriptionsFalback from './SubscriptionsFallback';
-import EmptyState from './EmptyState';
 
 const SubscriptionRow = ({
   subscription,
@@ -65,7 +64,7 @@ const SubscriptionRow = ({
   );
 }
 
-const Subscriptions = (): React.ReactElement => {
+const SubscriptionSettings = (): React.ReactElement => {
   const { loading, data, error, refetch } = useQuery(UserSubscriptionsQuery, { variables: { username: 'me' } });
 
   if (loading) return <SubscriptionsFalback />;
@@ -73,18 +72,14 @@ const Subscriptions = (): React.ReactElement => {
 
   if (!data?.user?.subscriptions.length) {
     return (
-      <div>
-        <div>
+      <div className="border border-gray-300 rounded-sm p-4 shadow-sm">
+        <h2 className="mb-2 font-bold">
           We didn&apos;t find any subscriptions.
-        </div>
+        </h2>
 
-        <div>
-          Supporting authors you love helps them write great content. That&apos;s what Bard is all about.
-        </div>
-
-        <div>
-          While it isn&apos;t necessarily required, we highly encourage it.
-        </div>
+        <p>
+          Supporting authors you love helps them write great content. That&apos;s what Bard is all about. While it isn&apos;t necessarily required, we highly encourage it.
+        </p>
       </div>
     );
   }
@@ -98,4 +93,4 @@ const Subscriptions = (): React.ReactElement => {
   );
 }
 
-export default Subscriptions;
+export default SubscriptionSettings;
