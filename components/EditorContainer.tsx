@@ -15,6 +15,7 @@ import EditorHeaderPhotoSelector from './EditorHeaderPhotoSelector';
 import EditorCategorySelector from './EditorCategorySelector';
 import HeaderImage from './HeaderImage';
 import Notification from './Notification';
+import VerifyEmailAlert from './VerifyEmailAlert';
 
 import { CreateOrUpdateArticleInput, Article, PublishArticleInput } from '../generated/graphql';
 import CreateOrUpdateArticleMutation from '../queries/CreateOrUpdateArticleMutation';
@@ -77,7 +78,15 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   }] = useMutation(PublishArticleMutation);
 
   const articleId = saveData?.createOrUpdateArticle?.id || article?.id;
-  const publishable = !(!articleId || !title || content === emptyDocumentString) && !(called && mutationLoading);
+
+  // An article is publishable when...
+  // it has been saved with a title and content
+  // and no mutations are currently happening
+  // and the user has been verified
+  const publishable = !(!articleId || !title || content === emptyDocumentString)
+    && !(called && mutationLoading)
+    && auth?.user?.emailVerified;
+
   const publishButtonText = article?.publishedAt ? 'Save and Publish' : 'Publish';
 
   useEffect(() => {
@@ -158,7 +167,9 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
 
   return (
     <div className="relative py-5">
-      <div className="sticky bg-white z-20 top-0 min-w-screen py-2 mb-4">
+      <VerifyEmailAlert />
+
+      <div className={`${auth?.user?.emailVerified && 'sticky'} bg-white z-20 top-0 min-w-screen py-2 mb-4`}>
         <div className="flex justify-between sm:w-3/5 px-5 container mx-auto">
           <SubscribersOnlyToggle
             subscribersOnly={subscribersOnly}
@@ -166,10 +177,6 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
           />
 
           <div>
-            {/* <span className="mr-4 underline">
-              Schedule
-            </span> */}
-
             <Button
               thin
               onClick={handlePublishArticle}
