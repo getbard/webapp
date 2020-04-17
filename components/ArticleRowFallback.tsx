@@ -1,6 +1,6 @@
 function ArticleRowFallback(): React.ReactElement {
   return (
-    <div className="border-b border-gray-200 my-2 py-4 flex justify-between items-center">
+    <div className="border border-gray-200 rounded-sm shadow-sm my-2 p-4 flex justify-between items-center">
       <div>
         {/* Title */}
         <div className="w-64 h-8 mb-2 bg-gray-100"></div>

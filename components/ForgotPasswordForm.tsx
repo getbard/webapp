@@ -66,9 +66,9 @@ function ForgotPasswordForm({
               },
             })}
           />
-          <span className="tracking-wide text-primary text-xs font-bold">{errors.email && errors.email.message}</span>
-          <span className="tracking-wide text-primary text-xs font-bold">{errors.reset && errors.reset.message}</span>
-          <span className="block tracking-wide text-xs font-bold mt-2">{resetSent && `You've got email! If your account is valid you should be able to reset your password now.`}</span>
+          <span className="text-red-600 text-xs font-bold">{errors.email && errors.email.message}</span>
+          <span className="text-red-600 text-xs font-bold">{errors.reset && errors.reset.message}</span>
+          <span className="block text-xs font-bold mt-2">{resetSent && `You've got email! If your account is valid you should be able to reset your password now.`}</span>
         </div>
 
         <div className="flex items-center md:justify-between justify-center">

@@ -90,7 +90,7 @@ function OneTimeSupportButton({
                 }
               })}
             />
-            <span className="tracking-wide text-xs font-bold text-red-600">
+            <span className="text-xs font-bold text-red-600">
               {errors.donationAmount && errors.donationAmount.message}
               {error && 'Yikes, something went wrong. Please try again in a minute.'}
             </span>

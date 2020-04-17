@@ -5,15 +5,17 @@ import { withApollo } from '../lib/apollo';
 import withLayout from '../components/withLayout';
 import PageHeader from '../components/PageHeader';
 import SettingsMenu from '../components/SettingsMenu';
-import Subscriptions from '../components/Subscriptions';
+import Subscriptions from '../components/SubscriptionSettings';
 import VerifyEmailAlert from '../components/VerifyEmailAlert';
+import AccountSettings from '../components/AccountSettings';
 
 const settingsComponents: { [key: string]: any } = {
+  account: AccountSettings,
   subscriptions: Subscriptions,
 };
 
 const Settings: NextPage = (): React.ReactElement => {
-  const [settingsOption, setSettingsOption] = useState('subscriptions');
+  const [settingsOption, setSettingsOption] = useState('account');
   const Component = settingsComponents[settingsOption];
 
   return (
@@ -26,13 +28,16 @@ const Settings: NextPage = (): React.ReactElement => {
           Settings
         </PageHeader>
 
-        <div className="flex">
+        <div className="grid grid-cols-6">
           <SettingsMenu
+            settingsOptions={Object.keys(settingsComponents)}
             settingsOption={settingsOption}
             setSettingsOption={setSettingsOption}
           />
 
-          <Component />
+          <div className="col-span-5">
+            <Component />
+          </div>
         </div>
       </div>
     </div>

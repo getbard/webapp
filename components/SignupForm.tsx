@@ -127,7 +127,7 @@ function SignupUser(): React.ReactElement {
                   },
                 })}
               />
-              <span className="tracking-wide text-primary text-xs font-bold">{errors.email && errors.email.message}</span>
+              <span className="text-red-600 text-xs font-bold">{errors.email && errors.email.message}</span>
             </div>
 
             <div className="mb-4">
@@ -143,7 +143,7 @@ function SignupUser(): React.ReactElement {
                 name="firstName"
                 ref={register({ required: 'Please enter your first name' })}
               />
-              <span className="tracking-wide text-primary text-xs font-bold">{errors.firstName && errors.firstName.message}</span>
+              <span className="text-red-600 text-xs font-bold">{errors.firstName && errors.firstName.message}</span>
             </div>
 
             <div className="mb-6">
@@ -177,7 +177,7 @@ function SignupUser(): React.ReactElement {
                   minLength: { value: 12, message: 'It\'s best if your password is at least 12 characters long' },
                 })}
               />
-              <span className="tracking-wide text-primary text-xs font-bold">{errors.password && errors.password.message}</span>
+              <span className="text-red-600 text-xs font-bold">{errors.password && errors.password.message}</span>
             </div>
 
             <div className="mb-6">
@@ -196,8 +196,8 @@ function SignupUser(): React.ReactElement {
                   validate: passwordConfirmation => passwordConfirmation === watch('password') || 'The confirmation password does not match your password',
                 })}
               />
-              <span className="tracking-wide text-primary text-xs font-bold">{errors.passwordConfirmation && errors.passwordConfirmation.message}</span>
-              <span className="tracking-wide text-primary text-xs font-bold">{errors.signup && errors.signup.message}</span>
+              <span className="text-red-600 text-xs font-bold">{errors.passwordConfirmation && errors.passwordConfirmation.message}</span>
+              <span className="text-red-600 text-xs font-bold">{errors.signup && errors.signup.message}</span>
             </div>
 
             <div className="flex items-center justify-center focus:outline-none">

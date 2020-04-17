@@ -29,7 +29,7 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
   }
 
   return (
-    <div className="border-b border-gray-200 my-2 py-4 flex justify-between items-center">
+    <div className="border border-gray-300 rounded-sm shadow-sm my-2 p-4 flex justify-between items-center">
       <div>
         {
           !article.publishedAt

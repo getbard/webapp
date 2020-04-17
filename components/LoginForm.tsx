@@ -57,7 +57,7 @@ function LoginForm({
 
           <input
             className={`shadow-inner border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.email && 'focus:border-primary'} placeholder-gray-500 ${errors.email && 'border-red-600'}`}
-            id="username"
+            id="email"
             placeholder="Email"
             type="email"
             name="email"
@@ -69,7 +69,7 @@ function LoginForm({
               },
             })}
           />
-          <span className="tracking-wide text-primary text-xs font-bold">{errors.email && errors.email.message}</span>
+          <span className="text-red-600 text-xs font-bold">{errors.email && errors.email.message}</span>
         </div>
 
         <div className="mb-8">
@@ -87,8 +87,8 @@ function LoginForm({
               required: 'Please enter a password',
             })}
           />
-          <span className="tracking-wide text-primary text-xs font-bold">{errors.password && errors.password.message}</span>
-          <span className="tracking-wide text-primary text-xs font-bold">{errors.login && errors.login.message}</span>
+          <span className="text-red-600 text-xs font-bold">{errors.password && errors.password.message}</span>
+          <span className="text-red-600 text-xs font-bold">{errors.login && errors.login.message}</span>
         </div>
 
         <div className="flex items-center md:justify-between justify-center">

@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Wed Apr 15 2020 15:16:37 GMT-0700 (Pacific Daylight Time)
+# timestamp: Fri Apr 17 2020 12:01:45 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -214,6 +214,7 @@ type Mutation {
   publishArticle(input: PublishArticleInput!): PublishArticlePayload!
   deleteArticle(input: DeleteArticleInput!): DeleteArticlePayload!
   createUser(input: CreateUserInput!): CreateUserPayload!
+  updateUser(input: UpdateUserInput!): UpdateUserPayload!
   connectStripeAccount(input: ConnectStripeAccountInput!): ConnectStripeAccountPayload!
   createStripeSession(input: CreateStripeSessionInput!): CreateStripeSessionPayload!
   createSubscription(input: CreateSubscriptionInput!): CreateSubscriptionPayload!
@@ -330,6 +331,18 @@ input UpdateCommentInput {
 type UpdateCommentPayload {
   id: ID!
   updatedAt: String!
+}
+
+input UpdateUserInput {
+  id: ID!
+  firstName: String!
+  lastName: String
+  username: String!
+  email: String!
+}
+
+type UpdateUserPayload {
+  id: ID!
 }
 
 """The `Upload` scalar type represents a file upload."""

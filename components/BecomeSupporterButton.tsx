@@ -71,7 +71,7 @@ function BecomeSupporterButton({
           </p>
 
           {error && (
-            <p className="tracking-wide text-xs font-bold text-red-600 mb-4">
+            <p className="text-xs font-bold text-red-600 mb-4">
               Yikes, something went wrong. Please try again in a minute.
             </p>
           )}

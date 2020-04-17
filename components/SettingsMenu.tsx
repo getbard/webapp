@@ -16,19 +16,17 @@ const MenuOption = styled.div`
   }
 `;
 
-const menuOptions = [
-  'subscriptions',
-];
-
 const SettingsMenu = ({
+  settingsOptions,
   settingsOption,
   setSettingsOption,
 }: {
+  settingsOptions: string[];
   settingsOption: string;
   setSettingsOption: (option: string) => void;
 }): React.ReactElement => (
-    <menu className="w-1/5 mt-0 p-0 mr-4">
-      {menuOptions.map(option => (
+    <menu className="col-span-1 mt-0 p-0 mr-4">
+      {settingsOptions.map(option => (
         <MenuOption
           key={option}
           onClick={(): void => setSettingsOption(option)}
