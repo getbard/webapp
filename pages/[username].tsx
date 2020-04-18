@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { format } from 'date-fns';
 import { ApolloError } from 'apollo-client';
 import Error from 'next/error';
+import { NextSeo } from 'next-seo';
 
 import { Article, User } from '../generated/graphql';
 import AuthorProfileQuery from '../queries/AuthorProfileQuery';
@@ -94,6 +95,11 @@ const Author: NextPage = (): React.ReactElement => {
 
   return (
     <div className="px-5 pt-5 grid grid-cols-4 gap-5">
+      <NextSeo
+        title={`Edit ${username}`}
+        description={`Read and support ${user.username} on Bard.`}
+      />
+
       <div className="text-center break-words">
         <div className="text-4xl font-serif font-bold">{user.firstName} {user.lastName}</div>
         <div className="text-xl text-gray-600 mb-2">{user.username}</div>

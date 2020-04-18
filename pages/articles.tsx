@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import { useQuery } from '@apollo/react-hooks';
 import { useState } from 'react';
 import Link from 'next/link';
+import { NextSeo } from 'next-seo';
 
 import { Article } from '../generated/graphql';
 import ArticlesSummaryQuery from '../queries/ArticlesSummaryQuery';
@@ -84,6 +85,11 @@ const Articles: NextPage = (): React.ReactElement => {
 
   return (
     <div className="px-5 pt-5 container mx-auto relative">
+      <NextSeo
+        title="Articles"
+        description="Get a glimpse at everything you've written."
+      />
+
       <PageHeader>
         Your articles
       </PageHeader>

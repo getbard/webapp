@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
+import { NextSeo } from 'next-seo';
 
 const OpenLetter: NextPage = (): React.ReactElement => {
   const [email, setEmail] = useState('');
@@ -9,6 +10,11 @@ const OpenLetter: NextPage = (): React.ReactElement => {
 
   return (
     <div className="flex flex-col justify-between container mx-auto px-10 lg:px-5">
+      <NextSeo
+        title="Open Letter"
+        description="Read the Internet's best content while directly supporting the writers that made it."
+      />
+
       <header>
         <nav className="py-10 flex justify-between">
           <Link href="/">

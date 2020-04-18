@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Error from 'next/error';
 import { useMutation } from '@apollo/react-hooks';
 import Link from 'next/link';
+import { NextSeo } from 'next-seo';
 
 import { withApollo } from '../lib/apollo';
 import { useAuth } from '../hooks/useAuth';
@@ -69,6 +70,11 @@ const StripeConnect: NextPage = (): React.ReactElement => {
 
   return (
     <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
+      <NextSeo
+        title="Stripe"
+        description="Connect with Stripe and earn money while writing."
+      />
+
       <PageHeader>
         Connecting with Stripe
       </PageHeader>

@@ -1,6 +1,7 @@
 import React from 'react';
 import Error from 'next/error';
-import * as Sentry from '@sentry/node'
+import * as Sentry from '@sentry/node';
+import { NextSeo } from 'next-seo';
 
 const BardError = ({
   statusCode,
@@ -15,7 +16,16 @@ const BardError = ({
     Sentry.captureException(err);
   }
 
-  return <Error statusCode={statusCode} />;
+  return (
+    <>
+      <NextSeo
+        title="Whoops"
+        description="Something went wrong. Sorry about that!"
+      />
+
+      <Error statusCode={statusCode} />
+    </>
+  );
 }
 
 BardError.getInitialProps = async ({ res, err, asPath }: any): Promise<any> => {

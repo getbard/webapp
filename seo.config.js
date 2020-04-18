@@ -1,5 +1,6 @@
 export default {
-  title: 'bard.',
+  title: 'welcome',
+  titleTemplate: '%s | bard.',
   openGraph: {
     title: 'bard.',
     type: 'website',
@@ -14,6 +15,6 @@ export default {
   },
   twitter: {
     cardType: 'summary_large_image',
-    handle: '@amorriscode',
+    site: '@GetBardOfficial',
   },
 };

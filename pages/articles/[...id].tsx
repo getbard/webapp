@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
 import styled from '@emotion/styled';
 import ProgressiveImage from 'react-progressive-image';
+import { NextSeo } from 'next-seo';
 
 import { User } from '../../generated/graphql';
 import ArticleBySlugQuery from '../../queries/ArticleBySlugQuery';
@@ -78,9 +79,32 @@ const Article: NextPage = (): React.ReactElement => {
 
   const article = data?.article || data?.articleBySlug;
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName}`;
+  const readingTime = timeToRead(article.wordCount);
+  const seoDescription = article?.summary
+    ? article.summary
+    : article.content.substr(0, article.content.lastIndexOf('.', 120));
 
   return (
     <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
+      <NextSeo
+        title={article.title}
+        description={seoDescription}
+        openGraph={{
+          title: article.title,
+          description: `${seoDescription}
+            ${readingTime}
+          `,
+          images: [{
+            url: article.headerImage?.url || 'https://getbard.com/og.png',
+            alt: article.title,
+          }],
+          article: {
+            publishedTime: article.publishedAt,
+            authors: [authorName],
+          }
+        }}
+      />
+
       <div className="mb-8">
         {
           article?.headerImage?.url && (
@@ -123,7 +147,7 @@ const Article: NextPage = (): React.ReactElement => {
         </div>
 
         <div className="text-xs w-full relative">
-          <DateMeta resource={article} dateParam="publishedAt" action="" /> | {timeToRead(article.wordCount)}
+          <DateMeta resource={article} dateParam="publishedAt" action="" /> | {readingTime}
         </div>
       </div>
 

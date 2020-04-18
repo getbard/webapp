@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
+import { NextSeo } from 'next-seo';
 
 import LoginForm from '../components/LoginForm';
 import ForgotPasswordForm from '../components/ForgotPasswordForm';
@@ -18,6 +19,11 @@ const Login: NextPage = (): React.ReactElement => {
 
   return (
     <div className="flex flex-col justify-center items-center pt-16 p-4">
+      <NextSeo
+        title="Login"
+        description="Login to find your next favorite read."
+      />
+
       <div className="pb-5">
         <Link href="/">
           <a className="logo font-extrabold text-4xl text-primary font-serif">
