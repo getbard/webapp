@@ -83,10 +83,15 @@ function CommentEditor({
     }
   }, [createLoading, updateLoading]);
 
-  // Clear the comment if it was created successfully
-  if (createData?.createComment?.message === JSON.stringify(value)) {
-    setValue(emptyValue);
-  }
+  useEffect(() => {
+    if (createData?.createComment?.message) {
+      Transforms.select(editor, {
+        anchor:{ path: [0, 0] ,offset: 0 },
+        focus: { path: [0, 0], offset: 0 }
+      });
+      setValue(emptyValue);
+    }
+  }, [createData]);
 
   const focusEditor = (): void => {
     ReactEditor.focus(editor);
