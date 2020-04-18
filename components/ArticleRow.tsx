@@ -18,14 +18,18 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
   const auth = useAuth();
   const [showCopiedTooltip, setShowCopiedTooltip] = useState(false);
   const articleOwner = auth.userId === article.userId;
-  const [deleteArticle, { data, called, error }] = useMutation(DeleteArticleMutation, {
+  const [deleteArticle, { error }] = useMutation(DeleteArticleMutation, {
     update() {
       refetch();
     }
   });
 
   const handleDelete = (): void => {
-    deleteArticle({ variables: { input: { id: article.id } } });
+    const deleteConfirmed = confirm('Are you sure you want to delete this article?');
+
+    if (deleteConfirmed) {
+      deleteArticle({ variables: { input: { id: article.id } } });
+    }
   }
 
   return (
@@ -110,9 +114,7 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
             Delete
           </div>
 
-          <Notification showNotification={(data && called) || !!error} error={error}>
-            Deleted
-          </Notification>
+          <Notification showNotification={!!error} error={error} />
         </div>
       )}
       </div>
