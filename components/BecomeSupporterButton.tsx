@@ -29,7 +29,7 @@ function BecomeSupporterButton({
 
   const handleClick = (): void => {
     if (!auth.userId) {
-      router.push('/login');
+      router.push(`/login?redirect=${router.asPath}`);
       return;
     }
 

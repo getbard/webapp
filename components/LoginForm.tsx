@@ -22,10 +22,11 @@ function LoginForm({
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, errors, setError } = useForm<FormData>();
   const setFormToForgotPassword = (): void => setForm('forgotPassword');
+  const redirect = router?.query?.redirect as string || '/';
 
   useEffect(() => {
     if (auth.user !== null){
-      router.push('/');
+      router.push(redirect);
     }
   }, [auth]);
 

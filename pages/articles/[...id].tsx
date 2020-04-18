@@ -30,6 +30,7 @@ const GradientBlocker = styled.div`
 
 const ContentBlocker = ({ author }: { author: User }): React.ReactElement => {
   const auth = useAuth();
+  const router = useRouter();
   const buttonText = auth.userId ? `Support ${author.firstName} to read this article` : 'Create an account to read this article';
   const buttonHref = auth.userId ? `/${author.username}?support=true` : '/signup';
 
@@ -55,7 +56,7 @@ const ContentBlocker = ({ author }: { author: User }): React.ReactElement => {
         {
           !auth.userId && (
             <div className="mt-2">
-              Already a supporter? <Link href="/login"><a className="underline">Login to read</a></Link>
+              Already a supporter? <Link href={`/login?redirect=${router.asPath}`}><a className="underline">Login to read</a></Link>
             </div>
           )
         }

@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 
 import { useAuth } from '../hooks/useAuth';
 
+import { User } from '../generated/graphql';
 import CreateStripeSessionMutation from '../queries/CreateStripeSessionMutation';
 
 import Button from './Button';
@@ -17,10 +18,10 @@ type FormData = {
 
 function OneTimeSupportButton({
   stripeUserId,
-  authorName,
+  author,
 }: {
   stripeUserId: string;
-  authorName: string;
+  author: User;
 }): React.ReactElement {
   const router = useRouter();
   const auth = useAuth();
@@ -31,7 +32,7 @@ function OneTimeSupportButton({
 
   const handleClick = (): void => {
     if (!auth.userId) {
-      router.push('/login');
+      router.push(`/login?redirect=${router.asPath}`);
       return;
     }
 
@@ -75,7 +76,7 @@ function OneTimeSupportButton({
         <h2 className="text-xl font-bold mb-2">Thank you!</h2>
 
         <p className="mb-4">
-          Supporting {authorName} helps them focus on what matters most, their content.
+          Supporting {author.firstName} helps them focus on what matters most, their content.
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)}>

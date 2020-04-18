@@ -18,6 +18,7 @@ function Comments({
   resourceId: string;
 }): React.ReactElement {
   const auth = useAuth();
+  const router = useRouter();
   const { loading, error, data, refetch } = useQuery(CommentsByResourceIdQuery, { variables: { resourceId } });
   const [sortBy, setSortBy] = useState('latest');
 
@@ -41,7 +42,7 @@ function Comments({
           )
           : (
             <div className="text-center p-16 border border-gray-300 rounded-sm">
-              <Link href="/login">
+              <Link href={`/login?redirect=${router.asPath}`}>
                 <a className="underline">
                   Login to comment on this article
                 </a>
