@@ -36,7 +36,11 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
       <ArticleCardContainer className="pt-1 pb-2 px-2 rounded-sm hover:cursor-pointer transition duration-150 ease-in">
         <div className={`${article.subscribersOnly && 'grid grid-cols-8'}`}>
           <h1 className="col-span-7 font-serif font-bold transition duration-150 ease-in">
-            {article.title}
+            {
+              article.title.length > 45
+                ? `${article.title.substr(0, article.title.lastIndexOf(' ', 45))}...`
+                : article.title
+            }
           </h1>
 
           {
@@ -52,7 +56,11 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
         {
           article.summary && (
             <div className="text-gray-600 mt-1 text-sm">
-              {article.summary}
+              {
+                article.summary.length > 100
+                  ? `${article.summary.substr(0, article.summary.lastIndexOf(' ', 100))}...`
+                  : article.summary
+              }
             </div>
           )
         }

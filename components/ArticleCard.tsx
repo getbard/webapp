@@ -62,11 +62,19 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
       
         <div>
           <h1 className="font-serif font-bold text-xl transition duration-150 ease-in">
-            {article.title}
+            {
+              article.title.length > 45
+                ? `${article.title.substr(0, article.title.lastIndexOf(' ', 45))}...`
+                : article.title
+            }
           </h1>
 
           <div className="text-gray-600 text-sm">
-            {article.summary}
+          {
+            article.summary && article.summary.length > 100
+              ? `${article.summary.substr(0, article.summary.lastIndexOf(' ', 100))}...`
+              : article.summary
+          }
           </div>
           
           <div className="text-xs mt-2 font-medium flex justify-between">

@@ -217,6 +217,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
           placeholder="Title"
           value={title}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setTitle(e.target.value)}
+          maxLength={80}
         >
         </TextareaAutosize>
 
@@ -225,6 +226,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
           placeholder="Add an optional summary"
           value={summary}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setSummary(e.target.value)}
+          maxLength={200}
         >
         </TextareaAutosize>
 

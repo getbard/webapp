@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
-import { Transforms } from 'slate'
+import { Transforms, Editor } from 'slate'
 import styled from '@emotion/styled';
 import { FiImage } from 'react-icons/fi';
 import { useDropzone } from 'react-dropzone';
@@ -40,9 +40,15 @@ function EditorInsertImage(): React.ReactElement {
     if (data?.uploadImage?.url) {
       const text = { text: '' };
       const image = { type: 'image', url: data?.uploadImage?.url, children: [text] };
+
+      // Insert the image into the editor
       Transforms.insertNodes(editor, image);
       setDisplay(false);
       setError(null);
+
+      // Focus the editor
+      ReactEditor.focus(editor);
+      Transforms.select(editor, Editor.end(editor, []));
     }
   }, [loading]);
 
