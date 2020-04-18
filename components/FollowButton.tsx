@@ -1,4 +1,7 @@
 import { useMutation } from '@apollo/react-hooks';
+import { useRouter } from 'next/router';
+
+import { useAuth } from '../hooks/useAuth';
 
 import { User } from '../generated/graphql';
 import AuthorProfileQuery from '../queries/AuthorProfileQuery';
@@ -17,6 +20,9 @@ function FollowButton({
   follower: string;
   className?: string;
 }): React.ReactElement {
+  const router = useRouter();
+  const auth = useAuth();
+
   const [followUser, { error: followError }] = useMutation(FollowUserMutation, {
     update(cache) {
       const userFollowers = user?.followerIds || [];
@@ -32,6 +38,7 @@ function FollowButton({
       });
     }
   });
+
   const [unfollowUser, { error: unfollowError }] = useMutation(UnfollowUserMutation, {
     update(cache) {
       const data: any = cache.readQuery({
@@ -52,6 +59,11 @@ function FollowButton({
   const isFollower = user.followerIds?.includes(follower);
 
   const handleFollow = (): void => {
+    if (!auth.userId) {
+      router.push('/login');
+      return;
+    }
+
     if (isFollower) {
       unfollowUser({ variables: { input: { userId: user.id } } });
     } else {

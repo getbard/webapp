@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { loadStripe } from '@stripe/stripe-js';
 import { FiFeather } from 'react-icons/fi';
+import { useRouter } from 'next/router';
+
+import { useAuth } from '../hooks/useAuth';
 
 import { User } from '../generated/graphql';
 import CreateStripeSessionMutation from '../queries/CreateStripeSessionMutation';
@@ -17,9 +20,21 @@ function BecomeSupporterButton({
   author: User;
   displayModal?: boolean;
 }): React.ReactElement {
+  const router = useRouter();
+  const auth = useAuth();
+
   const { stripeUserId, stripePlan, firstName } = author;
   const [displayDonationPrompt, setDisplayDonationPrompt] = useState(displayModal || false);
   const [createStripeSession, { data, error, loading }] = useMutation(CreateStripeSessionMutation);
+
+  const handleClick = (): void => {
+    if (!auth.userId) {
+      router.push('/login');
+      return;
+    }
+
+    setDisplayDonationPrompt(true);
+  }
 
   const handleSubmit = (): void => {
     createStripeSession({
@@ -50,7 +65,7 @@ function BecomeSupporterButton({
 
   return (
     <>
-      <Button onClick={(): void => setDisplayDonationPrompt(true)}>
+      <Button onClick={handleClick}>
         Become a supporter
       </Button>
 
