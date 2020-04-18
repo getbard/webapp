@@ -223,7 +223,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
 
         <TextareaAutosize 
           className="focus:outline-none text-xl w-full h-auto resize-none placeholder-gray-500 mb-6 font-serif"
-          placeholder="Add an optional summary"
+          placeholder="Add a summary"
           value={summary}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>): void => setSummary(e.target.value)}
           maxLength={200}
