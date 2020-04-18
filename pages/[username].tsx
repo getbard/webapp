@@ -128,7 +128,10 @@ const Author: NextPage = (): React.ReactElement => {
                 />
 
                 {user?.stripeUserId && (
-                  <OneTimeSupportButton stripeUserId={user?.stripeUserId || ''} authorName={user.firstName} />
+                  <OneTimeSupportButton
+                    stripeUserId={user?.stripeUserId || ''}
+                    author={user}
+                  />
                 )}
               </div>
             </div>

@@ -21,7 +21,7 @@ function withLayout(PageComponent: NextPage): NextPage {
 
     useEffect(() => {
       if (!cookie.get('token') && protectedRoutes.includes(router.pathname)) {
-        router.push('/login');
+        router.push(`/login?redirect=${router.asPath}`);
       }
     }, []);
 
