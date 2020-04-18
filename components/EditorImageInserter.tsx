@@ -131,7 +131,7 @@ function EditorInsertImage(): React.ReactElement {
 
           {
             loading
-              ? <FiLoader className="inline-block icon-spin text-xs mr-1" />
+              ? <FiLoader className="inline-block icon-spin text-lg mr-1" />
               : <p>Drop an image or click to browse your images (5MB size limit)</p>
           }
           
