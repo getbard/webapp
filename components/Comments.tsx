@@ -41,7 +41,7 @@ function Comments({
           )
           : (
             <div className="text-center p-16 border border-gray-300 rounded-sm">
-              <Link href="/href">
+              <Link href="/login">
                 <a className="underline">
                   Login to comment on this article
                 </a>
@@ -76,7 +76,7 @@ function Comments({
           )
           : (
             <div className="pt-5 text-center">
-              No one has commented on this article. Be the first to start a discussion!
+              No one has commented on this article. {auth.userId && 'Be the first to start a discussion!'}
             </div>
           )
       }
