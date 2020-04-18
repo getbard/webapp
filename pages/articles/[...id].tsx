@@ -95,7 +95,7 @@ const Article: NextPage = (): React.ReactElement => {
             ${readingTime}
           `,
           images: [{
-            url: article.headerImage?.url || 'https://getbard.com/og.png',
+            url: `${article.headerImage?.url}&w=960` || 'https://getbard.com/og.png',
             alt: article.title,
           }],
           article: {
