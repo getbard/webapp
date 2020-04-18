@@ -46,7 +46,7 @@ const SubscriptionRow = ({
         </div>
 
         <div className="underline">
-          You&apos;re next charge will occur on {format(fromUnixTime(currentPeriodEnd), 'MMMM d, yyyy')}
+          Your next charge will occur on {format(fromUnixTime(currentPeriodEnd), 'MMMM d, yyyy')}
         </div>
       </div>
 
