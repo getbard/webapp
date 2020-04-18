@@ -39,11 +39,10 @@ const TEXT_TAGS: {
 const deserialize = (el: any): any => {
   if (el.nodeType === 3) {
     // Remove line breaks from the start and end of the text
-    return el.textContent.trim();
+    const elContent = el.textContent.replace(/(^\s*(?!.+)\n+)|(\n+\s+(?!.+)$)/g, '');
+    return elContent || null;
   } else if (el.nodeType !== 1) {
     return null;
-  } else if (el.nodeName === 'BR') {
-    return '\n';
   }
 
   const { nodeName } = el;

@@ -27,7 +27,7 @@ function Button({
   const bgColor = secondary ? 'bg-white' : 'bg-primary';
   const bgHoverColor = secondary ? 'hover:bg-primary' : 'hover:bg-secondary';
   const borderHoverColor = secondary ? 'hover:border-primary' : 'hover:border-secondary';
-  const disabled = isDisabled && 'opacity-50 cursor-not-allowed';
+  const disabled = (isDisabled && 'opacity-50 cursor-not-allowed') || loading;
 
   const classes = `focus:outline-none inline-flex justify-center items-center ${!text && 'border'} border-primary ${!disabled && borderHoverColor} transition duration-150 ease-in-out ${!text && bgColor} px-4 ${yPadding} ${disabled} ${textColor} ${hoverText} ${(!disabled && !text) && bgHoverColor} rounded ${className}`
   return (

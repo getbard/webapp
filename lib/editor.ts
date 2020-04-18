@@ -1,11 +1,8 @@
 import { Editor, Transforms, Text } from 'slate';
 
 export const isFormatActive = (editor: Editor, format: string): boolean => {
-  const [match] = Editor.nodes(editor, {
-    match: n => n[format] === true,
-    mode: 'all',
-  });
-  return !!match;
+  const marks = Editor.marks(editor);
+  return marks ? marks[format] === true : false;
 }
 
 export const toggleFormat = (editor: Editor, format: string): void => {
@@ -13,7 +10,7 @@ export const toggleFormat = (editor: Editor, format: string): void => {
   Transforms.setNodes(
     editor,
     { [format]: isActive ? null : true },
-    { match: Text.isText, split: true },
+    { match: n => Text.isText(n), split: true },
   );
 }
 
