@@ -1,5 +1,7 @@
 import { NextPage } from 'next';
 
+import { withApollo } from '../lib/apollo';
+
 import withLayout from '../components/withLayout';
 import PageHeader from '../components/PageHeader';
 
@@ -15,4 +17,4 @@ const Analytics: NextPage = (): React.ReactElement => {
   );
 }
 
-export default withLayout(Analytics);
+export default withApollo()(withLayout(Analytics));
