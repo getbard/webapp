@@ -89,7 +89,7 @@ const withHtml = (editor: ReactEditor): ReactEditor => {
 
     if (html) {
       const parsed = new DOMParser().parseFromString(html, 'text/html');
-      const fragment = deserialize(parsed.body)
+      const fragment = deserialize(parsed.body);
       Transforms.insertFragment(editor, fragment);
       return;
     }
