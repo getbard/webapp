@@ -4,6 +4,8 @@ import { useMutation } from '@apollo/react-hooks';
 import { loadStripe } from '@stripe/stripe-js';
 import { useRouter } from 'next/router';
 
+import { useAuth } from '../hooks/useAuth';
+
 import CreateStripeSessionMutation from '../queries/CreateStripeSessionMutation';
 
 import Button from './Button';
@@ -20,11 +22,21 @@ function OneTimeSupportButton({
   stripeUserId: string;
   authorName: string;
 }): React.ReactElement {
+  const router = useRouter();
+  const auth = useAuth();
+
   const [displayDonationPrompt, setDisplayDonationPrompt] = useState(false);
   const { register, handleSubmit, errors } = useForm<FormData>();
   const [createStripeSession, { data, error, loading }] = useMutation(CreateStripeSessionMutation);
 
-  const router = useRouter();
+  const handleClick = (): void => {
+    if (!auth.userId) {
+      router.push('/login');
+      return;
+    }
+
+    setDisplayDonationPrompt(true);
+  }
 
   const onSubmit = ({ donationAmount }: FormData): void => {
     createStripeSession({
@@ -55,7 +67,7 @@ function OneTimeSupportButton({
 
   return (
     <>
-      <Button secondary onClick={(): void => setDisplayDonationPrompt(true)}>
+      <Button secondary onClick={handleClick}>
         One-Time Support
       </Button>
 
