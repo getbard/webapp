@@ -32,13 +32,13 @@ function Footer(): React.ReactElement {
           Feedback
         </a>
 
-        <Link href="/privacy-policy">
+        <Link href="/privacy">
           <a>
             Privacy
           </a>
         </Link>
 
-        <Link href="/terms-of-service">
+        <Link href="/terms">
           <a>
             Terms
           </a>

@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import { NextSeo } from 'next-seo';
 
 import { withApollo } from '../lib/apollo';
 
@@ -9,6 +10,11 @@ import Footer from '../components/Footer';
 const FAQ: NextPage = (): React.ReactElement => {
   return (
     <>
+      <NextSeo
+        title="FAQ"
+        description="View frequently asked questions about the Bard platform."
+      />
+
       <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
         <PageHeader>
           Frequently Asked Questions
