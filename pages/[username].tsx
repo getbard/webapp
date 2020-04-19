@@ -25,6 +25,7 @@ import ArticlesFallback from '../components/ArticlesFallback';
 import UserProfileFallback from '../components/UserProfileFallback';
 import EmptyState from '../components/EmptyState';
 import ProfileFeed from '../components/ProfileFeed';
+import GenericError from '../components/GenericError';
 
 function Articles({
   loading,
@@ -40,8 +41,9 @@ function Articles({
   name: string;
 }): React.ReactElement {
 
-  if (error) return <div>Error loading articles!</div>;
   if (loading) return <ArticlesFallback />;
+
+  if (error) return <div><GenericError title /></div>;
 
   const { articlesByUser } = articlesData;
 
@@ -75,8 +77,8 @@ const Author: NextPage = (): React.ReactElement => {
   const [section, setSection] = useState('articles');
   const { loading, error, data } = useQuery(AuthorProfileQuery, { variables: { username } });
 
-  if (error) return <div>Error</div>;
   if (loading) return <UserProfileFallback />;
+  if (error) return <div><GenericError title /></div>;
 
   const { user }: { user: User } = data;
 

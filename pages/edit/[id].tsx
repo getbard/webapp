@@ -12,6 +12,7 @@ import { withApollo } from '../../lib/apollo';
 import withLayout from '../../components/withLayout';
 import EditorContainer from '../../components/EditorContainer';
 import GenericLoader from '../../components/GenericLoader';
+import GenericError from '../../components/GenericError';
 
 const Edit: NextPage = (): React.ReactElement => {
   const router = useRouter();
@@ -19,8 +20,8 @@ const Edit: NextPage = (): React.ReactElement => {
   const { id } = router.query;
   const { loading, error, data } = useQuery(ArticleByIdQuery, { variables: { id } });
 
-  if (error) return <div>Error</div>;
   if (loading || !auth?.user?.uid) return <GenericLoader />;
+  if (error) return <div><GenericError title /></div>;
 
   const { article } = data;
 

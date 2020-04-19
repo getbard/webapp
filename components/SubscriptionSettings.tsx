@@ -12,6 +12,7 @@ import CancelSubscriptionMutation from '../queries/CancelSubscriptionMutation';
 import Button from './Button';
 import Notification from './Notification';
 import SubscriptionsFalback from './SubscriptionsFallback';
+import GenericError from './GenericError';
 
 const SubscriptionRow = ({
   subscription,
@@ -77,7 +78,18 @@ const SubscriptionSettings = (): React.ReactElement => {
   const { loading, data, error, refetch } = useQuery(UserSubscriptionsQuery, { variables: { username: 'me' } });
 
   if (loading) return <SubscriptionsFalback />;
-  if (error) return <div>Something went wrong. Sorry about that.</div>;
+
+  if (error) return (
+    <div className="w-full border border-gray-300 rounded-sm p-4 shadow-sm">
+      <h2 className="mb-2 font-bold">
+        We weren&apos;t able to get your subscriptions.
+      </h2>
+
+      <p>
+        Rest assured, we&apos;re on it! Check back in a little bit.
+      </p>
+    </div>
+  );
 
   if (!data?.user?.subscriptions.length) {
     return (

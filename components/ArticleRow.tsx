@@ -36,7 +36,7 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
       category: article.category,
     },
     author: {
-      id: article.author.id,
+      id: article.userId,
     }
   }
 

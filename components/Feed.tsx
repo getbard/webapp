@@ -16,6 +16,7 @@ import FeedCommentInfo from './FeedCommentInfo';
 import FeedUserInfo from './FeedUserInfo';
 import FeedFallback from './FeedFallback';
 import EmptyState from './EmptyState';
+import GenericError from './GenericError';
 
 function Item({ item }: { item: FeedItem }): React.ReactElement {
   const { verb, actor_count: actorCount } = item;
@@ -104,8 +105,8 @@ function Item({ item }: { item: FeedItem }): React.ReactElement {
 function Feed(): React.ReactElement {
   const { loading, error, data } = useQuery(FeedQuery);
 
-  if (error) return <div>Error</div>;
   if (loading) return <FeedFallback />;
+  if (error) return <div><GenericError title /></div>;
 
   const { feed } = data;
 
