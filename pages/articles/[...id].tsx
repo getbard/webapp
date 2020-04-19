@@ -105,11 +105,10 @@ const Article: NextPage = (): React.ReactElement => {
       readingTime,
       subscribersOnly: article.subscribersOnly,
       category: article.category,
+      headerImage: article.headerImage,
     },
     author: {
       id: article.author.id,
-      firstName: article.author.firstName,
-      lastName: article.author.lastName,
     }
   };
 

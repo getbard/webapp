@@ -49,8 +49,6 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
       },
       author: {
         id: article.author.id,
-        firstName: article.author.firstName,
-        lastName: article.author.lastName,
       },
     });
   }

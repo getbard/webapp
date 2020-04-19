@@ -14,7 +14,13 @@ function FeedCommentItemInfo({
   const auth = useAuth();
   const usersOwnArticle = auth.userId === resource.author.id;
   const actorCommentedOnOwnArticle = actor.username === resource.author.username;
-  const trackingData = { actor, resource, usersOwnArticle };
+  const trackingData = {
+    actor: {
+      id: actor.id,
+    },
+    resource,
+    usersOwnArticle,
+  };
 
   return (
     <>
