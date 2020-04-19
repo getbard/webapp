@@ -81,8 +81,8 @@ const Article: NextPage = (): React.ReactElement => {
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName}`;
   const readingTime = timeToRead(article.wordCount);
   const seoDescription = article?.summary
-    ? article.summary.substr(0, article.summary.lastIndexOf('.', 200))
-    : article.content.substr(0, article.content.lastIndexOf('.', 200));
+    ? article.summary.substr(0, article.summary.lastIndexOf('.', 180))
+    : article.content.substr(0, article.content.lastIndexOf('.', 180));
 
   return (
     <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
@@ -91,8 +91,9 @@ const Article: NextPage = (): React.ReactElement => {
         description={seoDescription}
         openGraph={{
           title: article.title,
-          description: `${seoDescription}
-            ${readingTime}
+          description: `
+            ${seoDescription}
+            <br/><strong>${readingTime}</strong>
           `,
           images: [{
             url: `${article.headerImage?.url}&w=960` || 'https://getbard.com/og.png',
