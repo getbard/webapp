@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
 import { useForm } from 'react-hook-form';
-import { FiLoader } from 'react-icons/fi';
 
 import { useAuth } from '../hooks/useAuth';
 

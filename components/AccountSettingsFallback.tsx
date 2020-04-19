@@ -1,19 +1,3 @@
-import { useState } from 'react';
-import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks';
-import { useForm } from 'react-hook-form';
-import { FiLoader } from 'react-icons/fi';
-
-import { useAuth } from '../hooks/useAuth';
-
-import UserAccountSettingsQuery from '../queries/UserAccountSettingsQuery';
-import UsernameQuery from '../queries/UsernameQuery';
-import UpdateUserMutation from '../queries/UpdateUserMutation';
-
-import Button from './Button';
-import Notification from './Notification';
-import GenericError from './GenericError';
-
-
 const AccountSettingsFallback = (): React.ReactElement => {
   return (
     <div className="w-full border border-gray-300 rounded-sm p-4 shadow-sm">
