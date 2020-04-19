@@ -13,7 +13,7 @@ import ArticleByIdQuery from '../../queries/ArticleByIdQuery';
 
 import { useAuth } from '../../hooks/useAuth';
 
-import { timeToRead } from '../../lib/editor';
+import { timeToRead, serializeText } from '../../lib/editor';
 import { withApollo } from '../../lib/apollo';
 import withLayout from '../../components/withLayout';
 import Editor from '../../components/Editor';
@@ -81,13 +81,13 @@ const Article: NextPage = (): React.ReactElement => {
   const article = data?.article || data?.articleBySlug;
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName}`;
   const readingTime = timeToRead(article.wordCount);
+  const textContent = serializeText(JSON.parse(article.content)).trim();
   const seoDescription = article?.summary
     ? article.summary.substr(0, article.summary.lastIndexOf('.', 180))
-    : article.content.substr(0, article.content.lastIndexOf('.', 180));
+    : textContent.substr(0, textContent.lastIndexOf('.', 180));
 
   return (
     <>
-    <Head>
       <NextSeo
         title={article.title}
         description={seoDescription}
@@ -105,14 +105,16 @@ const Article: NextPage = (): React.ReactElement => {
         }}
       />
 
-      {/*
-        // @ts-ignore */}
-      <meta name="twitter:label1" value="Reading time" />
+      <Head>
+        {/* {/*
+          // @ts-ignore */}
+        <meta name="twitter:label1" value="Reading time" />
 
-      {/*
-        // @ts-ignore */}
-      <meta name="twitter:data1" value={readingTime} />
-    </Head>
+        {/*
+          // @ts-ignore */}
+        <meta name="twitter:data1" value={readingTime} /> */}
+      </Head>
+
       <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
         <div className="mb-8">
           {
