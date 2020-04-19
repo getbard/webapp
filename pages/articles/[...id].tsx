@@ -81,8 +81,8 @@ const Article: NextPage = (): React.ReactElement => {
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName}`;
   const readingTime = timeToRead(article.wordCount);
   const seoDescription = article?.summary
-    ? article.summary
-    : article.content.substr(0, article.content.lastIndexOf('.', 120));
+    ? article.summary.substr(0, article.summary.lastIndexOf('.', 200))
+    : article.content.substr(0, article.content.lastIndexOf('.', 200));
 
   return (
     <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
