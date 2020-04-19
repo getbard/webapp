@@ -125,7 +125,10 @@ function EditorInsertImage(): React.ReactElement {
         ref={ref as React.RefObject<any>}
         className="hover:cursor-pointer hover:bg-gray-200 text-gray-500 hover:text-gray-800 text-lg rounded-sm px-2 py-2 absolute z-10 opacity-0"
       >
-        <FiImage onClick={(): void => setDisplay(true)} />
+        <FiImage onClick={(): void => {
+          window.analytics.track('EDITOR IMAGE INSERTER: Inserter opened');
+          setDisplay(true);
+        }} />
       </Menu>
 
       <Modal open={display} onModalClose={(): void => setDisplay(false)}>

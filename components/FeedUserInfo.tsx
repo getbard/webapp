@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { Article, User } from '../generated/graphql';
+import { User } from '../generated/graphql';
 
 import { useAuth } from '../hooks/useAuth';
 
@@ -19,7 +19,10 @@ function FeedUserInfo({
           ? 'you'
           : (
             <Link href={`/${user.username}`}>
-              <a className="font-bold">
+              <a
+                className="font-bold"
+                onClick={(): void => window.analytics.track('FEED USER INFO: User clicked', { user, isUser })}
+              >
                 {user.firstName} {user?.lastName}
               </a>
             </Link>

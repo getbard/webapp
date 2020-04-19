@@ -30,16 +30,26 @@ function OneTimeSupportButton({
   const { register, handleSubmit, errors } = useForm<FormData>();
   const [createStripeSession, { data, error, loading }] = useMutation(CreateStripeSessionMutation);
 
+  const trackingData = {
+    author,
+    page: router.asPath,
+  };
+
   const handleClick = (): void => {
     if (!auth.userId) {
+      window.analytics.track('ONE TIME SUPPORT BUTTON: One-Time Support clicked; Redirect to login', trackingData);
       router.push(`/login?redirect=${router.asPath}`);
       return;
     }
+
+    window.analytics.track('ONE TIME SUPPORT BUTTON: One-Time Support clicked', trackingData);
 
     setDisplayDonationPrompt(true);
   }
 
   const onSubmit = ({ donationAmount }: FormData): void => {
+    window.analytics.track('ONE TIME SUPPORT BUTTON: Pay now clicked', { ...trackingData, donationAmount });
+
     createStripeSession({
       variables: {
         input: {

@@ -7,6 +7,8 @@ function VerifyEmailAlert(): React.ReactElement {
   const [verificationSent, setVerificationSent] = useState(false);
 
   const sendEmailVerification = (): void => {
+    window.analytics.track('VERIFY EMAIL ALERT: Resend verification clicked');
+
     if (!verificationSent) {
       auth.user?.sendEmailVerification();
       setVerificationSent(true);

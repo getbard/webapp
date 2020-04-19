@@ -16,6 +16,10 @@ function SupportConfirmation({
   const { loading, error, data } = useQuery(StripeSessionQuery, { variables: { id: sessionId, stripeUserId } });
   const sessionSucceededOrSubscription = data?.stripeSession?.status === 'succeeded' || data?.stripeSession?.subscription;
 
+  if (sessionSucceededOrSubscription) {
+    window.analytics.track('SUPPORT CONFIRMATION: Succeeded', { sessionId, stripeUserId });
+  }
+
   if (sessionSucceededOrSubscription && refetch) {
     refetch();
   }

@@ -102,6 +102,11 @@ function useAuthContext(ctxUserId: string): AuthContext {
         const token = await user.getIdToken();
         cookie.set('token', token);
         cookie.set('uid', user.uid);
+
+        // Set the user in Segment
+        window.analytics.identify(user.uid, {
+          email: user.email,
+        });
       } else {
         setUser(null);
         setUserId(null);

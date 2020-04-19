@@ -42,7 +42,10 @@ function DiscoverArticles({ category }: { category: string }): React.ReactElemen
         <div>
           Perhaps you&apos;d like to&nbsp;
           <Link href="/write">
-            <a className="underline">
+            <a
+              className="underline"
+              onClick={(): void => window.analytics.track(`DISCOVER: Perhaps you'd like to write one? clicked`)}
+            >
               write one?
             </a>
           </Link>

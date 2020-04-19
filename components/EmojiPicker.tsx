@@ -34,6 +34,7 @@ function EmojiPicker({
           emoji="point_up"
           title=""
           onSelect={(emoji: BaseEmoji): void => {
+            window.analytics.track(`EMOJI PICKER: ${emoji} clicked`);
             handleEmojiSelection(emoji);
             setShowEmojiPicker(false);
           }}
@@ -43,6 +44,7 @@ function EmojiPicker({
         className="px-1"
         onMouseDown={(e): void => {
           e.preventDefault();
+          window.analytics.track('EMOJI PICKER: Show emoji picker clicked', { show: showEmojiPicker });
           setShowEmojiPicker(!showEmojiPicker);
         }}
       >

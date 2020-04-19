@@ -29,7 +29,10 @@ const SettingsMenu = ({
       {settingsOptions.map(option => (
         <MenuOption
           key={option}
-          onClick={(): void => setSettingsOption(option)}
+          onClick={(): void => {
+            window.analytics.track(`SETTINGS MENU: ${option} clicked`);
+            setSettingsOption(option);
+          }}
           selected={settingsOption === option}
         >
           {option}

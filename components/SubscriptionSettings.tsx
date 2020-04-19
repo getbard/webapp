@@ -28,8 +28,15 @@ const SubscriptionRow = ({
     }
   });
 
+  const trackingData = {
+    author,
+    plan,
+    currentPeriodEnd,
+    createdAt,
+  }
 
   const handleCancel = (): void => {
+    window.analytics.track('SUBSCRIPTION ROW: Cancel clicked', trackingData);
     cancelSubscription({ variables: { input: { id: subscription.id } } });
   }
 

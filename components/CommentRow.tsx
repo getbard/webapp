@@ -42,6 +42,7 @@ const CommentRow = ({
   });
 
   const handleDeleteComment = (): void => {
+    window.analytics.track('COMMENT ROW: Delete clicked');
     deleteComment({ variables: { input: { id: comment.id } } });
   }
 
@@ -82,7 +83,13 @@ const CommentRow = ({
                 {
                   auth.userId && auth.userId === comment.user.id && (
                     <div>
-                      <Button text onClick={(): void => setReadOnly(false)} >
+                      <Button
+                        text
+                        onClick={(): void => {
+                          window.analytics.track('COMMENT ROW: Edit clicked');
+                          setReadOnly(false);
+                        }}
+                      >
                         Edit
                       </Button>
 
@@ -96,7 +103,13 @@ const CommentRow = ({
                 {
                   auth.userId
                     ? (
-                      <Button text onClick={(): void => setShowReplyEditor(true)}>
+                      <Button
+                        text
+                        onClick={(): void => {
+                          window.analytics.track('COMMENT ROW: Reply clicked');
+                          setShowReplyEditor(true);
+                        }}
+                      >
                         Reply
                       </Button>
                     )

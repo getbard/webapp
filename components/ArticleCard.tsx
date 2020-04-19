@@ -35,10 +35,32 @@ const ArticleCardImage = styled.div`
 function ArticleCard({ article }: { article: Article }): React.ReactElement {
   const articleHref = article?.slug ? `/articles/s/${article.slug}` : `/articles/i/${article.id}`;
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName[0] + '.'}`;
+  const readingTime = timeToRead(article.wordCount);
+
+  const handleClick = (): void => {
+    window.analytics.track(`ARTICLE CARD: ${article.id} clicked`, {
+      article: {
+        id: article.id,
+        title: article.title,
+        slug: article.slug,
+        readingTime,
+        subscribersOnly: article.subscribersOnly,
+        category: article.category,
+      },
+      author: {
+        id: article.author.id,
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+      },
+    });
+  }
   
   return (
     <Link href="/articles/[...id]" as={articleHref} passHref={true}>
-      <ArticleCardContainer className="p-4 border border-gray-300 rounded-sm hover:cursor-pointer transition duration-150 ease-in flex justify-between flex-col">
+      <ArticleCardContainer
+        className="p-4 border border-gray-300 rounded-sm hover:cursor-pointer transition duration-150 ease-in flex justify-between flex-col"
+        onClick={handleClick}
+      >
         {
           article?.headerImage?.url &&
           <ProgressiveImage
@@ -94,7 +116,7 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
               }
 
               <span>
-                {timeToRead(article.wordCount)}
+                {readingTime}
               </span>
             </div>
           </div>

@@ -21,11 +21,16 @@ function LoginForm({
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, errors, setError } = useForm<FormData>();
-  const setFormToForgotPassword = (): void => setForm('forgotPassword');
   const redirect = router?.query?.redirect as string || '/';
+
+  const setFormToForgotPassword = (): void => {
+    window.analytics.track('LOGIN FORM: Forgot password clicked')
+    setForm('forgotPassword');
+  };
 
   useEffect(() => {
     if (auth.user !== null){
+      window.analytics.track('LOGIN FORM: Redirected', { redirect });
       router.push(redirect);
     }
   }, [auth]);
@@ -93,7 +98,11 @@ function LoginForm({
         </div>
 
         <div className="flex items-center md:justify-between justify-center">
-          <Button className="w-full md:w-auto" loading={loading}>
+          <Button
+            className="w-full md:w-auto"
+            loading={loading}
+            trackEvent="LOGIN FORM: Login clicked"
+          >
             Login
           </Button>
 

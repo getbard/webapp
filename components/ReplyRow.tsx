@@ -34,6 +34,7 @@ const ReplyRow = ({
   }, [loading]);
 
   const handleDeleteReply = (): void => {
+    window.analytics.track('COMMENT REPLY ROW: Delete clicked');
     deleteReply({ variables: { input: { id: reply.id } } });
   }
 
@@ -57,7 +58,13 @@ const ReplyRow = ({
         {
           auth.userId && auth.userId === reply.user.id && (
             <div>
-              <Button text onClick={(): void => setReadOnly(false)}>
+              <Button
+                text
+                onClick={(): void => {
+                  window.analytics.track('COMMENT REPLY ROW: Edit clicked');
+                  setReadOnly(false);
+                }}
+              >
                 Edit
               </Button>
 

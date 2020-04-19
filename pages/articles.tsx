@@ -61,7 +61,10 @@ function ArticlesDisplay({
         </div>
 
         <Link href="/write">
-          <a className="underline">
+          <a
+            className="underline"
+            onClick={(): void => window.analytics.track('ARTICLES: Write one today! clicked', { isDrafts })}
+          >
             Write one today!
           </a>
         </Link>
