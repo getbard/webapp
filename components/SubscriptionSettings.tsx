@@ -12,7 +12,6 @@ import CancelSubscriptionMutation from '../queries/CancelSubscriptionMutation';
 import Button from './Button';
 import Notification from './Notification';
 import SubscriptionsFalback from './SubscriptionsFallback';
-import GenericError from './GenericError';
 
 const SubscriptionRow = ({
   subscription,

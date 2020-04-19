@@ -2,7 +2,8 @@ import { useState, useRef } from 'react';
 import { FiSettings } from 'react-icons/fi';
 import styled from '@emotion/styled'
 import Link from 'next/link';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient, ApolloProvider } from '@apollo/react-hooks';
+import createApolloClient from '../lib/apolloClient';
 
 import { useAuth } from '../hooks/useAuth';
 import useOnClickOutside from '../hooks/useOnClickOutside';
@@ -15,11 +16,12 @@ const Menu = styled.div`
 function DisplayMenu(): React.ReactElement {
   const auth = useAuth();
   const apolloClient = useApolloClient();
-
+  
   const handleLogout = (): void => {
     window.analytics.track('MENU: Logout clicked');
-    apolloClient.clearStore();
     auth.signOut();
+
+    apolloClient.clearStore();
   }
 
   return (
@@ -87,6 +89,16 @@ function NavMenu(): React.ReactElement {
   const menuRef = useRef(null);
   const [display, setDisplay] = useState(false);
 
+  let apolloClient;
+  // Make sure the nav menu always has an Apollo Client
+  // If it doesn't exist then the Apollo cache won't
+  // properly get cleared on logout
+  try {
+    apolloClient = useApolloClient();
+  } catch {
+    apolloClient = createApolloClient({});
+  }
+
   useOnClickOutside(menuRef, () => {
     if (display) {
       setDisplay(!display);
@@ -94,20 +106,22 @@ function NavMenu(): React.ReactElement {
   });
 
   return (
-    <div
-      className="flex justify-end relative ml-4"
-      ref={menuRef}
-    >
-      <FiSettings
-        onClick={(): void => {
-          setDisplay(!display);
-          window.analytics.track('Settings icon clicked');
-        }}
-        className={`${display && 'text-gray-700'} hover:cursor-pointer hover:text-primary`}
-      />
+    <ApolloProvider client={apolloClient}>
+      <div
+        className="flex justify-end relative ml-4"
+        ref={menuRef}
+      >
+        <FiSettings
+          onClick={(): void => {
+            setDisplay(!display);
+            window.analytics.track('Settings icon clicked');
+          }}
+          className={`${display && 'text-gray-700'} hover:cursor-pointer hover:text-primary`}
+        />
 
-      {display && <DisplayMenu />}
-    </div>
+        {display && <DisplayMenu />}
+      </div>
+    </ApolloProvider>
   );
 }
 

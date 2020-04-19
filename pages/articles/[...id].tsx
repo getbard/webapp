@@ -25,6 +25,7 @@ import Comments from '../../components/Comments';
 import DateMeta from '../../components/DateMeta';
 import ArticleFallback from '../../components/ArticleFallback';
 import GenericError from '../../components/GenericError';
+import BardError from '../_error';
 
 const GradientBlocker = styled.div`
   width: 100%;
@@ -88,6 +89,8 @@ const Article: NextPage = (): React.ReactElement => {
   const { loading, error, data, refetch } = useQuery(articleQuery, { variables: { id } });
 
   if (loading) return <ArticleFallback />;
+
+  if (error?.message.includes('Article not found')) return <BardError statusCode={404} hasGetInitialPropsRun={true} err={null} />;
   if (error) return <div><GenericError title /></div>;
 
   const article = data?.article || data?.articleBySlug;

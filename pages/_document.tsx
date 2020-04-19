@@ -4,7 +4,6 @@ import * as snippet from '@segment/snippet';
 
 export default class extends Document {
   renderSnippet(): any {
-    console.log('SNIPPY!');
     const opts = {
       apiKey: process.env.SEGMENT_WRITE_KEY,
       // note: the page option only covers SSR tracking.
@@ -21,7 +20,6 @@ export default class extends Document {
   }
 
   render(): React.ReactElement {
-    console.log('WUT');
     return (
       <Html>
         <Head>
