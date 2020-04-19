@@ -47,7 +47,9 @@ function SubscribersOnlyToggle({ subscribersOnly, setSubscribersOnly }: Props): 
             className="hidden"
             onChange={(e): void => {
               if (!disabled) {
-                setSubscribersOnly(e.target.checked);
+                const isChecked = e.target.checked;
+                window.analytics.track('SUBSCRIBERS ONLY TOGGLE: Toggle clicked', { subscribersOnly: isChecked });
+                setSubscribersOnly(isChecked);
               }
             }}
           />
@@ -62,7 +64,15 @@ function SubscribersOnlyToggle({ subscribersOnly, setSubscribersOnly }: Props): 
       {
         disabled && !loading && called && (
           <div className="text-xs">
-            <Link href="/earn-money"><a className="underline">Connect a Stripe account</a></Link> to create supporter only content
+            <Link href="/earn-money">
+              <a
+                className="underline"
+                onClick={(): void => window.analytics.track('SUBSCRIBERS ONLY TOGGLE: Connect a Stripe account clicked')}
+              >
+                Connect a Stripe account
+              </a>
+            </Link>
+            &nbsp;to create supporter only content
           </div>
         )
       }

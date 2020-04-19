@@ -58,15 +58,23 @@ function FollowButton({
   });
   const isFollower = user.followerIds?.includes(follower);
 
+  const trackingData = {
+    user,
+    follower,
+  }
+
   const handleFollow = (): void => {
     if (!auth.userId) {
+      window.analytics.track('FOLLOW BUTTON: Follow clicked; Redirect to login', trackingData);
       router.push(`/login?redirect=${router.asPath}`);
       return;
     }
 
     if (isFollower) {
+      window.analytics.track('FOLLOW BUTTON: Unfollow clicked', trackingData);
       unfollowUser({ variables: { input: { userId: user.id } } });
     } else {
+      window.analytics.track('FOLLOW BUTTON: Follow clicked', trackingData);
       followUser({ variables: { input: { userId: user.id } } });
     }
   }

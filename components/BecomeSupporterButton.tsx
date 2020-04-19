@@ -27,16 +27,26 @@ function BecomeSupporterButton({
   const [displayDonationPrompt, setDisplayDonationPrompt] = useState(displayModal || false);
   const [createStripeSession, { data, error, loading }] = useMutation(CreateStripeSessionMutation);
 
+  const trackingData = {
+    author,
+    page: router.asPath,
+  };
+
   const handleClick = (): void => {
     if (!auth.userId) {
+      window.analytics.track('BECOME SUPPORTER BUTTON: Become a support clicked; Redirect to login', trackingData);
       router.push(`/login?redirect=${router.asPath}`);
       return;
     }
+
+    window.analytics.track('BECOME SUPPORTER BUTTON: Become a support clicked', trackingData);
 
     setDisplayDonationPrompt(true);
   }
 
   const handleSubmit = (): void => {
+    window.analytics.track('BECOME SUPPORTER BUTTON: Start supporting today clicked', trackingData);
+
     createStripeSession({
       variables: {
         input: {
@@ -69,7 +79,13 @@ function BecomeSupporterButton({
         Become a supporter
       </Button>
 
-      <Modal open={displayDonationPrompt} onModalClose={(): void => setDisplayDonationPrompt(false)}>
+      <Modal
+        open={displayDonationPrompt}
+        onModalClose={(): void => {
+          window.analytics.track('BECOME SUPPORTER BUTTON: Modal closed');
+          setDisplayDonationPrompt(false);
+        }}
+      >
         <div>
           <h2 className="text-xl font-bold mb-2">Thank you!</h2>
 

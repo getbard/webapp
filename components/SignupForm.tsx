@@ -29,6 +29,7 @@ function SignupUser(): React.ReactElement {
 
   useEffect(() => {
     if (auth.user !== null){
+      window.analytics.track('SIGNUP FORM: Redirected');
       router.push('/');
     }
   }, [auth]);
@@ -40,6 +41,8 @@ function SignupUser(): React.ReactElement {
     password,
   }: FormData): void => {
     setLoading(true);
+
+    window.analytics.track('SIGNUP FORM: Sign up clicked');
 
     auth
       .signUp(email, password)
@@ -211,8 +214,11 @@ function SignupUser(): React.ReactElement {
         <div>
           <p className="text-center text-sm">
             Already have an account?&nbsp;
-              <Link href="/login">
-              <a className="text-black">
+            <Link href="/login">
+              <a
+                className="text-black"
+                onClick={(): void => window.analytics.track('SIGNUP FORM: Login clicked')}
+              >
                 Login
               </a>
             </Link>

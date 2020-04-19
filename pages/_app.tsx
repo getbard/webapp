@@ -1,6 +1,7 @@
 import App from 'next/app';
 import { DefaultSeo } from 'next-seo';
 import * as Sentry from '@sentry/browser';
+import Router from 'next/router';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -15,6 +16,16 @@ import '../styles/main.css';
 import 'emoji-mart/css/emoji-mart.css';
 
 import { AuthProvider } from '../hooks/useAuth';
+
+// Add properties to the window object
+declare global {
+  interface Window { analytics: any }
+}
+
+// Track client-side page views with Segment
+Router.events.on('routeChangeComplete', url => {
+  window.analytics.page(url);
+});
 
 class BardApp extends App {
   render(): React.ReactElement {

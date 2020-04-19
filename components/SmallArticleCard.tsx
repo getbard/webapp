@@ -30,10 +30,32 @@ const SubOnlyIcon = styled.div`
 function SmallArticleCard({ article }: { article: Article }): React.ReactElement {
   const articleHref = article?.slug ? `/articles/s/${article.slug}` : `/articles/i/${article.id}`;
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName[0] + '.'}`;
+  const readingTime = timeToRead(article.wordCount);
+
+  const handleClick = (): void => {
+    window.analytics.track(`SMALL ARTICLE CARD: ${article.id} clicked`, {
+      article: {
+        id: article.id,
+        title: article.title,
+        slug: article.slug,
+        readingTime,
+        subscribersOnly: article.subscribersOnly,
+        category: article.category,
+      },
+      author: {
+        id: article.author.id,
+        firstName: article.author.firstName,
+        lastName: article.author.lastName,
+      }
+    });
+  }
 
   return (
     <Link href="/articles/[...id]" as={articleHref} passHref={true}>
-      <ArticleCardContainer className="pt-1 pb-2 px-2 rounded-sm hover:cursor-pointer transition duration-150 ease-in">
+      <ArticleCardContainer
+        className="pt-1 pb-2 px-2 rounded-sm hover:cursor-pointer transition duration-150 ease-in"
+        onClick={handleClick}
+      >
         <div className={`${article.subscribersOnly && 'grid grid-cols-8'}`}>
           <h1 className="col-span-7 font-serif font-bold transition duration-150 ease-in">
             {
@@ -82,7 +104,7 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
               }
 
               <span className="time-to-read">
-                {timeToRead(article.wordCount)}
+                {readingTime}
               </span>
             </div>
           </div>

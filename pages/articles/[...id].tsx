@@ -49,7 +49,10 @@ const ContentBlocker = ({ author }: { author: User }): React.ReactElement => {
           auth.user && author.stripeUserId && author.stripePlan
             ? <BecomeSupporterButton author={author} />
             : (
-              <ButtonLink href={buttonHref}>
+              <ButtonLink
+                href={buttonHref}
+                trackEvent={`CONTENT BLOCKER: ${buttonText} clicked`}
+              >
                 {buttonText}
               </ButtonLink>
             )
@@ -58,7 +61,15 @@ const ContentBlocker = ({ author }: { author: User }): React.ReactElement => {
         {
           !auth.userId && (
             <div className="mt-2">
-              Already a supporter? <Link href={`/login?redirect=${router.asPath}`}><a className="underline">Login to read</a></Link>
+              Already a supporter?&nbsp;
+              <Link href={`/login?redirect=${router.asPath}`}>
+                <a
+                  className="underline"
+                  onClick={(): void => window.analytics.track('CONTENT BLOCKER: Login to read clicked', { page: router.asPath })}
+                >
+                  Login to read
+                </a>
+              </Link>
             </div>
           )
         }
@@ -85,6 +96,26 @@ const Article: NextPage = (): React.ReactElement => {
   const seoDescription = article?.summary
     ? article.summary.substr(0, article.summary.lastIndexOf('.', 180))
     : textContent.substr(0, textContent.lastIndexOf('.', 180));
+
+  const articleTrackingData = {
+    article: {
+      id: article.id,
+      title: article.title,
+      slug: article.slug,
+      readingTime,
+      subscribersOnly: article.subscribersOnly,
+      category: article.category,
+    },
+    author: {
+      id: article.author.id,
+      firstName: article.author.firstName,
+      lastName: article.author.lastName,
+    }
+  };
+
+  const handleAuthorClick = (): void => {
+    window.analytics.track(`ARTICLE: author name clicked`, articleTrackingData);
+  }
 
   return (
     <>
@@ -129,7 +160,22 @@ const Article: NextPage = (): React.ReactElement => {
                 </ProgressiveImage>
 
                 <div className="text-xs text-center">
-                  Photo by <a className="underline" href={`${article.headerImage.photographerUrl}?utm_source=bard&utm_medium=referral`}>{article.headerImage.photographerName}</a> on <a className="underline" href="https://unsplash.com?utm_source=bard&utm_medium=referral">Unsplash</a>
+                  Photo by&nbsp;
+                  <a
+                    className="underline"
+                    href={`${article.headerImage.photographerUrl}?utm_source=bard&utm_medium=referral`}
+                    onClick={(): void => window.analytics.track(`ARTICLE: Unsplash photographer URL clicked`, articleTrackingData)}
+                  >
+                    {article.headerImage.photographerName}
+                  </a>
+                  &nbsp;on&nbsp;
+                  <a
+                    className="underline"
+                    href="https://unsplash.com?utm_source=bard&utm_medium=referral"
+                    onClick={(): void => window.analytics.track(`ARTICLE: Unsplash URL clicked`, articleTrackingData)}
+                  >
+                    Unsplash
+                  </a>
                 </div>
               </div>
             )
@@ -138,7 +184,10 @@ const Article: NextPage = (): React.ReactElement => {
           {
             article?.category && (
               <Link href={`/?category=${article.category}`}>
-                <a className="capitalize text-lg text-gray-500 w-full font-serif font-bold">
+                <a
+                  className="capitalize text-lg text-gray-500 w-full font-serif font-bold"
+                  onClick={(): void => window.analytics.track(`ARTICLE: Category clicked`, articleTrackingData)}
+                >
                   {article.category}
                 </a>
               </Link>
@@ -154,7 +203,15 @@ const Article: NextPage = (): React.ReactElement => {
           </div>
 
           <div className="text-sm w-full font-bold">
-            By <Link href={`/${article.author.username}`} ><a className="underline">{authorName}</a></Link>
+            By&nbsp;
+            <Link href={`/${article.author.username}`} >
+              <a
+                className="underline"
+                onClick={handleAuthorClick}
+              >
+                {authorName}
+              </a>
+            </Link>
           </div>
 
           <div className="text-xs w-full relative">
@@ -177,7 +234,15 @@ const Article: NextPage = (): React.ReactElement => {
                   </div>
 
                   <div>
-                    Please consider supporting <Link href={`/${article.author.username}`} ><a className="underline">{article.author.firstName}</a></Link>.
+                    Please consider supporting&nbsp;
+                    <Link href={`/${article.author.username}`} >
+                      <a
+                        className="underline"
+                        onClick={(): void => window.analytics.track(`ARTICLE: Consider supporting author clicked`, articleTrackingData)}
+                      >
+                        {article.author.firstName}
+                      </a>
+                    </Link>.
                   </div>
                 </div>
 

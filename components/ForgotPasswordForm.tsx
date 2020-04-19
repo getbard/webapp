@@ -17,7 +17,11 @@ function ForgotPasswordForm({
   const [loading, setLoading] = useState(false);
   const [resetSent, setResetSent] = useState(false);
   const { register, handleSubmit, errors, setError } = useForm<FormData>();
-  const setFormToLogin = (): void => setForm('login');
+
+  const setFormToLogin = (): void => {
+    window.analytics.track('FORGOT PASSWORD FORM: Login clicked')
+    setForm('login');
+  };
 
   const onSubmit = ({ email }: FormData): void => {
     setLoading(true);
@@ -72,7 +76,11 @@ function ForgotPasswordForm({
         </div>
 
         <div className="flex items-center md:justify-between justify-center">
-          <Button className="w-full md:w-auto" loading={loading}>
+          <Button
+            className="w-full md:w-auto"
+            loading={loading}
+            trackEvent="FORGOT PASSWORD FORM: Reset Password clicked"
+          >
             Reset Password
           </Button>
 

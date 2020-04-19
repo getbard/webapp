@@ -17,6 +17,7 @@ function DisplayMenu(): React.ReactElement {
   const apolloClient = useApolloClient();
 
   const handleLogout = (): void => {
+    window.analytics.track('MENU: Logout clicked');
     apolloClient.clearStore();
     auth.signOut();
   }
@@ -24,13 +25,19 @@ function DisplayMenu(): React.ReactElement {
   return (
     <Menu className="z-40 bg-white border border-gray-300 absolute rounded-sm shadow-sm whitespace-no-wrap">
       <Link href="/write">
-        <a className="hover:bg-gray-100 block py-2 pl-2 pr-12">
+        <a
+          className="hover:bg-gray-100 block py-2 pl-2 pr-12"
+          onClick={(): void => window.analytics.track('MENU: Write an article clicked')}
+        >
           Write an article
         </a>
       </Link>
 
       <Link href="/articles">
-        <a className="hover:bg-gray-100 block py-2 pl-2 pr-12">
+        <a
+          className="hover:bg-gray-100 block py-2 pl-2 pr-12"
+          onClick={(): void => window.analytics.track('MENU: Articles clicked')}
+        >
           Articles
         </a>
       </Link>
@@ -38,7 +45,10 @@ function DisplayMenu(): React.ReactElement {
       <div className="border-b border-gray-200"></div>
 
       <Link href="/earn-money">
-        <a className="hover:bg-gray-100 block py-2 pl-2 pr-12">
+        <a
+          className="hover:bg-gray-100 block py-2 pl-2 pr-12"
+          onClick={(): void => window.analytics.track('MENU: Earn money clicked')}
+        >
           Earn money
         </a>
       </Link>
@@ -46,18 +56,29 @@ function DisplayMenu(): React.ReactElement {
       <div className="border-b border-gray-200"></div>
 
       <Link href="/me">
-        <a className="hover:bg-gray-100 block py-2 pl-2 pr-12">
+        <a
+          className="hover:bg-gray-100 block py-2 pl-2 pr-12"
+          onClick={(): void => window.analytics.track('MENU: Profile clicked')}
+        >
           Profile
         </a>
       </Link>
 
       <Link href="/settings">
-        <a className="hover:bg-gray-100 block py-2 pl-2 pr-12">
+        <a
+          className="hover:bg-gray-100 block py-2 pl-2 pr-12"
+          onClick={(): void => window.analytics.track('MENU: Settings clicked')}
+        >
           Settings
         </a>
       </Link>
 
-      <a className="hover:bg-gray-100 block py-2 pl-2 pr-12" onClick={handleLogout}>Logout</a>
+      <a
+        className="hover:bg-gray-100 block py-2 pl-2 pr-12"
+        onClick={handleLogout}
+      >
+          Logout
+      </a>
     </Menu>
   );
 }
@@ -78,7 +99,10 @@ function NavMenu(): React.ReactElement {
       ref={menuRef}
     >
       <FiSettings
-        onClick={(): void => setDisplay(!display)}
+        onClick={(): void => {
+          setDisplay(!display);
+          window.analytics.track('Settings icon clicked');
+        }}
         className={`${display && 'text-gray-700'} hover:cursor-pointer hover:text-primary`}
       />
 

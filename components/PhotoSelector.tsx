@@ -72,6 +72,7 @@ export function PhotoSelector({
   const debouncedSetSearch = debounce(setSearch, 1000);
 
   const handlePhotoSelect = (headerImage: ArticleHeaderImage | null): void => {
+    window.analytics.track('PHOTO SELECTOR: Photo selected');
     onSelect(headerImage);
     setDisplay(false);
   }

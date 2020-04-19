@@ -14,6 +14,7 @@ function FeedCommentItemInfo({
   const auth = useAuth();
   const usersOwnArticle = auth.userId === resource.author.id;
   const actorCommentedOnOwnArticle = actor.username === resource.author.username;
+  const trackingData = { actor, resource, usersOwnArticle };
 
   return (
     <>
@@ -26,7 +27,10 @@ function FeedCommentItemInfo({
       }
 
       <Link href={`/articles/s/${resource.slug}`}>
-        <a className="font-bold">
+        <a
+          className="font-bold"
+          onClick={(): void => window.analytics.track('FEED COMMENT INFO: Resource title clicked', trackingData)}
+        >
           {resource.title}
         </a>
       </Link>
@@ -37,7 +41,10 @@ function FeedCommentItemInfo({
             &nbsp;by&nbsp;
 
             <Link href={`/${resource.author.username}`}>
-              <a className="font-bold">
+              <a
+                className="font-bold"
+                onClick={(): void => window.analytics.track('FEED COMMENT INFO: Resource author clicked', trackingData)}
+              >
                 {resource.author.firstName} {resource.author?.lastName}
               </a>
             </Link>

@@ -17,6 +17,8 @@ import GenericLoader from '../components/GenericLoader';
 const isAccountAlreadyConnectedError = (error: string): boolean => error.includes('authorization code has already been used');
 
 const SuccessInfo = (): React.ReactElement => {
+  window.analytics.track('STRIPE CONNECT: Success info displayed');
+
   return (
     <div>
       <p className="mb-4">Looks like you&apos;re good to go!</p>
@@ -24,7 +26,7 @@ const SuccessInfo = (): React.ReactElement => {
       <p className="mb-4">Readers can now subscribe to support you monthly.</p>
 
       <p>
-        We have setup a default plan for <strong className="text-primary">$10 USD / month</strong>. You can adjust the plan <Link href="/settings"><a>in your settings</a></Link> at any time.
+        We have setup a default plan for <strong className="text-primary">$10 USD / month</strong>. You can adjust the plan <Link href="/settings"><a onClick={(): void => window.analytics.track('STRIPE CONNECT: Settings clicked')}>in your settings</a></Link> at any time.
       </p>
     </div>
   );
@@ -45,10 +47,10 @@ const StripeConnect: NextPage = (): React.ReactElement => {
     return <Error statusCode={404} />;
   }
 
-  // Redirect to analytics if the user has already connected Stripe
+  // Redirect to settings if the user has already connected Stripe
   // Could happen if they refresh the page with an auth code
   if (accountAlreadyConnected) {
-    router.push('/analytics');
+    router.push('/settings');
   }
 
   if (!called) {
@@ -61,7 +63,7 @@ const StripeConnect: NextPage = (): React.ReactElement => {
       }
     }).catch(error => {
       if (isAccountAlreadyConnectedError(error?.message)) {
-        router.push('/analytics');
+        router.push('/settings');
       }
     });
   }

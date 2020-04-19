@@ -33,6 +33,7 @@ const EarnMoney: NextPage = (): React.ReactElement => {
   const stripeRedictUrl = `//connect.stripe.com/express/oauth/authorize?redirect_uri=${bardRedirectUrl}&client_id=${clientId}&state=${auth?.user?.uid}&stripe_user[business_type]=individual&${userEmail}&suggested_capabilities[]=card_payments&suggested_capabilities[]=transfers`;
 
   const handleClick = (): void => {
+    window.analytics.track('EARN MONEY: Start earning clicked');
     router.push(stripeRedictUrl);
   }
 

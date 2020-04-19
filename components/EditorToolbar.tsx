@@ -31,6 +31,7 @@ function FormatButton({ format }: { format: string}): React.ReactElement {
       className={`px-2 hover:text-secondary ${isFormatActive(editor, format) && 'text-secondary'}`}
       onMouseDown={(e): void => {
         e.preventDefault();
+        window.analytics.track(`EDITOR TOOLBAR: ${format} clicked`);
         toggleFormat(editor, format);
       }}
     >

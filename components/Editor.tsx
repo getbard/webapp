@@ -35,6 +35,8 @@ function BardEditor({
     if (!e.ctrlKey && !e.metaKey) {
       return;
     }
+
+    window.analytics.track('EDITOR: Meta key pressed', { key: e.key });
     
     switch(e.key) {
       case 'b': {

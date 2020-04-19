@@ -18,16 +18,36 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
   const auth = useAuth();
   const [showCopiedTooltip, setShowCopiedTooltip] = useState(false);
   const articleOwner = auth.userId === article.userId;
+  const readingTime = timeToRead(article.wordCount);
+
   const [deleteArticle, { error }] = useMutation(DeleteArticleMutation, {
     update() {
       refetch();
     }
   });
 
+  const trackingData = {
+    article: {
+      id: article.id,
+      title: article.title,
+      slug: article.slug,
+      readingTime,
+      subscribersOnly: article.subscribersOnly,
+      category: article.category,
+    },
+    author: {
+      id: article.author.id,
+      firstName: article.author.firstName,
+      lastName: article.author.lastName,
+    }
+  }
+
   const handleDelete = (): void => {
+    window.analytics.track('ARTICLE ROW: Delete clicked', trackingData);
     const deleteConfirmed = confirm('Are you sure you want to delete this article?');
 
     if (deleteConfirmed) {
+      window.analytics.track('ARTICLE ROW: Delete confirm clicked', trackingData);
       deleteArticle({ variables: { input: { id: article.id } } });
     }
   }
@@ -51,7 +71,10 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
             )
             : (
               <Link href={`/articles/i/${article.id}`}>
-                <a className="text-3xl font-serif flex items-center hover:text-primary hover:cursor-pointer transition duration-150 ease-in-out">
+                <a
+                  className="text-3xl font-serif flex items-center hover:text-primary hover:cursor-pointer transition duration-150 ease-in-out"
+                  onClick={(): void => window.analytics.track('ARTICLE ROW: Article title clicked', trackingData)}
+                >
                   {article.title}
                   {
                     article.subscribersOnly && (
@@ -74,7 +97,7 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
             resource={article}
             action={article?.publishedAt ? 'Published' : 'Created'}
             dateParam={article?.publishedAt ? 'publishedAt' : 'createdAt'}
-          /> | {timeToRead(article.wordCount)}
+          /> | {readingTime}
         </div>
       </div>
 
@@ -87,6 +110,7 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
                 id={`a-${article.id}-copy`} 
                 className="relative"
                 onClick={(): void => {
+                  window.analytics.track('ARTICLE ROW: Copy article clicked', trackingData);
                   navigator.clipboard.writeText(`https://getbard.com/articles/s/${article.slug}`);
                   setShowCopiedTooltip(true);
                   setTimeout(() => setShowCopiedTooltip(false), 2500);
@@ -102,7 +126,10 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
           }
 
           <Link href={`/edit/${article.id}`}>
-            <a className="inline text-primary hover:underline hover:cursor-pointer mr-4 transition duration-150 ease-in-out">
+            <a
+              className="inline text-primary hover:underline hover:cursor-pointer mr-4 transition duration-150 ease-in-out"
+              onClick={(): void => window.analytics.track('ARTICLE ROW: Edit clicked', trackingData)}
+            >
               Edit
             </a>
           </Link>

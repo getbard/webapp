@@ -40,7 +40,10 @@ const Discover: NextPage = (): React.ReactElement => {
               <div
                 key={category}
                 className={classes}
-                onClick={(): void => setSelectedCategory(category)}
+                onClick={(): void => {
+                  window.analytics.track(`DISCOVER: ${category} clicked`);
+                  setSelectedCategory(category);
+                }}
               >
                 {category}
               </div>

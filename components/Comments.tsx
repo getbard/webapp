@@ -29,6 +29,7 @@ function Comments({
   const { commentsByResourceId } = data;
 
   const changeSort = (): void => {
+    window.analytics.track('COMMENT: Change sort clicked', { sortBy });
     setSortBy(sortBy === 'latest' ? 'oldest' : 'latest');
   }
 

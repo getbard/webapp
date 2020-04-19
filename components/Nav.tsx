@@ -12,7 +12,11 @@ function LoggedInMenu(): React.ReactElement {
   return (
     <span className="flex items-center">
       {router.pathname !== '/write' && (
-        <ButtonLink href="/write" thin>
+        <ButtonLink
+          href="/write"
+          thin
+          trackEvent="NAV: Write clicked"
+        >
           Write
         </ButtonLink>
       )}
@@ -26,12 +30,19 @@ function LoggedOutMenu(): React.ReactElement {
   return (
     <div className="flex items-center">
       <Link href = "/login">
-        <a className="mr-4">
+        <a
+          className="mr-4"
+          onClick={(): void => window.analytics.track('NAV: Login clicked')}
+        >
           Login
         </a>
       </Link>
 
-      <ButtonLink href="/signup" thin>
+      <ButtonLink
+        href="/signup"
+        thin
+        trackEvent="NAV: Join clicked"
+      >
         Join
       </ButtonLink>
     </div>
@@ -45,7 +56,10 @@ function Nav(): React.ReactElement {
     <nav className="py-1 border-b border-gray-200">
       <div className="container mx-auto flex flex-row justify-between items-center px-5">
         <Link href="/">
-          <a className="logo font-extrabold text-3xl text-primary font-serif">
+          <a
+            className="logo font-extrabold text-3xl text-primary font-serif"
+            onClick={(): void => window.analytics.track('NAV: logo clicked')}
+          >
             bard.
           </a>
         </Link>
