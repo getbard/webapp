@@ -21,7 +21,7 @@ function FeedUserInfo({
             <Link href={`/${user.username}`}>
               <a
                 className="font-bold"
-                onClick={(): void => window.analytics.track('FEED USER INFO: User clicked', { user, isUser })}
+                onClick={(): void => window.analytics.track('FEED USER INFO: User clicked', { user: { id: user.id }, isUser })}
               >
                 {user.firstName} {user?.lastName}
               </a>

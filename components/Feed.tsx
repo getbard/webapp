@@ -32,7 +32,7 @@ function Item({ item }: { item: FeedItem }): React.ReactElement {
           <Link href={`/${actor.username}`}>
             <a
               className="font-bold"
-              onClick={(): void => window.analytics.track('FEED: Actor clicked', { actor })}
+              onClick={(): void => window.analytics.track('FEED: Actor clicked', { actor: { id: actor.id } })}
             >
               {actorName}
             </a>

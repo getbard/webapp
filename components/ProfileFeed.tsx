@@ -35,7 +35,7 @@ function Activity({ activity }: { activity: FeedActivity }): React.ReactElement 
                 <Link href={`/${actor.username}`}>
                   <a
                     className="font-bold"
-                    onClick={(): void => window.analytics.track('FEED COMMENT INFO: Resource title clicked', { actor })}
+                    onClick={(): void => window.analytics.track('FEED COMMENT INFO: Resource title clicked', { actor: { id: actor.id } })}
                   >
                     {actorName}
                   </a>

@@ -29,7 +29,9 @@ const SubscriptionRow = ({
   });
 
   const trackingData = {
-    author,
+    author: {
+      id: author.id,
+    },
     plan,
     currentPeriodEnd,
     createdAt,

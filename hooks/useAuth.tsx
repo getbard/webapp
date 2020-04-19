@@ -104,9 +104,7 @@ function useAuthContext(ctxUserId: string): AuthContext {
         cookie.set('uid', user.uid);
 
         // Set the user in Segment
-        window.analytics.identify(user.uid, {
-          email: user.email,
-        });
+        window.analytics.identify(user.uid);
       } else {
         setUser(null);
         setUserId(null);
