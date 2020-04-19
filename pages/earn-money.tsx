@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
+import { NextSeo } from 'next-seo';
 
 import { withApollo } from '../lib/apollo';
 import { useAuth } from '../hooks/useAuth';
@@ -37,6 +38,11 @@ const EarnMoney: NextPage = (): React.ReactElement => {
 
   return (
     <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
+      <NextSeo
+        title="Earn"
+        description="Earn money with your words with the help of Stripe."
+      />
+
       <PageHeader>
         Earn money with your words
       </PageHeader>

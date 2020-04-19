@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { NextPage } from 'next';
+import { NextSeo } from 'next-seo';
 
 import { withApollo } from '../lib/apollo';
 import withLayout from '../components/withLayout';
@@ -20,6 +21,11 @@ const Settings: NextPage = (): React.ReactElement => {
 
   return (
     <div className="py-5">
+      <NextSeo
+        title="Settings"
+        description="Change your settings on Bard."
+      />
+
       <VerifyEmailAlert />
 
       <div className="sm:w-3/5 px-5 container mx-auto relative">

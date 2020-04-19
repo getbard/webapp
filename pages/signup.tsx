@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { NextSeo } from 'next-seo';
 
 import { useAuth } from '../hooks/useAuth';
 
@@ -16,6 +17,11 @@ const Signup: NextPage = (): React.ReactElement => {
 
   return (
     <div>
+      <NextSeo
+        title="Sign Up"
+        description="Join the writing revolution. Support amazing writers today!"
+      />
+
       <SignupForm />
     </div>
   );

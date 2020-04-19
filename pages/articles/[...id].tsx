@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
 import styled from '@emotion/styled';
 import ProgressiveImage from 'react-progressive-image';
+import { NextSeo } from 'next-seo';
+import Head from 'next/head';
 
 import { User } from '../../generated/graphql';
 import ArticleBySlugQuery from '../../queries/ArticleBySlugQuery';
@@ -11,7 +13,7 @@ import ArticleByIdQuery from '../../queries/ArticleByIdQuery';
 
 import { useAuth } from '../../hooks/useAuth';
 
-import { timeToRead } from '../../lib/editor';
+import { timeToRead, serializeText } from '../../lib/editor';
 import { withApollo } from '../../lib/apollo';
 import withLayout from '../../components/withLayout';
 import Editor from '../../components/Editor';
@@ -78,90 +80,124 @@ const Article: NextPage = (): React.ReactElement => {
 
   const article = data?.article || data?.articleBySlug;
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName}`;
+  const readingTime = timeToRead(article.wordCount);
+  const textContent = serializeText(JSON.parse(article.content)).trim();
+  const seoDescription = article?.summary
+    ? article.summary.substr(0, article.summary.lastIndexOf('.', 180))
+    : textContent.substr(0, textContent.lastIndexOf('.', 180));
 
   return (
-    <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
-      <div className="mb-8">
-        {
-          article?.headerImage?.url && (
-            <div className="mb-4">
-              <ProgressiveImage
-                delay={500}
-                src={article.headerImage.url}
-                placeholder={`${article.headerImage.url}&w=400&blur=80`}
-              >
-                {(src: string): React.ReactElement => <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-1" url={src} />}
-              </ProgressiveImage>
+    <>
+      <NextSeo
+        title={article.title}
+        description={seoDescription}
+        openGraph={{
+          title: article.title,
+          description: seoDescription,
+          images: [{
+            url: `${article.headerImage?.url}&w=960` || 'https://getbard.com/og.png',
+            alt: article.title,
+          }],
+          article: {
+            publishedTime: article.publishedAt,
+            authors: [authorName],
+          }
+        }}
+      />
 
-              <div className="text-xs text-center">
-                Photo by <a className="underline" href={`${article.headerImage.photographerUrl}?utm_source=bard&utm_medium=referral`}>{article.headerImage.photographerName}</a> on <a className="underline" href="https://unsplash.com?utm_source=bard&utm_medium=referral">Unsplash</a>
-              </div>
-            </div>
-          )
-        }
-        
-        {
-          article?.category && (
-            <Link href={`/?category=${article.category}`}>
-              <a className="capitalize text-lg text-gray-500 w-full font-serif font-bold">
-                {article.category}
-              </a>
-            </Link>
-          )
-        }
-        
-        <div className="text-4xl w-full font-serif font-bold">
-          {article.title}
-        </div>
+      <Head>
+        {/* {/*
+          // @ts-ignore */}
+        <meta name="twitter:label1" value="Reading time" />
 
-        <div className="text-xl w-full mb-6 font-serif">
-          {article?.summary}
-        </div>
+        {/*
+          // @ts-ignore */}
+        <meta name="twitter:data1" value={readingTime} /> */}
+      </Head>
 
-        <div className="text-sm w-full font-bold">
-          By <Link href={`/${article.author.username}`} ><a className="underline">{authorName}</a></Link>
-        </div>
+      <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
+        <div className="mb-8">
+          {
+            article?.headerImage?.url && (
+              <div className="mb-4">
+                <ProgressiveImage
+                  delay={500}
+                  src={article.headerImage.url}
+                  placeholder={`${article.headerImage.url}&w=400&blur=80`}
+                >
+                  {(src: string): React.ReactElement => <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-1" url={src} />}
+                </ProgressiveImage>
 
-        <div className="text-xs w-full relative">
-          <DateMeta resource={article} dateParam="publishedAt" action="" /> | {timeToRead(article.wordCount)}
-        </div>
-      </div>
-
-      <div className="relative">
-        <Editor
-          readOnly
-          initialValue={JSON.parse(article.content)}
-        />
-
-        {
-          article?.subscribersOnly && article?.contentBlocked && (
-            <>
-              <div className="text-center font-bold mt-2 text-primary mt-5 p-5">
-                <div>
-                  Oh! You edited our HTML. We trimmed the content on the server but nice try!
-                </div>
-
-                <div>
-                  Please consider supporting <Link href={`/${article.author.username}`} ><a className="underline">{article.author.firstName}</a></Link>.
+                <div className="text-xs text-center">
+                  Photo by <a className="underline" href={`${article.headerImage.photographerUrl}?utm_source=bard&utm_medium=referral`}>{article.headerImage.photographerName}</a> on <a className="underline" href="https://unsplash.com?utm_source=bard&utm_medium=referral">Unsplash</a>
                 </div>
               </div>
+            )
+          }
+          
+          {
+            article?.category && (
+              <Link href={`/?category=${article.category}`}>
+                <a className="capitalize text-lg text-gray-500 w-full font-serif font-bold">
+                  {article.category}
+                </a>
+              </Link>
+            )
+          }
+          
+          <div className="text-4xl w-full font-serif font-bold">
+            {article.title}
+          </div>
 
-              <ContentBlocker author={article.author} />
-            </>
-          )
-        }
+          <div className="text-xl w-full mb-6 font-serif">
+            {article?.summary}
+          </div>
+
+          <div className="text-sm w-full font-bold">
+            By <Link href={`/${article.author.username}`} ><a className="underline">{authorName}</a></Link>
+          </div>
+
+          <div className="text-xs w-full relative">
+            <DateMeta resource={article} dateParam="publishedAt" action="" /> | {readingTime}
+          </div>
+        </div>
+
+        <div className="relative">
+          <Editor
+            readOnly
+            initialValue={JSON.parse(article.content)}
+          />
+
+          {
+            article?.subscribersOnly && article?.contentBlocked && (
+              <>
+                <div className="text-center font-bold mt-2 text-primary mt-5 p-5">
+                  <div>
+                    Oh! You edited our HTML. We trimmed the content on the server but nice try!
+                  </div>
+
+                  <div>
+                    Please consider supporting <Link href={`/${article.author.username}`} ><a className="underline">{article.author.firstName}</a></Link>.
+                  </div>
+                </div>
+
+                <ContentBlocker author={article.author} />
+              </>
+            )
+          }
+        </div>
+
+        {!article?.contentBlocked && <Comments resourceId={article.id} />}
+
+        {sessionId && article.author?.stripeUserId && (
+          <SupportConfirmation
+            sessionId={sessionId}
+            stripeUserId={article.author.stripeUserId}
+            refetch={refetch}
+          />
+        )}
       </div>
-
-      {!article?.contentBlocked && <Comments resourceId={article.id} />}
-
-      {sessionId && article.author?.stripeUserId && (
-        <SupportConfirmation
-          sessionId={sessionId}
-          stripeUserId={article.author.stripeUserId}
-          refetch={refetch}
-        />
-      )}
-    </div>
+    </>
   );
 }
 

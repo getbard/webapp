@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
 import Error from 'next/error';
+import { NextSeo } from 'next-seo';
 
 import { useAuth } from '../../hooks/useAuth';
 
@@ -28,7 +29,14 @@ const Edit: NextPage = (): React.ReactElement => {
   }
 
   return (
-    <EditorContainer article={article} />
+    <>
+      <NextSeo
+        title={`Edit ${article.title}`}
+        description="Edit your article on Bard."
+      />
+
+      <EditorContainer article={article} />
+    </>
   );
 }
 

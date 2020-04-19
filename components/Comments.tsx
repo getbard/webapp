@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { useAuth } from '../hooks/useAuth';
 

@@ -1,4 +1,4 @@
-import { Editor, Transforms, Text } from 'slate';
+import { Editor, Transforms, Text, Node } from 'slate';
 
 export const isFormatActive = (editor: Editor, format: string): boolean => {
   const marks = Editor.marks(editor);
@@ -29,4 +29,8 @@ export const timeToRead = (wordCount: number): string => {
   const t = ~~(wordCount / 200);
   // const minutes = t.toFixed(0);
   return `${Math.max(1, t)} min read`;
+}
+
+export const serializeText = (nodes: Node[]): string => {
+  return nodes.map(n => Node.string(n)).join('\n');
 }
