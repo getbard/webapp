@@ -29,19 +29,18 @@ const Settings: NextPage = (): React.ReactElement => {
       <VerifyEmailAlert />
 
       <div className="sm:w-3/5 px-5 container mx-auto relative">
-
         <PageHeader>
           Settings
         </PageHeader>
 
-        <div className="grid grid-cols-6">
+        <div className="grid grid-cols-8">
           <SettingsMenu
             settingsOptions={Object.keys(settingsComponents)}
             settingsOption={settingsOption}
             setSettingsOption={setSettingsOption}
           />
 
-          <div className="col-span-5">
+          <div className="col-span-6">
             <Component />
           </div>
         </div>
