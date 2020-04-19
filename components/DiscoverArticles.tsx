@@ -9,6 +9,7 @@ import DiscoverArticlesFallback from './DiscoverArticlesFallback';
 import EmptyState from './EmptyState';
 import ArticleCard from './ArticleCard';
 import SmallArticleCard from './SmallArticleCard';
+import GenericError from './GenericError';
 
 const ArticleChunkContainer = styled.div`
   > div:not(:first-of-type) {
@@ -24,8 +25,8 @@ const ArticleChunkContainer = styled.div`
 function DiscoverArticles({ category }: { category: string }): React.ReactElement {
   const { loading, error, data } = useQuery(DiscoverArticlesQuery, { variables: { category } });
 
-  if (error) return <div>Error</div>;
   if (loading) return <DiscoverArticlesFallback />;
+  if (error) return <div><GenericError title /></div>;
 
   const { articles } = data;
   const articleChunks: Article[][] = [];

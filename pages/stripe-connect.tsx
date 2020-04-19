@@ -13,6 +13,7 @@ import ConnectStripeAccountMutation from '../queries/ConnectStripeAccountMutatio
 import withLayout from '../components/withLayout';
 import PageHeader from '../components/PageHeader';
 import GenericLoader from '../components/GenericLoader';
+import BardError from './_error';
 
 const isAccountAlreadyConnectedError = (error: string): boolean => error.includes('authorization code has already been used');
 
@@ -44,7 +45,7 @@ const StripeConnect: NextPage = (): React.ReactElement => {
   }
 
   if (state !== auth.user.uid) {
-    return <Error statusCode={404} />;
+    return <BardError statusCode={404} hasGetInitialPropsRun={true} err={null} />;
   }
 
   // Redirect to settings if the user has already connected Stripe

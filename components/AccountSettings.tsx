@@ -10,6 +10,7 @@ import UpdateUserMutation from '../queries/UpdateUserMutation';
 
 import Button from './Button';
 import Notification from './Notification';
+import AccountSettingsFallback from './AccountSettingsFallback';
 
 type FormData = {
   email: string;
@@ -43,8 +44,19 @@ const AccountSettings = (): React.ReactElement => {
     setTimeout(() => setNotification('Saved!'), 500);
   }
 
-  if (loading) return <div>Loading</div>;
-  if (error) return <div>Something went wrong. Sorry about that.</div>;
+  if (loading) return <AccountSettingsFallback />;
+
+  if (error) return (
+    <div className="w-full border border-gray-300 rounded-sm p-4 shadow-sm">
+      <h2 className="mb-2 font-bold">
+        We weren&apos;t able to get your account settings.
+      </h2>
+
+      <p>
+        Rest assured, we&apos;re on it! Check back in a little bit.
+      </p>
+    </div>
+  );
 
   const onSubmit = ({ email, username, firstName, lastName }: FormData): void => {
     updateUser({ variables: {
@@ -95,7 +107,7 @@ const AccountSettings = (): React.ReactElement => {
               required: 'Please enter a first name',
             })}
           />
-          <span className="text-xs font-bold text-red-600">{errors.firstName && errors.firstName.message}</span>
+          <span className="text-xs font-bold text-red-600">{errors.firstName && errors.firstName?.message}</span>
         </div>
 
         <div className="mb-4">
@@ -111,7 +123,7 @@ const AccountSettings = (): React.ReactElement => {
             name="lastName"
             ref={register}
           />
-          <span className="text-xs font-bold text-red-600">{errors.lastName && errors.lastName.message}</span>
+          <span className="text-xs font-bold text-red-600">{errors.lastName && errors.lastName?.message}</span>
         </div>
 
         <div className="mb-4">
@@ -131,7 +143,7 @@ const AccountSettings = (): React.ReactElement => {
               validate: checkUsernameAvailable,
             })}
           />
-          <span className="text-xs font-bold text-red-600">{errors.username && errors.username.message}</span>
+          <span className="text-xs font-bold text-red-600">{errors.username && errors.username?.message}</span>
         </div>
 
         <div className="mb-4">
@@ -154,7 +166,7 @@ const AccountSettings = (): React.ReactElement => {
               },
             })}
           />
-          <span className="text-xs font-bold text-red-600">{errors.email && errors.email.message}</span>
+          <span className="text-xs font-bold text-red-600">{errors.email && errors.email?.message}</span>
           <span className="text-xs font-bold text-primary">{displayEmailChangeWarning && 'Changing your email will require you to verify your new email and login again'}</span>
         </div>
 

@@ -14,12 +14,23 @@ const Menu = styled.div`
 
 function DisplayMenu(): React.ReactElement {
   const auth = useAuth();
-  const apolloClient = useApolloClient();
 
+  let apolloClient: any;
+  try {
+    apolloClient = useApolloClient();
+  } catch(error) {
+    // No Apollo Client is in scope
+    // The cache will not get cleared if a user logs out
+    // This only happens during error states
+  }
+  
   const handleLogout = (): void => {
     window.analytics.track('MENU: Logout clicked');
-    apolloClient.clearStore();
     auth.signOut();
+
+    if (apolloClient) {
+      apolloClient.clearStore();
+    }
   }
 
   return (

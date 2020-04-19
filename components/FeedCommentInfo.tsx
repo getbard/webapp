@@ -18,7 +18,13 @@ function FeedCommentItemInfo({
     actor: {
       id: actor.id,
     },
-    resource,
+    resource: {
+      id: resource.id,
+      title: resource.title,
+      slug: resource.slug,
+      subscribersOnly: resource.subscribersOnly,
+      category: resource.category,
+    },
     usersOwnArticle,
   };
 

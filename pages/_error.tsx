@@ -2,6 +2,7 @@ import React from 'react';
 import Error from 'next/error';
 import * as Sentry from '@sentry/node';
 import { NextSeo } from 'next-seo';
+import Link from 'next/link';
 
 const BardError = ({
   statusCode,
@@ -10,20 +11,46 @@ const BardError = ({
 }: {
   statusCode: number;
   hasGetInitialPropsRun: boolean;
-  err: Error;
+  err: Error | null;
 }): React.ReactElement => {
   if (!hasGetInitialPropsRun && err) {
     Sentry.captureException(err);
   }
 
+  let description = `Something went wrong. We're on it!`;
+  let title = 'As a writer, you should not judge, you should understand.';
+  let body = `Something went wrong on our end. We know that must be frustrating but we're working hard to fix it.`;
+
+  if (statusCode === 404) {
+    description = `We couldn't find what you were looking for.`;
+    title = 'Not all those who wander are lost.';
+    body = `J.R.R. Tolkien was right. And we couldn't find what you were looking for.`;
+  }
+
   return (
     <>
       <NextSeo
-        title="Whoops"
-        description="Something went wrong. Sorry about that!"
+        title={statusCode.toString()}
+        description={description}
       />
 
-      <Error statusCode={statusCode} />
+      <div className="flex justify-center items-center flex-col p-40 text-lg">
+        <div className="text-4xl text-center font-serif">
+          <div>
+            {title}
+          </div>
+        </div>
+
+        <div>
+          {body}
+        </div>
+
+        <Link href="/">
+          <a className="underline">
+            Find your way home
+          </a>
+        </Link>
+      </div>
     </>
   );
 }

@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
 import { format } from 'date-fns';
 import { ApolloError } from 'apollo-client';
-import Error from 'next/error';
 import { NextSeo } from 'next-seo';
 
 import { Article, User } from '../generated/graphql';
@@ -25,6 +24,8 @@ import ArticlesFallback from '../components/ArticlesFallback';
 import UserProfileFallback from '../components/UserProfileFallback';
 import EmptyState from '../components/EmptyState';
 import ProfileFeed from '../components/ProfileFeed';
+import GenericError from '../components/GenericError';
+import BardError from './_error';
 
 function Articles({
   loading,
@@ -40,8 +41,9 @@ function Articles({
   name: string;
 }): React.ReactElement {
 
-  if (error) return <div>Error loading articles!</div>;
   if (loading) return <ArticlesFallback />;
+
+  if (error) return <div><GenericError title /></div>;
 
   const { articlesByUser } = articlesData;
 
@@ -75,13 +77,14 @@ const Author: NextPage = (): React.ReactElement => {
   const [section, setSection] = useState('articles');
   const { loading, error, data } = useQuery(AuthorProfileQuery, { variables: { username } });
 
-  if (error) return <div>Error</div>;
   if (loading) return <UserProfileFallback />;
+  if (error?.message.includes('User not found'))return <BardError statusCode={404} hasGetInitialPropsRun={true} err={null} />;
+  if (error) return <div><GenericError title /></div>;
 
   const { user }: { user: User } = data;
 
   if (!user?.id) {
-    return <Error statusCode={404} />;
+    return <BardError statusCode={404} hasGetInitialPropsRun={true} err={null} />;
   }
 
   const isSubscriber = user?.subscribers?.some(subscriber => subscriber === auth?.userId);

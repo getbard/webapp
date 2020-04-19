@@ -12,6 +12,7 @@ import CommentsByResourceIdQuery from '../queries/CommentsByResourceIdQuery';
 import CommentEditor from './CommentEditor';
 import CommentRow from './CommentRow';
 import CommentsFallback from './CommentsFallback';
+import GenericError from './GenericError';
 
 function Comments({
   resourceId,
@@ -24,7 +25,18 @@ function Comments({
   const [sortBy, setSortBy] = useState('latest');
 
   if (loading) return <CommentsFallback />;
-  if (error) return <div>Something went wrong...</div>;
+
+  if (error) return (
+    <div className="mt-10 w-full border border-gray-300 rounded-sm p-4 shadow-sm">
+      <h2 className="mb-2 font-bold">
+        We weren&apos;t able to get comments for this article.
+      </h2>
+
+      <p>
+        Rest assured, we&apos;re on it! Check back in a little bit.
+      </p>
+    </div>
+  );
 
   const { commentsByResourceId } = data;
 

@@ -16,6 +16,7 @@ import ArticleRow from '../components/ArticleRow';
 import PageHeader from '../components/PageHeader';
 import ArticlesFallback from '../components/ArticlesFallback';
 import EmptyState from '../components/EmptyState';
+import GenericError from '../components/GenericError';
 
 function ArticlesDisplay({
   articleType,
@@ -32,8 +33,8 @@ function ArticlesDisplay({
     variables: { userId, drafts: true },
   });
 
-  if (error) return <div>Error</div>;
   if (loading) return <ArticlesFallback />;
+  if (error) return <div><GenericError title /></div>;
 
   const { articlesByUser } = data;
 

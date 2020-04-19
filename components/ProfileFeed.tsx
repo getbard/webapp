@@ -17,6 +17,7 @@ import FeedCommentInfo from './FeedCommentInfo';
 import FeedUserInfo from './FeedUserInfo';
 import FeedFallback from './FeedFallback';
 import EmptyState from './EmptyState';
+import GenericError from './GenericError';
 
 function Activity({ activity }: { activity: FeedActivity }): React.ReactElement {
   const auth = useAuth();
@@ -98,8 +99,9 @@ function Activity({ activity }: { activity: FeedActivity }): React.ReactElement 
 function ProfileFeed({ userId, name }: { userId: string; name: string }): React.ReactElement {
   const { loading, error, data } = useQuery(ProfileFeedQuery, { variables: { userId } });
 
-  if (error) return <div>Error</div>;
   if (loading) return <FeedFallback />;
+
+  if (error) return <div><GenericError title /></div>;
 
   const { profileFeed } = data;
 
