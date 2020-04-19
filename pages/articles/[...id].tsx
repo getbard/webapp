@@ -112,7 +112,7 @@ const Article: NextPage = (): React.ReactElement => {
 
         {/*
           // @ts-ignore */}
-        <meta name="twitter:data1" value={readingTime} /> */}
+        <meta name="twitter:data1" value={readingTime} />
       </Head>
 
       <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
