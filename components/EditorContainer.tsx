@@ -94,6 +94,10 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
       return;
     }
 
+    if (headerImage?.__typename) {
+      delete headerImage.__typename;
+    }
+
     const input: CreateOrUpdateArticleInput = {
       title,
       summary,
