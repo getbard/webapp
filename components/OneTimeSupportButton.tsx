@@ -100,12 +100,12 @@ function OneTimeSupportButton({
               id="donationAmount"
               type="number"
               name="donationAmount"
-              placeholder="Enter a donation amount of $5 or more"
+              placeholder="Enter a donation amount of $2 or more"
               ref={register({
                 required: 'Please enter a donation amount',
                 min: {
-                  value: 5,
-                  message: 'The minimum donation is $5',
+                  value: 2,
+                  message: 'The minimum donation is $2',
                 },
                 max: {
                   value: 999999,
