@@ -1,17 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLazyQuery } from '@apollo/react-hooks';
+
+import AuthLinkQuery from '../queries/AuthLinkQuery';
 
 import { useAuth } from '../hooks/useAuth';
 
 function VerifyEmailAlert(): React.ReactElement {
   const auth = useAuth();
   const [verificationSent, setVerificationSent] = useState(false);
+  const [sendResetPasswordEmail, { data, error, called }] = useLazyQuery(AuthLinkQuery);
+
+  useEffect(() => {
+    if (called && !error) {
+      setVerificationSent(true);
+    }
+  }, [data]);
 
   const sendEmailVerification = (): void => {
     window.analytics.track('VERIFY EMAIL ALERT: Resend verification clicked');
 
     if (!verificationSent) {
-      auth.user?.sendEmailVerification();
-      setVerificationSent(true);
+      sendResetPasswordEmail({
+        variables: { type: 'emailVerification', email: auth.user?.email },
+      });
     }
   };
 
