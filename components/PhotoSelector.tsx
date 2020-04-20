@@ -73,6 +73,11 @@ export function PhotoSelector({
 
   const handlePhotoSelect = (headerImage: ArticleHeaderImage | null): void => {
     window.analytics.track('PHOTO SELECTOR: Photo selected');
+
+    if (headerImage?.__typename) {
+      delete headerImage.__typename;
+    }
+
     onSelect(headerImage);
     setDisplay(false);
   }
