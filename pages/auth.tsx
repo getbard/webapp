@@ -1,13 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
-import { useLazyQuery } from '@apollo/react-hooks';
 import { useRouter } from 'next/router';
 import firebase from '../lib/firebase';
 
 import { withApollo } from '../lib/apollo';
-import AuthLinkQuery from '../queries/AuthLinkQuery';
 
 import withLayout from '../components/withLayout';
 import PageHeader from '../components/PageHeader';

@@ -33,8 +33,16 @@ module.exports = withSourceMaps(withBundleAnalyzer({
           ignore: ['node_modules'],
           urlPrefix: '~/_next',
         })
-      )
+      );
     }
+
+    config.module.rules.push({
+      test: /\.svg$/,
+      issuer: {
+        test: /\.(js|ts)x?$/,
+      },
+      use: ['@svgr/webpack'],
+    });
 
     return config;
   },
