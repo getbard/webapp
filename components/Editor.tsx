@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { Slate, Editable, withReact } from 'slate-react';
 import { createEditor, Node } from 'slate';
 import { withHistory } from 'slate-history';
@@ -7,6 +7,7 @@ import { toggleFormatInline } from '../lib/editor';
 
 import withHtml from './withHtml';
 import withImages from './withImages';
+import { withLinks, insertLink } from './withLinks';
 import EditorLeaf from './EditorLeaf';
 import EditorElement from './EditorElement';
 import EditorToolbar from './EditorToolbar';
@@ -29,7 +30,9 @@ function BardEditor({
   placeholder?: string;
 }): React.ReactElement {
   const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
-  const editor = useMemo(() => withImages(withHtml(withHistory(withReact(createEditor())))), []);
+  const editor = useMemo(() => withLinks(withImages(withHtml(withHistory(withReact(createEditor()))))), []);
+  const renderLeaf = useCallback((props): JSX.Element => <EditorLeaf {...props} />, []);
+  const renderElement = useCallback((props): JSX.Element => <EditorElement {...props} />, []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
     if (!e.ctrlKey && !e.metaKey) {
@@ -53,6 +56,12 @@ function BardEditor({
         e.preventDefault();
         toggleFormatInline(editor, 'underline');
         break;
+      }
+      case 'k': {
+        e.preventDefault();
+        const url = window.prompt('Enter the URL of the link:');
+        if (!url) return;
+        insertLink(editor, url);
       }
     }
   }
@@ -78,8 +87,8 @@ function BardEditor({
         className="text-lg"
         readOnly={readOnly}
         placeholder={placeholder || 'Let the world know what is on your mind.'}
-        renderLeaf={(props): JSX.Element => <EditorLeaf {...props} />}
-        renderElement={(props): JSX.Element => <EditorElement {...props} />}
+        renderLeaf={renderLeaf}
+        renderElement={renderElement}
         onKeyDown={handleKeyDown}
       />
     </Slate>

@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import styled from '@emotion/styled';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { createEditor, Node, Transforms, Editor } from 'slate';
@@ -20,6 +20,7 @@ import EditorToolbar from './EditorToolbar';
 import Button from './Button';
 import Notification from './Notification';
 const EmojiPicker = dynamic(() => import('./EmojiPicker'));
+import { withLinks, insertLink } from './withLinks';
 
 const emptyValue = [{
   type: 'paragraph',
@@ -56,7 +57,10 @@ function CommentEditor({
 }): React.ReactElement {
   const auth = useAuth();
   const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const editor = useMemo(() => withLinks(withHistory(withReact(createEditor()))), []);
+  const renderLeaf = useCallback((props): JSX.Element => <EditorLeaf {...props} />, []);
+  const renderElement = useCallback((props): JSX.Element => <EditorElement {...props} />, []);
+
   const [createComment, {
     data: createData,
     error: createError,
@@ -124,6 +128,12 @@ function CommentEditor({
         toggleFormatInline(editor, 'underline');
         break;
       }
+      case 'k': {
+        e.preventDefault();
+        const url = window.prompt('Enter the URL of the link:');
+        if (!url) return;
+        insertLink(editor, url);
+      }
     }
   }
 
@@ -178,8 +188,8 @@ function CommentEditor({
           <Editable
             readOnly={readOnly}
             placeholder="What did you think of the article?"
-            renderLeaf={(props): JSX.Element => <EditorLeaf {...props} />}
-            renderElement={(props): JSX.Element => <EditorElement {...props} />}
+            renderLeaf={renderLeaf}
+            renderElement={renderElement}
             onKeyDown={handleKeyDown}
           />
         </Slate>
