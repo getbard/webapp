@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Sun Apr 19 2020 21:21:55 GMT-0700 (Pacific Daylight Time)
+# timestamp: Mon Apr 20 2020 08:52:11 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -10,7 +10,7 @@ type Article {
   content: String
   headerImage: ArticleHeaderImage
   author: User!
-  category: Category
+  category: String
   comments: [Comment]
   likes: Int!
   wordCount: Int!
@@ -62,16 +62,15 @@ enum Category {
   arts
   books
   business
-  design
-  food
   health
   opinion
   politics
+  psychology
+  relationships
   science
-  sports
+  self
   technology
   travel
-  world
 }
 
 type Comment {
