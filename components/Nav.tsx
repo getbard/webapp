@@ -15,7 +15,7 @@ function LoggedInMenu(): React.ReactElement {
     <div className="flex items-center">
       {!isAboutPage && (
         <Link href="/about">
-          <a className={`${!isWritePage && 'mr-4'}`}>
+          <a className={`${!isWritePage ? 'mr-4' : ''}`}>
             Why Bard?
           </a>
         </Link>
