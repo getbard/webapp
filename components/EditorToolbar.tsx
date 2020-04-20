@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import { FiLink } from 'react-icons/fi';
 
 import { isFormatActive, toggleFormat } from '../lib/editor';
+import { insertLink } from './withLinks';
 
 import Portal from './Portal';
 
@@ -24,12 +25,19 @@ const formatStyles: {
 };
 
 function LinkButton(): React.ReactElement {
+  const editor = useSlate();
+
   return (
     <button
       className="px-2 hover:text-secondary"
       onMouseDown={(e): void => {
         e.preventDefault();
+
         window.analytics.track(`EDITOR TOOLBAR: Link clicked`);
+
+        const url = window.prompt('Enter the URL of the link:');
+        if (!url) return;
+        insertLink(editor, url);
       }}
     >
       <span className="font-serif text-lg">

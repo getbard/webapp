@@ -53,7 +53,7 @@ const EditorElement = (props: RenderElementProps): React.ReactElement => {
       return <ol {...attributes}>{children}</ol>;
     case 'link':
       return (
-        <a href={element.url} {...attributes}>
+        <a href={element.url} {...attributes} className="underline">
           {children}
         </a>
       );
