@@ -9,7 +9,7 @@ export function EditorHeaderPhotoSelector({
   category,
   setCategory,
 }: {
-  category: Category | null;
+  category: Category | string | null;
   setCategory: (category: Category) => void;
 }): React.ReactElement {
   const menuRef = useRef(null);
