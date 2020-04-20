@@ -188,17 +188,17 @@ function HoveringToolbar(): React.ReactElement {
         ref={ref as React.RefObject<any>}
         className="bg-black text-white rounded-sm px-2 py-2 absolute z-10 flex opacity-0"
       >
-        <div className="flex mr-5">
+        <div className="flex mr-4">
           <BlockButton />
         </div>
 
-        <div className="flex mr-5">
+        <div className="flex mr-4">
           <MarkButton format="bold" />
           <MarkButton format="italic" />
           <MarkButton format="underline" />
         </div>
 
-        <div className="flex mr-5">
+        <div className="flex mr-4">
           <ListButton format="bulleted-list" />
           <ListButton format="numbered-list" />
         </div>
