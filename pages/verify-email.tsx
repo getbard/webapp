@@ -82,7 +82,7 @@ const ResetPassword: NextPage = (): React.ReactElement => {
               />
               <span className="text-red-600 text-xs font-bold">{errors.email && errors.email.message}</span>
               <span className="text-red-600 text-xs font-bold">{errors.sent && errors.sent.message}</span>
-              <span className="block text-xs font-bold mt-2">{verificationSent && `You've got email! If that email is valid you should be able to verify it now.`}</span>
+              <span className="text-primary block text-xs font-bold mt-2">{verificationSent && `You've got email! If that email is valid you should be able to verify it now.`}</span>
             </div>
 
             <div className="flex items-center md:justify-between justify-center">

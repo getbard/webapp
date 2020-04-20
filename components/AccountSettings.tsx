@@ -170,15 +170,13 @@ const AccountSettings = (): React.ReactElement => {
           <span className="text-xs font-bold text-primary">{displayEmailChangeWarning && 'Changing your email will require you to verify your new email and login again'}</span>
         </div>
 
-        <div className="flex justify-end">
-          <Button
-            className="w-full md:w-auto"
-            loading={loading || updateUserLoading}
-            disabled={loading || updateUserLoading || usernameLoading}
-          >
-            Save
-          </Button>
-        </div>
+        <Button
+          className="w-full md:w-auto"
+          loading={loading || updateUserLoading}
+          disabled={loading || updateUserLoading || usernameLoading}
+        >
+          Save
+        </Button>
       </form>
 
 
