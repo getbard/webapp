@@ -11,7 +11,7 @@ import dynamic from 'next/dynamic';
 import CreateCommentMutation from '../queries/CreateCommentMutation';
 import UpdateCommentMutation from '../queries/UpdateCommentMutation';
 
-import { toggleFormatInline } from '../lib/editor';
+import { toggleMarkInline } from '../lib/editor';
 import { useAuth } from '../hooks/useAuth';
 
 import EditorLeaf from './EditorLeaf';
@@ -21,6 +21,7 @@ import Button from './Button';
 import Notification from './Notification';
 const EmojiPicker = dynamic(() => import('./EmojiPicker'));
 import { withLinks, insertLink } from './withLinks';
+import { withList } from './withList';
 
 const emptyValue = [{
   type: 'paragraph',
@@ -57,7 +58,7 @@ function CommentEditor({
 }): React.ReactElement {
   const auth = useAuth();
   const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
-  const editor = useMemo(() => withLinks(withHistory(withReact(createEditor()))), []);
+  const editor = useMemo(() => withList(withLinks(withHistory(withReact(createEditor())))), []);
   const renderLeaf = useCallback((props): JSX.Element => <EditorLeaf {...props} />, []);
   const renderElement = useCallback((props): JSX.Element => <EditorElement {...props} />, []);
 
@@ -115,17 +116,17 @@ function CommentEditor({
     switch (e.key) {
       case 'b': {
         e.preventDefault();
-        toggleFormatInline(editor, 'bold');
+        toggleMarkInline(editor, 'bold');
         break;
       }
       case 'i': {
         e.preventDefault();
-        toggleFormatInline(editor, 'italic');
+        toggleMarkInline(editor, 'italic');
         break;
       }
       case 'u': {
         e.preventDefault();
-        toggleFormatInline(editor, 'underline');
+        toggleMarkInline(editor, 'underline');
         break;
       }
       case 'k': {

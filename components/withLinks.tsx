@@ -2,7 +2,7 @@ import isUrl from 'is-url';
 import { Element, Transforms, Editor, Range } from 'slate';
 import { ReactEditor } from 'slate-react';
 
-export const isLinkActive = (editor: Editor) => {
+export const isLinkActive = (editor: Editor): boolean => {
   const [link] = Editor.nodes(editor, {
     match: n => n.type === 'link',
   });
@@ -10,11 +10,11 @@ export const isLinkActive = (editor: Editor) => {
   return !!link;
 };
 
-export const unwrapLink = (editor: Editor) => {
+export const unwrapLink = (editor: Editor): void => {
   Transforms.unwrapNodes(editor, { match: n => n.type === 'link' });
 };
 
-const wrapLink = (editor: Editor, url: string) => {
+const wrapLink = (editor: Editor, url: string): void => {
   if (isLinkActive(editor)) {
     unwrapLink(editor);
   }
@@ -35,7 +35,7 @@ const wrapLink = (editor: Editor, url: string) => {
   }
 };
 
-export const insertLink = (editor: Editor, url: string) => {
+export const insertLink = (editor: Editor, url: string): void => {
   if (editor.selection) {
     wrapLink(editor, url);
   }
@@ -48,7 +48,7 @@ export const withLinks = (editor: ReactEditor): ReactEditor => {
     return element.type === 'link' ? true : isInline(element);
   };
 
-  editor.insertText = (text: string) => {
+  editor.insertText = (text: string): void => {
     if (text && isUrl(text)) {
       wrapLink(editor, text);
     } else {
@@ -56,7 +56,7 @@ export const withLinks = (editor: ReactEditor): ReactEditor => {
     }
   };
 
-  editor.insertData = (data: DataTransfer) => {
+  editor.insertData = (data: DataTransfer): void => {
     const text = data.getData('text/plain');
 
     if (text && isUrl(text)) {
