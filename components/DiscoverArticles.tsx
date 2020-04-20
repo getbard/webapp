@@ -33,7 +33,15 @@ function DiscoverArticles({ category }: { category: string }): React.ReactElemen
   const articlesWithoutHeader: Article[] = [];
   const articlesWithHeader: Article[] = [];
 
-  if (!articles.length) {
+  articles.forEach((article: Article) => {
+    if (article.headerImage?.url) {
+      articlesWithHeader.push(article);
+    } else {
+      articlesWithoutHeader.push(article);
+    }
+  });
+
+  if (!articlesWithHeader.length) {
     return (
       <EmptyState title="We're at a loss for words...">
         <div>
@@ -54,14 +62,6 @@ function DiscoverArticles({ category }: { category: string }): React.ReactElemen
       </EmptyState>
     );
   }
-
-  articles.forEach((article: Article) => {
-    if (article.headerImage?.url) {
-      articlesWithHeader.push(article);
-    } else {
-      articlesWithoutHeader.push(article);
-    }
-  });
 
   for (let i = 0; i < articlesWithoutHeader.length; i+= 6) {
     articleChunks.push(articlesWithoutHeader.slice(i, i + 6));
