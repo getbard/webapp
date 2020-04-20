@@ -99,8 +99,8 @@ const Author: NextPage = (): React.ReactElement => {
   return (
     <div className="px-5 pt-5 grid grid-cols-4 gap-5">
       <NextSeo
-        title={`Edit ${username}`}
-        description={`Read and support ${user.username} on Bard.`}
+        title={`${user?.firstName} ${user?.lastName}` || user.username}
+        description={`Read and support ${user.firstName} on Bard.`}
       />
 
       <div className="text-center break-words">
