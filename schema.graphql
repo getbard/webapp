@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Sun Apr 19 2020 18:57:40 GMT-0700 (Pacific Daylight Time)
+# timestamp: Sun Apr 19 2020 21:21:55 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -259,7 +259,7 @@ type Query {
   article(id: ID!): Article
   articleBySlug(slug: String!): Article
   articlesByUser(userId: ID!, drafts: Boolean): [Article]
-  authLink(type: AuthLink!): String
+  authLink(type: AuthLink!, email: String!): String
   commentsByResourceId(resourceId: ID!): [Comment]
   feed: Feed
   profileFeed(userId: ID): ProfileFeed
