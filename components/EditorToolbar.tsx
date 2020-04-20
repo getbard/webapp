@@ -1,10 +1,10 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import { Range, Editor } from 'slate';
 import styled from '@emotion/styled';
 import { IconType } from 'react-icons';
 import { FiLink } from 'react-icons/fi';
-import { MdFormatListBulleted, MdFormatListNumbered } from 'react-icons/md';
+import { MdFormatListBulleted, MdFormatListNumbered, MdFormatSize } from 'react-icons/md';
 
 import { isMarkActive, toggleMark, isBlockActive, toggleBlock, toggleList } from '../lib/editor';
 import { insertLink } from './withLinks';
@@ -30,13 +30,13 @@ const blockTypes: {
   [key: string]: { [key: string]:  string | IconType };
 } = {
   'heading-one': {
-    display: 'H1',
+    display: 'A',
   },
   'heading-two': {
-    display: 'H2',
+    display: 'A',
   },
   'heading-three': {
-    display: 'H3',
+    display: 'A',
   },
   'numbered-list': {
     icon: MdFormatListNumbered,
@@ -75,7 +75,7 @@ function MarkButton({ format }: { format: string}): React.ReactElement {
 
   return (
     <button
-      className={`px-2 hover:text-secondary ${isMarkActive(editor, format) && 'text-secondary'}`}
+      className={`px-1 hover:text-secondary ${isMarkActive(editor, format) && 'text-secondary'}`}
       onMouseDown={(e): void => {
         e.preventDefault();
 
@@ -91,30 +91,38 @@ function MarkButton({ format }: { format: string}): React.ReactElement {
   );
 }
 
-function BlockButton({ format }: { format: string }): React.ReactElement {
+function BlockButton(): React.ReactElement {
   const editor = useSlate();
-  const block = blockTypes[format];
-  const Icon = block?.icon;
+  const blocks = ['one', 'two', 'three'];
+  const [index, setIndex] = useState(0);
+
+  const h1Active = isBlockActive(editor, 'heading-one');
+  const h2Active = isBlockActive(editor, 'heading-two');
+  const h3Active = isBlockActive(editor, 'heading-three');
+  const isActive =  h1Active || h2Active || h3Active;
 
   return (
     <button
-      className={`px-2 hover:text-secondary ${isBlockActive(editor, format) && 'text-secondary'}`}
+      className={`px-1 hover:text-secondary ${isActive && 'text-secondary'}`}
       onMouseDown={(e): void => {
         e.preventDefault();
+
+        // Cycle through unless you're on heading 3 then just turn it off
+        const endOfCycle = index === 0 && h3Active;
+        const blockToToggle = endOfCycle ? 2 : index;
+        const format = `heading-${blocks[blockToToggle]}`;
 
         window.analytics.track(`EDITOR TOOLBAR: ${format} clicked`);
 
         toggleBlock(editor, format);
+
+        if (!endOfCycle) {
+          setIndex((index + 1) % blocks.length);
+        }
       }}
     >
       <span className="font-serif text-lg">
-        {
-          Icon
-           ? (
-            <Icon />
-           )
-           : block.display
-        }
+        <MdFormatSize />
       </span>
     </button>
   )
@@ -126,7 +134,7 @@ function ListButton({ format }: { format: string }): React.ReactElement {
 
   return (
     <button
-      className={`px-2 hover:text-secondary ${isBlockActive(editor, format) && 'text-secondary'}`}
+      className={`px-1 hover:text-secondary ${isBlockActive(editor, format) && 'text-secondary'}`}
       onMouseDown={(e): void => {
         e.preventDefault();
 
@@ -180,19 +188,17 @@ function HoveringToolbar(): React.ReactElement {
         ref={ref as React.RefObject<any>}
         className="bg-black text-white rounded-sm px-2 py-2 absolute z-10 flex opacity-0"
       >
-        <div className="flex mr-4">
-          <BlockButton format="heading-one" />
-          <BlockButton format="heading-two" />
-          <BlockButton format="heading-three" />
+        <div className="flex mr-5">
+          <BlockButton />
         </div>
 
-        <div className="flex mr-4">
+        <div className="flex mr-5">
           <MarkButton format="bold" />
           <MarkButton format="italic" />
           <MarkButton format="underline" />
         </div>
 
-        <div className="flex mr-4">
+        <div className="flex mr-5">
           <ListButton format="bulleted-list" />
           <ListButton format="numbered-list" />
         </div>
