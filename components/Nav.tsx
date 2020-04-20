@@ -8,10 +8,20 @@ import ButtonLink from './ButtonLink';
 
 function LoggedInMenu(): React.ReactElement {
   const router = useRouter();
+  const isWritePage = router.pathname === '/write';
+  const isAboutPage = router.pathname === '/about';
 
   return (
-    <span className="flex items-center">
-      {router.pathname !== '/write' && (
+    <div className="flex items-center">
+      {!isAboutPage && (
+        <Link href="/about">
+          <a className={`${!isWritePage ? 'mr-4' : ''}`}>
+            Why Bard?
+          </a>
+        </Link>
+      )}
+
+      {!isWritePage && (
         <ButtonLink
           href="/write"
           thin
@@ -22,7 +32,7 @@ function LoggedInMenu(): React.ReactElement {
       )}
 
       <NavMenu />
-    </span>
+    </div>
   )
 }
 
