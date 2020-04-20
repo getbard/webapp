@@ -30,7 +30,7 @@ const BardError = ({
   return (
     <>
       <NextSeo
-        title={statusCode.toString()}
+        title={statusCode?.toString() || '500'}
         description={description}
       />
 
