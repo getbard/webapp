@@ -11,6 +11,7 @@ const DiscoverArticlesQuery = gql`
       publishedAt
       subscribersOnly
       wordCount
+      category
       author {
         id
         username
