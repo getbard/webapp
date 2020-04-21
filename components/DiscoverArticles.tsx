@@ -25,10 +25,8 @@ const ArticleChunkContainer = styled.div`
 
 function DiscoverArticles({
   category,
-  setArticles,
 }: {
   category: string;
-  setArticles: (articles: Article[]) => void;
 }): React.ReactElement {
   const { loading, error, data } = useQuery(DiscoverArticlesQuery, { variables: { category } });
   
@@ -39,10 +37,6 @@ function DiscoverArticles({
   const articleChunks: Article[][] = [];
   const articlesWithoutHeader: Article[] = [];
   const articlesWithHeader: Article[] = [];
-
-  useEffect(() => {
-    setArticles(articles);
-  }, [data?.articles.length]);
 
   articles.forEach((article: Article) => {
     if (article.headerImage?.url) {
