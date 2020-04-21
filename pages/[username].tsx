@@ -87,8 +87,6 @@ const Author: NextPage = (): React.ReactElement => {
     return <BardError statusCode={404} hasGetInitialPropsRun={true} err={null} />;
   }
 
-  const isSubscriber = user?.subscribers?.some(subscriber => subscriber === auth?.userId);
-
   const {
     loading: articlesLoading,
     error: articlesError,
@@ -116,13 +114,7 @@ const Author: NextPage = (): React.ReactElement => {
         {
           user.id !== auth.userId && (
             <div className="flex justify-center flex-col items-center">
-              {isSubscriber && (
-                <span className="font-bold mb-2">
-                  Thanks for being a supporter!
-                </span>
-              )}
-
-              {user?.stripeUserId && user?.stripePlan && !isSubscriber && (
+              {user?.stripeUserId && user?.stripePlan && (
                 <BecomeSupporterButton
                   author={user}
                   displayModal={!!support}
@@ -179,7 +171,11 @@ const Author: NextPage = (): React.ReactElement => {
       </div>
 
       {sessionId && user?.stripeUserId && (
-        <SupportConfirmation sessionId={sessionId} stripeUserId={user?.stripeUserId || ''} />
+        <SupportConfirmation
+          authorId={user.id}
+          sessionId={sessionId}
+          stripeUserId={user?.stripeUserId || ''}
+        />
       )}
     </div>
   );

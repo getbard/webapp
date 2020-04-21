@@ -55,9 +55,10 @@ function OneTimeSupportButton({
     createStripeSession({
       variables: {
         input: {
+          authorId: author.id,
           stripeUserId,
           amount: +donationAmount,
-          redirectUrl: `${window.location.origin}/${router.query.username}`,
+          redirectUrl: `${window.location.origin}${router.asPath}`,
         },
       },
     });

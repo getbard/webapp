@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { loadStripe } from '@stripe/stripe-js';
 import { FiFeather } from 'react-icons/fi';
 import { useRouter } from 'next/router';
@@ -8,6 +8,7 @@ import { useAuth } from '../hooks/useAuth';
 
 import { User } from '../generated/graphql';
 import CreateStripeSessionMutation from '../queries/CreateStripeSessionMutation';
+import UserSupportQuery from '../queries/UserSupportQuery';
 
 import { formatAmountForDisplay } from '../lib/stripe';
 import Button from './Button';
@@ -26,6 +27,8 @@ function BecomeSupporterButton({
   const { stripeUserId, stripePlan, firstName } = author;
   const [displayDonationPrompt, setDisplayDonationPrompt] = useState(displayModal || false);
   const [createStripeSession, { data, error, loading }] = useMutation(CreateStripeSessionMutation);
+  const { data: userSupportData } = useQuery(UserSupportQuery, { variables: { username: author.username }});
+  const subscribers = userSupportData?.user?.subscribers || [];
 
   const trackingData = {
     author: {
@@ -52,6 +55,7 @@ function BecomeSupporterButton({
     createStripeSession({
       variables: {
         input: {
+          authorId: author.id,
           stripeUserId,
           plan: { ...stripePlan, __typename: undefined },
           redirectUrl: `${window.location.origin}${window.location.pathname}`,
@@ -75,47 +79,61 @@ function BecomeSupporterButton({
     redirectToCheckout(stripeSessionData);
   }
 
+  const isSubscriber = subscribers?.some((subscriber: string) => subscriber === auth?.userId);
+
   return (
     <>
-      <Button onClick={handleClick}>
-        Become a supporter
-      </Button>
-
-      <Modal
-        open={displayDonationPrompt}
-        onModalClose={(): void => {
-          window.analytics.track('BECOME SUPPORTER BUTTON: Modal closed');
-          setDisplayDonationPrompt(false);
-        }}
-      >
-        <div>
-          <h2 className="text-xl font-bold mb-2">Thank you!</h2>
-
-          <p className="mb-4">
-            Supporting {firstName} every {stripePlan?.interval} will help them focus on what matters most, their content.
-          </p>
-
-          <p className="mb-4">
-            Supporting an author monthly unlocks subscriber only content (<span className="text-primary"><FiFeather className="inline-block" /></span>).
-          </p>
-
-          <p className="mb-4">
-            You will be paying <span className="font-bold text-primary">{formatAmountForDisplay(stripePlan?.amount! || 1000)} {stripePlan?.currency.toUpperCase() || 'USD'} per {stripePlan?.interval || 'month'}</span>.
-          </p>
-
-          {error && (
-            <p className="text-xs font-bold text-red-600 mb-4">
-              Yikes, something went wrong. Please try again in a minute.
-            </p>
-          )}
-
-          <div className="flex items-center md:justify-between justify-center">
-            <Button className="w-full md:w-auto" loading={loading} onClick={handleSubmit}>
-              Start supporting today
-            </Button>
-          </div>
-        </div>
-      </Modal>
+      {
+        isSubscriber
+          ? (
+            <span className="font-bold">
+              Thanks for being a supporter!
+            </span>
+          )
+          : (
+            <>
+              <Button onClick={handleClick}>
+                Become a supporter
+              </Button>
+        
+              <Modal
+                open={displayDonationPrompt}
+                onModalClose={(): void => {
+                  window.analytics.track('BECOME SUPPORTER BUTTON: Modal closed');
+                  setDisplayDonationPrompt(false);
+                }}
+              >
+                <div>
+                  <h2 className="text-xl font-bold mb-2">Thank you!</h2>
+        
+                  <p className="mb-4">
+                    Supporting {firstName} every {stripePlan?.interval} will help them focus on what matters most, their content.
+                  </p>
+        
+                  <p className="mb-4">
+                    Supporting an author monthly unlocks subscriber only content (<span className="text-primary"><FiFeather className="inline-block" /></span>).
+                  </p>
+        
+                  <p className="mb-4">
+                    You will be paying <span className="font-bold text-primary">{formatAmountForDisplay(stripePlan?.amount! || 1000)} {stripePlan?.currency.toUpperCase() || 'USD'} per {stripePlan?.interval || 'month'}</span>.
+                  </p>
+        
+                  {error && (
+                    <p className="text-xs font-bold text-red-600 mb-4">
+                      Yikes, something went wrong. Please try again in a minute.
+                    </p>
+                  )}
+        
+                  <div className="flex items-center md:justify-between justify-center">
+                    <Button className="w-full md:w-auto" loading={loading} onClick={handleSubmit}>
+                      Start supporting today
+                    </Button>
+                  </div>
+                </div>
+              </Modal>
+            </>
+          )
+      }
     </>
   );
 }
