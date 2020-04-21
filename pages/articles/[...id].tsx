@@ -245,7 +245,7 @@ const Article: NextPage = (): React.ReactElement => {
         <div ref={endOfArticle}></div>
 
         { 
-          auth.userId !== article.author.id && (
+          auth.userId !== article.author.id && !article?.contentBlocked && (
             <AuthorSupport
               author={article.author}
               articleTrackingData={articleTrackingData}

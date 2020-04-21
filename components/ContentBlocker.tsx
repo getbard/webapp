@@ -11,7 +11,7 @@ import BecomeSupporterButton from './BecomeSupporterButton';
 
 const GradientBlocker = styled.div`
   width: 100%;
-  background: linear-gradient(0deg, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(0deg, rgba(255,255,255,1) 40%, rgba(255,255,255,0) 100%);
 `;
 
 const ContentBlocker = ({ author }: { author: User }): React.ReactElement => {
