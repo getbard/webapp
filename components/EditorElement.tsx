@@ -33,24 +33,18 @@ const EditorElement = (props: RenderElementProps): React.ReactElement => {
           <code {...attributes}>{children}</code>;
         </pre>
       );
-    case 'bulleted-list':
-      return <ul {...attributes}>{children}</ul>;
     case 'heading-one':
-      return <h1 {...attributes}>{children}</h1>;
+      return <h1 {...attributes} className="text-5xl font-serif">{children}</h1>;
     case 'heading-two':
-      return <h2 {...attributes}>{children}</h2>;
+      return <h2 {...attributes} className="text-4xl font-serif">{children}</h2>;
     case 'heading-three':
-      return <h3 {...attributes}>{children}</h3>;
-    case 'heading-four':
-      return <h4 {...attributes}>{children}</h4>;
-    case 'heading-five':
-      return <h5 {...attributes}>{children}</h5>;
-    case 'heading-six':
-      return <h6 {...attributes}>{children}</h6>;
+      return <h3 {...attributes} className="text-3xl font-serif">{children}</h3>;
     case 'list-item':
       return <li {...attributes}>{children}</li>;
+    case 'bulleted-list':
+        return <ul {...attributes} className="list-disc pl-6">{children}</ul>;
     case 'numbered-list':
-      return <ol {...attributes}>{children}</ol>;
+      return <ol {...attributes} className="list-decimal pl-6">{children}</ol>;
     case 'link':
       return (
         <a href={element.url} {...attributes} className="underline">

@@ -3,11 +3,12 @@ import { Slate, Editable, withReact } from 'slate-react';
 import { createEditor, Node } from 'slate';
 import { withHistory } from 'slate-history';
 
-import { toggleFormatInline } from '../lib/editor';
+import { toggleMarkInline, onKeyDownList } from '../lib/editor';
 
 import withHtml from './withHtml';
 import withImages from './withImages';
 import { withLinks, insertLink } from './withLinks';
+import { withList } from './withList';
 import EditorLeaf from './EditorLeaf';
 import EditorElement from './EditorElement';
 import EditorToolbar from './EditorToolbar';
@@ -30,11 +31,13 @@ function BardEditor({
   placeholder?: string;
 }): React.ReactElement {
   const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
-  const editor = useMemo(() => withLinks(withImages(withHtml(withHistory(withReact(createEditor()))))), []);
+  const editor = useMemo(() => withList(withLinks(withImages(withHtml(withHistory(withReact(createEditor())))))), []);
   const renderLeaf = useCallback((props): JSX.Element => <EditorLeaf {...props} />, []);
   const renderElement = useCallback((props): JSX.Element => <EditorElement {...props} />, []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
+    onKeyDownList(e, editor);
+
     if (!e.ctrlKey && !e.metaKey) {
       return;
     }
@@ -44,17 +47,17 @@ function BardEditor({
     switch(e.key) {
       case 'b': {
         e.preventDefault();
-        toggleFormatInline(editor, 'bold');
+        toggleMarkInline(editor, 'bold');
         break;
       }
       case 'i': {
         e.preventDefault();
-        toggleFormatInline(editor, 'italic');
+        toggleMarkInline(editor, 'italic');
         break;
       }
       case 'u': {
         e.preventDefault();
-        toggleFormatInline(editor, 'underline');
+        toggleMarkInline(editor, 'underline');
         break;
       }
       case 'k': {
