@@ -150,6 +150,16 @@ function CommentEditor({
     const message = JSON.stringify(value);
 
     if (commentId) {
+      window.analytics.track('COMMENT EDITOR: Comment edited', {
+        author: {
+          id: auth.userId,
+        },
+        message,
+        resourceId,
+        parentId,
+        commentId,
+      });
+
       updateComment({
         variables: {
           input: {
@@ -159,6 +169,15 @@ function CommentEditor({
         },
       });
     } else {
+      window.analytics.track('COMMENT EDITOR: Comment created', {
+        author: {
+          id: auth.userId,
+        },
+        message,
+        resourceId,
+        parentId,
+      });
+
       createComment({
         variables: {
           input: {
