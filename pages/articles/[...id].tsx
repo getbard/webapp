@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -6,12 +7,14 @@ import styled from '@emotion/styled';
 import ProgressiveImage from 'react-progressive-image';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
+import { differenceInSeconds } from 'date-fns';
 
 import { User } from '../../generated/graphql';
 import ArticleBySlugQuery from '../../queries/ArticleBySlugQuery';
 import ArticleByIdQuery from '../../queries/ArticleByIdQuery';
 
 import { useAuth } from '../../hooks/useAuth';
+import useOnScreen from '../../hooks/useOnScreen';
 
 import { timeToRead, serializeText } from '../../lib/editor';
 import { withApollo } from '../../lib/apollo';
@@ -37,6 +40,10 @@ const ContentBlocker = ({ author }: { author: User }): React.ReactElement => {
   const router = useRouter();
   const buttonText = auth.userId ? `Support ${author.firstName} to read this article` : 'Create an account to read this article';
   const buttonHref = auth.userId ? `/${author.username}?support=true` : '/signup';
+
+  if (typeof window !== 'undefined') {
+    window.analytics.track('CONTENT BLOCKER: Blocked article viewed', { page: router.asPath });
+  }
 
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0">
@@ -85,6 +92,10 @@ const Article: NextPage = (): React.ReactElement => {
   const { id: idParams, sessionId } = router.query;
   const [idType, id] = idParams;
   const articleQuery = idType === 's' ? ArticleBySlugQuery : ArticleByIdQuery;
+  const endOfArticle = useRef(null);
+  const articleRead = useOnScreen(endOfArticle);
+  const [readTracked, setReadTracked] = useState(false);
+  const [readStarted] = useState(Date.now());
 
   const { loading, error, data, refetch } = useQuery(articleQuery, { variables: { id } });
 
@@ -115,6 +126,22 @@ const Article: NextPage = (): React.ReactElement => {
       id: article.author.id,
     }
   };
+
+  if (articleRead && !readTracked) {
+    // Give the user some leeway on how long it
+    // should take them to read the given article
+    const expectedTime = (parseInt(readingTime[0]) * 0.25 || 1) * 60;
+
+    // Check if the read is close to the calculated reading
+    // time so that reads where people scroll down immediately
+    // don't count as a valid read
+    const timeToFinish = differenceInSeconds(Date.now(), readStarted);
+
+    if (timeToFinish - expectedTime >= 0) {
+      setReadTracked(true);
+      window.analytics.track(`ARTICLE: Article read`, articleTrackingData);
+    }
+  }
 
   if (typeof window !== 'undefined') {
     window.analytics.track(`ARTICLE: Article viewed`, articleTrackingData);
@@ -258,6 +285,8 @@ const Article: NextPage = (): React.ReactElement => {
             )
           }
         </div>
+
+        <div ref={endOfArticle}></div>
 
         {!article?.contentBlocked && <Comments resourceId={article.id} />}
 
