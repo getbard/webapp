@@ -1,16 +1,11 @@
-import { useEffect } from 'react';
-import { useQuery } from '@apollo/react-hooks';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 
 import { Article } from '../generated/graphql';
-import DiscoverArticlesQuery from '../queries/DiscoverArticlesQuery';
 
-import DiscoverArticlesFallback from './DiscoverArticlesFallback';
 import EmptyState from './EmptyState';
 import ArticleCard from './ArticleCard';
 import SmallArticleCard from './SmallArticleCard';
-import GenericError from './GenericError';
 
 const ArticleChunkContainer = styled.div`
   > div:not(:first-of-type) {
@@ -24,16 +19,12 @@ const ArticleChunkContainer = styled.div`
 `;
 
 function DiscoverArticles({
+  articles,
   category,
 }: {
+  articles: Article[];
   category: string;
 }): React.ReactElement {
-  const { loading, error, data } = useQuery(DiscoverArticlesQuery, { variables: { category } });
-  
-  if (loading) return <DiscoverArticlesFallback />;
-  if (error) return <div><GenericError title /></div>;
-
-  const { articles } = data;
   const articleChunks: Article[][] = [];
   const articlesWithoutHeader: Article[] = [];
   const articlesWithHeader: Article[] = [];
