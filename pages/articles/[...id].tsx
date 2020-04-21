@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -12,6 +13,7 @@ import ArticleBySlugQuery from '../../queries/ArticleBySlugQuery';
 import ArticleByIdQuery from '../../queries/ArticleByIdQuery';
 
 import { useAuth } from '../../hooks/useAuth';
+import useOnScreen from '../../hooks/useOnScreen';
 
 import { timeToRead, serializeText } from '../../lib/editor';
 import { withApollo } from '../../lib/apollo';
@@ -37,6 +39,8 @@ const ContentBlocker = ({ author }: { author: User }): React.ReactElement => {
   const router = useRouter();
   const buttonText = auth.userId ? `Support ${author.firstName} to read this article` : 'Create an account to read this article';
   const buttonHref = auth.userId ? `/${author.username}?support=true` : '/signup';
+
+  window.analytics.track('CONTENT BLOCKER: Blocked article viewed', { page: router.asPath });
 
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0">
@@ -85,6 +89,8 @@ const Article: NextPage = (): React.ReactElement => {
   const { id: idParams, sessionId } = router.query;
   const [idType, id] = idParams;
   const articleQuery = idType === 's' ? ArticleBySlugQuery : ArticleByIdQuery;
+  const endOfArticle = useRef(null);
+  const articleRead = useOnScreen(endOfArticle);
 
   const { loading, error, data, refetch } = useQuery(articleQuery, { variables: { id } });
 
@@ -92,6 +98,10 @@ const Article: NextPage = (): React.ReactElement => {
 
   if (error?.message.includes('Article not found')) return <BardError statusCode={404} hasGetInitialPropsRun={true} err={null} />;
   if (error) return <div><GenericError title /></div>;
+
+  if (articleRead) {
+    console.log('yo the article has been read!');
+  }
 
   const article = data?.article || data?.articleBySlug;
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName}`;
@@ -258,6 +268,8 @@ const Article: NextPage = (): React.ReactElement => {
             )
           }
         </div>
+
+        <div ref={endOfArticle}></div>
 
         {!article?.contentBlocked && <Comments resourceId={article.id} />}
 
