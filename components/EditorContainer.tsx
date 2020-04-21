@@ -56,6 +56,8 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   const [category, setCategory] = useState(article?.category || null);
   const [notification, setNotification] = useState('');
   const noContent = !title && !summary && content === emptyDocumentString;
+  const [articleId, setArticleId] = useState(article?.id || null);
+  const [publishable, setPublishable] = useState(false);
 
   const [createOrUpdateArticle, {
     data: saveData,
@@ -70,6 +72,12 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
     setTimeout(() => setNotification('Saved!'), 500);
   }
 
+  useEffect(() => {
+    if (saveData?.createOrUpdateArticle?.id !== articleId) {
+      setArticleId(saveData?.createOrUpdateArticle?.id);
+    }
+  }, [saveData?.createOrUpdateArticle?.id]);
+
   const [publishArticle, {
     data: publishData,
     loading: publishLoading,
@@ -77,15 +85,16 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
     called: publishCalled,
   }] = useMutation(PublishArticleMutation);
 
-  const articleId = saveData?.createOrUpdateArticle?.id || article?.id;
-
   // An article is publishable when...
   // it has been saved with a title and content
   // and no mutations are currently happening
   // and the user has been verified
-  const publishable = !(!articleId || !title || content === emptyDocumentString)
-    && !(called && mutationLoading)
-    && auth?.user?.emailVerified;
+  useEffect(() => {
+    const articleIsEmpty = (!articleId || !title || content === emptyDocumentString);
+    const mutationCalledAndLoading = (called && mutationLoading);
+    const userEmailVerified = !!auth?.user?.emailVerified;
+    setPublishable(!articleIsEmpty && !mutationCalledAndLoading && userEmailVerified);
+  }, [articleId, title, content, called, mutationLoading, auth?.user?.emailVerified]);
 
   const publishButtonText = article?.publishedAt ? 'Save and Publish' : 'Publish';
 
@@ -133,7 +142,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   }
 
   const handlePublishArticle = (): void => {
-    if (!publishable) {
+    if (!publishable || !articleId) {
       return;
     }
 
