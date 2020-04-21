@@ -41,7 +41,6 @@ function DiscoverArticles({
   const articlesWithHeader: Article[] = [];
 
   useEffect(() => {
-    console.log('yolo');
     setArticles(articles);
   }, [data?.articles.length]);
 
