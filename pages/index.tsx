@@ -26,10 +26,6 @@ const Discover: NextPage = (): React.ReactElement => {
   const [categories, setCategories] = useState<string[]>(defaultCategories);
 
   useEffect(() => {
-    if (!articles.length) {
-      return;
-    }
-    
     const categoryCounter = new Map();
 
     articles.forEach((article: Article) => {
