@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import styled from '@emotion/styled';
 import Link from 'next/link';
@@ -22,7 +23,13 @@ const ArticleChunkContainer = styled.div`
   }
 `;
 
-function DiscoverArticles({ category }: { category: string }): React.ReactElement {
+function DiscoverArticles({
+  category,
+  setArticles,
+}: {
+  category: string;
+  setArticles: (articles: Article[]) => void;
+}): React.ReactElement {
   const { loading, error, data } = useQuery(DiscoverArticlesQuery, { variables: { category } });
   
   if (loading) return <DiscoverArticlesFallback />;
@@ -32,6 +39,11 @@ function DiscoverArticles({ category }: { category: string }): React.ReactElemen
   const articleChunks: Article[][] = [];
   const articlesWithoutHeader: Article[] = [];
   const articlesWithHeader: Article[] = [];
+
+  useEffect(() => {
+    console.log('yolo');
+    setArticles(articles);
+  }, [data?.articles.length]);
 
   articles.forEach((article: Article) => {
     if (article.headerImage?.url) {
