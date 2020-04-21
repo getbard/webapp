@@ -24,6 +24,7 @@ const FeedQuery = gql`
               slug
               title
               summary
+              wordCount
               headerImage {
                 url
               }
