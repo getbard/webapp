@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 import ProgressiveImage from 'react-progressive-image';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
+import { differenceInSeconds } from 'date-fns';
 
 import { User } from '../../generated/graphql';
 import ArticleBySlugQuery from '../../queries/ArticleBySlugQuery';
@@ -40,7 +41,9 @@ const ContentBlocker = ({ author }: { author: User }): React.ReactElement => {
   const buttonText = auth.userId ? `Support ${author.firstName} to read this article` : 'Create an account to read this article';
   const buttonHref = auth.userId ? `/${author.username}?support=true` : '/signup';
 
-  window.analytics.track('CONTENT BLOCKER: Blocked article viewed', { page: router.asPath });
+  if (typeof window !== 'undefined') {
+    window.analytics.track('CONTENT BLOCKER: Blocked article viewed', { page: router.asPath });
+  }
 
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0">
@@ -91,6 +94,8 @@ const Article: NextPage = (): React.ReactElement => {
   const articleQuery = idType === 's' ? ArticleBySlugQuery : ArticleByIdQuery;
   const endOfArticle = useRef(null);
   const articleRead = useOnScreen(endOfArticle);
+  const [readTracked, setReadTracked] = useState(false);
+  const [readStarted] = useState(Date.now());
 
   const { loading, error, data, refetch } = useQuery(articleQuery, { variables: { id } });
 
@@ -98,10 +103,6 @@ const Article: NextPage = (): React.ReactElement => {
 
   if (error?.message.includes('Article not found')) return <BardError statusCode={404} hasGetInitialPropsRun={true} err={null} />;
   if (error) return <div><GenericError title /></div>;
-
-  if (articleRead) {
-    console.log('yo the article has been read!');
-  }
 
   const article = data?.article || data?.articleBySlug;
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName}`;
@@ -125,6 +126,22 @@ const Article: NextPage = (): React.ReactElement => {
       id: article.author.id,
     }
   };
+
+  if (articleRead && !readTracked) {
+    // Give the user some leeway on how long it
+    // should take them to read the given article
+    const expectedTime = (parseInt(readingTime[0]) * 0.25 || 1) * 60;
+
+    // Check if the read is close to the calculated reading
+    // time so that reads where people scroll down immediately
+    // don't count as a valid read
+    const timeToFinish = differenceInSeconds(Date.now(), readStarted);
+
+    if (timeToFinish - expectedTime >= 0) {
+      setReadTracked(true);
+      window.analytics.track(`ARTICLE: Article read`, articleTrackingData);
+    }
+  }
 
   if (typeof window !== 'undefined') {
     window.analytics.track(`ARTICLE: Article viewed`, articleTrackingData);
