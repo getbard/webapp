@@ -37,6 +37,14 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName[0] + '.'}`;
   const readingTime = timeToRead(article.wordCount);
 
+  const articleTitle = article.title.length > 45
+    ? `${article.title.substr(0, article.title.lastIndexOf(' ', 45))}...`
+    : article.title;
+
+  const articleSummary = article.summary && article.summary.length > 75
+    ? `${article.summary.substr(0, article.summary.lastIndexOf(' ', 75))}...`
+    : article.summary
+
   const handleClick = (): void => {
     window.analytics.track(`ARTICLE CARD: ${article.id} clicked`, {
       article: {
@@ -81,21 +89,21 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
         }
       
         <div>
-          <h1 className="font-serif font-bold text-xl transition duration-150 ease-in">
-            {
-              article.title.length > 45
-                ? `${article.title.substr(0, article.title.lastIndexOf(' ', 45))}...`
-                : article.title
-            }
-          </h1>
+          <textarea
+            id={`${article.id}-card-title`}
+            className="cursor-pointer outline-none font-serif font-bold text-xl transition duration-150 ease-in resize-none w-full overflow-hidden"
+            rows={article.title.length > 25 ? 2 : 1}
+            value={articleTitle}
+            readOnly
+          />
 
-          <div className="text-gray-600 text-sm">
-          {
-            article.summary && article.summary.length > 100
-              ? `${article.summary.substr(0, article.summary.lastIndexOf(' ', 100))}...`
-              : article.summary
-          }
-          </div>
+          <textarea
+            id={`${article.id}-card-summary`}
+            className="cursor-pointer outline-none text-gray-600 text-sm resize-none w-full overflow-hidden"
+            rows={2}
+            value={articleSummary || ''}
+            readOnly
+          />
           
           <div className="text-xs mt-2 font-medium flex justify-between">
             <div className="text-gray-700">
