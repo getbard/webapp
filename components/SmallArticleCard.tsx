@@ -33,7 +33,7 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
   const readingTime = timeToRead(article.wordCount);
 
   const handleClick = (): void => {
-    window.analytics.track(`SMALL ARTICLE CARD: ${article.id} clicked`, {
+    window.analytics.track(`SMALL ARTICLE CARD: clicked`, {
       article: {
         id: article.id,
         title: article.title,

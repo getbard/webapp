@@ -46,7 +46,7 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
     : article.summary
 
   const handleClick = (): void => {
-    window.analytics.track(`ARTICLE CARD: ${article.id} clicked`, {
+    window.analytics.track(`ARTICLE CARD: clicked`, {
       article: {
         id: article.id,
         title: article.title,
