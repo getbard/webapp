@@ -1,12 +1,12 @@
 import gql from 'graphql-tag';
 
-const UsernameQuery = gql`
+const UserSupportQuery = gql`
   query user($username: String!) {
     user(username: $username) {
       id
-      username
+      subscribers
     }
   }
 `;
 
-export default UsernameQuery;
+export default UserSupportQuery;

@@ -3,93 +3,36 @@ import { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
-import styled from '@emotion/styled';
 import ProgressiveImage from 'react-progressive-image';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
 import { differenceInSeconds } from 'date-fns';
 
-import { User } from '../../generated/graphql';
 import ArticleBySlugQuery from '../../queries/ArticleBySlugQuery';
 import ArticleByIdQuery from '../../queries/ArticleByIdQuery';
 
-import { useAuth } from '../../hooks/useAuth';
 import useOnScreen from '../../hooks/useOnScreen';
+import { useAuth } from '../../hooks/useAuth';
 
 import { timeToRead, serializeText } from '../../lib/editor';
 import { withApollo } from '../../lib/apollo';
 import withLayout from '../../components/withLayout';
 import Editor from '../../components/Editor';
 import HeaderImage from '../../components/HeaderImage';
-import ButtonLink from '../../components/ButtonLink';
-import BecomeSupporterButton from '../../components/BecomeSupporterButton';
 import SupportConfirmation from '../../components/SupportConfirmation';
 import Comments from '../../components/Comments';
 import DateMeta from '../../components/DateMeta';
 import ArticleFallback from '../../components/ArticleFallback';
 import GenericError from '../../components/GenericError';
 import BardError from '../_error';
-
-const GradientBlocker = styled.div`
-  width: 100%;
-  background: linear-gradient(0deg, rgba(255,255,255,1) 20%, rgba(255,255,255,0) 100%);
-`;
-
-const ContentBlocker = ({ author }: { author: User }): React.ReactElement => {
-  const auth = useAuth();
-  const router = useRouter();
-  const buttonText = auth.userId ? `Support ${author.firstName} to read this article` : 'Create an account to read this article';
-  const buttonHref = auth.userId ? `/${author.username}?support=true` : '/signup';
-
-  if (typeof window !== 'undefined') {
-    window.analytics.track('CONTENT BLOCKER: Blocked article viewed', { page: router.asPath });
-  }
-
-  return (
-    <div className="absolute top-0 left-0 right-0 bottom-0">
-      <GradientBlocker className="h-full w-full" />
-
-      <div className="bg-white flex flex-col justify-center items-center pb-10 pt-0 -mt-16">
-        <div className="mb-2">
-          {author.firstName} has made this content available to supporters only.
-        </div>
-
-        {
-          auth.user && author.stripeUserId && author.stripePlan
-            ? <BecomeSupporterButton author={author} />
-            : (
-              <ButtonLink
-                href={buttonHref}
-                trackEvent={`CONTENT BLOCKER: ${buttonText} clicked`}
-              >
-                {buttonText}
-              </ButtonLink>
-            )
-        }
-
-        {
-          !auth.userId && (
-            <div className="mt-2">
-              Already a supporter?&nbsp;
-              <Link href={`/login?redirect=${router.asPath}`}>
-                <a
-                  className="underline"
-                  onClick={(): void => window.analytics.track('CONTENT BLOCKER: Login to read clicked', { page: router.asPath })}
-                >
-                  Login to read
-                </a>
-              </Link>
-            </div>
-          )
-        }
-      </div>
-    </div>
-  );
-}
+import AuthorSupport from '../../components/AuthorSupport';
+import ArticleHeaderSupport from '../../components/ArticleHeaderSupport';
+import ContentBlocker from '../../components/ContentBlocker';
 
 const Article: NextPage = (): React.ReactElement => {
+  const auth = useAuth();
   const router = useRouter();
-  const { id: idParams, sessionId } = router.query;
+  const { id: idParams, sessionId, support } = router.query;
   const [idType, id] = idParams;
   const articleQuery = idType === 's' ? ArticleBySlugQuery : ArticleByIdQuery;
   const endOfArticle = useRef(null);
@@ -127,7 +70,7 @@ const Article: NextPage = (): React.ReactElement => {
     }
   };
 
-  if (articleRead && !readTracked) {
+  if (articleRead && !readTracked && !article.contentBlocked) {
     // Give the user some leeway on how long it
     // should take them to read the given article
     const expectedTime = (parseInt(readingTime[0]) * 0.25 || 1) * 60;
@@ -236,20 +179,33 @@ const Article: NextPage = (): React.ReactElement => {
             {article?.summary}
           </div>
 
-          <div className="text-sm w-full font-bold">
-            By&nbsp;
-            <Link href={`/${article.author.username}`} >
-              <a
-                className="underline"
-                onClick={handleAuthorClick}
-              >
-                {authorName}
-              </a>
-            </Link>
-          </div>
+          <div className="grid grid-cols-2">
+            <div className="col-span-1">
+              <div className="text-sm font-bold">
+                By&nbsp;
+                <Link href={`/${article.author.username}`} >
+                  <a
+                    className="underline"
+                    onClick={handleAuthorClick}
+                  >
+                    {authorName}
+                  </a>
+                </Link>
+              </div>
 
-          <div className="text-xs w-full relative">
-            <DateMeta resource={article} dateParam="publishedAt" action="" /> | {readingTime}
+
+              <div className="text-xs w-full relative">
+                <DateMeta resource={article} dateParam="publishedAt" action="" /> | {readingTime}
+              </div>
+            </div>
+
+            {
+              auth.userId !== article.author.id && (
+                <ArticleHeaderSupport
+                  author={article.author}
+                />
+              )
+            }
           </div>
         </div>
 
@@ -288,10 +244,20 @@ const Article: NextPage = (): React.ReactElement => {
 
         <div ref={endOfArticle}></div>
 
+        { 
+          auth.userId !== article.author.id && (
+            <AuthorSupport
+              author={article.author}
+              articleTrackingData={articleTrackingData}
+            />
+          )
+        }
+      
         {!article?.contentBlocked && <Comments resourceId={article.id} />}
 
         {sessionId && article.author?.stripeUserId && (
           <SupportConfirmation
+            authorId={article.author.id}
             sessionId={sessionId}
             stripeUserId={article.author.stripeUserId}
             refetch={refetch}

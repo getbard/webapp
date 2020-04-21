@@ -15,6 +15,7 @@ const ArticleByIdQuery = gql`
       updatedAt
       category
       author {
+        id
         username
         firstName
         lastName

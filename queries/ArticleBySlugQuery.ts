@@ -14,6 +14,7 @@ const ArticleBySlugQuery = gql`
       contentBlocked
       category
       author {
+        id
         username
         firstName
         lastName

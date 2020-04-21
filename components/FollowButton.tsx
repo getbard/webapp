@@ -1,12 +1,12 @@
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { useRouter } from 'next/router';
 
 import { useAuth } from '../hooks/useAuth';
 
 import { User } from '../generated/graphql';
-import AuthorProfileQuery from '../queries/AuthorProfileQuery';
 import FollowUserMutation from '../queries/FollowUserMutation';
 import UnfollowUserMutation from '../queries/UnfollowUserMutation';
+import UserFollowQuery from '../queries/UserFollowQuery';
 
 import Button from './Button';
 import Notification from './Notification';
@@ -22,17 +22,21 @@ function FollowButton({
 }): React.ReactElement {
   const router = useRouter();
   const auth = useAuth();
-
+  const { data } = useQuery(UserFollowQuery, {
+    variables: { username: user.username },
+    fetchPolicy: 'cache-and-network',
+  });
+  const followerIds = data?.user?.followerIds || [];
+  
   const [followUser, { error: followError }] = useMutation(FollowUserMutation, {
     update(cache) {
-      const userFollowers = user?.followerIds || [];
       cache.writeQuery({
-        query: AuthorProfileQuery,
+        query: UserFollowQuery,
         variables: { username: user.username },
         data: {
           user: {
-            ...user,
-            followerIds: [...userFollowers, follower],
+            ...data.user,
+            followerIds: [...followerIds, follower],
           },
         },
       });
@@ -41,22 +45,19 @@ function FollowButton({
 
   const [unfollowUser, { error: unfollowError }] = useMutation(UnfollowUserMutation, {
     update(cache) {
-      const data: any = cache.readQuery({
-        query: AuthorProfileQuery,
-        variables: { username: user.username },
-      });
       cache.writeQuery({
-        query: AuthorProfileQuery,
+        query: UserFollowQuery,
+        variables: { username: user.username },
         data: {
           user: {
             ...data.user,
-            followerIds: data.user.followerIds.filter((followerId: string) => followerId !== follower),
+            followerIds: followerIds.filter((followerId: string) => followerId !== follower),
           },
         },
       });
     }
   });
-  const isFollower = user.followerIds?.includes(follower);
+  const isFollower = followerIds?.includes(follower);
 
   const trackingData = {
     user: {
