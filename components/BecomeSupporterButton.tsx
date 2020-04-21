@@ -27,7 +27,10 @@ function BecomeSupporterButton({
   const { stripeUserId, stripePlan, firstName } = author;
   const [displayDonationPrompt, setDisplayDonationPrompt] = useState(displayModal || false);
   const [createStripeSession, { data, error, loading }] = useMutation(CreateStripeSessionMutation);
-  const { data: userSupportData } = useQuery(UserSupportQuery, { variables: { username: author.username }});
+  const { data: userSupportData } = useQuery(UserSupportQuery, {
+    variables: { username: author.username },
+    fetchPolicy: 'cache-and-network',
+  });
   const subscribers = userSupportData?.user?.subscribers || [];
 
   const trackingData = {

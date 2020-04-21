@@ -22,7 +22,10 @@ function FollowButton({
 }): React.ReactElement {
   const router = useRouter();
   const auth = useAuth();
-  const { data } = useQuery(UserFollowQuery, { variables: { username: user.username }});
+  const { data } = useQuery(UserFollowQuery, {
+    variables: { username: user.username },
+    fetchPolicy: 'cache-and-network',
+  });
   const followerIds = data?.user?.followerIds || [];
   
   const [followUser, { error: followError }] = useMutation(FollowUserMutation, {

@@ -20,7 +20,6 @@ function AuthorSupport({
   const router = useRouter();
   const { support } = router.query;
   const authorName = `${author.firstName}${author?.lastName && ' ' + author.lastName}`;
-  const isSubscriber = author?.subscribers?.some(subscriber => subscriber === auth?.userId);
 
   const handleAuthorClick = (): void => {
     window.analytics.track(`ARTICLE: author name clicked`, articleTrackingData);
