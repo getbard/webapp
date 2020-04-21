@@ -12,6 +12,7 @@ const ArticlesSummaryQuery = gql`
       subscribersOnly
       slug
       userId
+      wordCount
     }
   }
 `;

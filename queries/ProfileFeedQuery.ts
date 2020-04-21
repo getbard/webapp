@@ -19,6 +19,7 @@ const ProfileFeedQuery = gql`
             slug
             title
             summary
+            wordCount
             headerImage {
               url
             }
