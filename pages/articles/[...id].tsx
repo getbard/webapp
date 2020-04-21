@@ -116,7 +116,9 @@ const Article: NextPage = (): React.ReactElement => {
     }
   };
 
-  window.analytics.track(`ARTICLE: Article viewed`, articleTrackingData);
+  if (typeof window !== 'undefined') {
+    window.analytics.track(`ARTICLE: Article viewed`, articleTrackingData);
+  }
 
   const handleAuthorClick = (): void => {
     window.analytics.track(`ARTICLE: author name clicked`, articleTrackingData);
