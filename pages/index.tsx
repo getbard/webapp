@@ -102,7 +102,7 @@ const Discover: NextPage = (): React.ReactElement => {
     });
   
     newCategories.unshift('all');
-console.log('yo', newCategories);
+
     setCategories(newCategories);
     setHasSetCategories(true);
   }, [data?.articles.length]);
@@ -110,7 +110,7 @@ console.log('yo', newCategories);
   if (auth.userId && categories[0] !== 'feed') {
     categories.unshift('feed');
   }
-console.log(categories);
+
   const handleSelectCategory = (category: string): void => {
     window.analytics.track(`DISCOVER: ${category} clicked`);
     setSelectedCategory(category);
