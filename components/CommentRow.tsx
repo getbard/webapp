@@ -14,6 +14,11 @@ import DateMeta from './DateMeta';
 import ReplyRow from './ReplyRow';
 import Notification from './Notification';
 
+const emptyValue = [{
+  type: 'paragraph',
+  children: [{ text: '' }],
+}];
+
 const CommentRow = ({
   comment,
   refetch,
@@ -25,6 +30,7 @@ const CommentRow = ({
   const replyEditorRef = useRef(null);
   const [showReplyEditor, setShowReplyEditor] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
+  const [initialValue, setInitialValue] = useState<any | null>(null);
   const commentorName = auth.userId === comment.user.id
     ? 'You'
     : `${comment.user.firstName}${comment.user?.lastName && ' ' + comment.user.lastName}`;
@@ -36,6 +42,12 @@ const CommentRow = ({
       refetch();
     }
   }, [loading]);
+
+  useEffect(() => {
+    if (JSON.stringify(initialValue) === JSON.stringify(emptyValue)) {
+      setShowReplyEditor(false);
+    }
+  }, [initialValue]);
 
   useOnClickOutside(replyEditorRef, (): void => {
     setShowReplyEditor(false);
@@ -64,10 +76,11 @@ const CommentRow = ({
               className="m-2 border border-gray-300"
             >
               <CommentEditor
+                initialValue={initialValue}
+                setInitialValue={setInitialValue}
                 refetch={refetch}
                 resourceId={comment.resourceId}
                 parentId={comment.id || ''}
-                onSubmit={(): void => setShowReplyEditor(false)}
               />
             </div>
           )

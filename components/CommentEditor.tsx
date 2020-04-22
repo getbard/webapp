@@ -28,7 +28,6 @@ const emptyValue = [{
   children: [{ text: '' }],
 }];
 
-
 type EditorContainerProps = {
   readOnly: boolean;
 }
@@ -47,6 +46,7 @@ function CommentEditor({
   initialValue,
   refetch,
   onSubmit,
+  setInitialValue,
 }: {
   resourceId: string;
   parentId?: string;
@@ -55,6 +55,7 @@ function CommentEditor({
   initialValue?: Node[];
   refetch?: () => void;
   onSubmit?: () => void;
+  setInitialValue?: (initialValue: any) => void;
 }): React.ReactElement {
   const auth = useAuth();
   const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
@@ -85,6 +86,10 @@ function CommentEditor({
 
     if (called && !loading && onSubmit) {
       onSubmit();
+    }
+
+    if (called && !loading && setInitialValue) {
+      setInitialValue(emptyValue);
     }
   }, [createLoading, updateLoading]);
 
@@ -140,6 +145,11 @@ function CommentEditor({
 
   const handleChange = (value: Node[]): void => {
     setValue(value);
+
+    // Save the comment even when closing the editor
+    if (setInitialValue) {
+      setInitialValue(value);
+    }
   }
 
   const handleCreateComment = (): void => {
