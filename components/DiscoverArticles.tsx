@@ -59,7 +59,7 @@ function DiscoverArticles({
     );
   }
 
-  for (let i = 0; i < articlesWithoutHeader.length; i+= 6) {
+  for (let i = 0; i < articlesWithoutHeader.length; i += 6) {
     articleChunks.push(articlesWithoutHeader.slice(i, i + 6));
   }
 
@@ -75,6 +75,22 @@ function DiscoverArticles({
               <SmallArticleCard key={article.id} article={article} />
             );
           })}
+
+          {
+            articleChunk.length < 6 && (
+              <div className="text-center my-4">
+                <a 
+                  className="font-bold"
+                  href="https://feedback.getbard.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(): void => window.analytics.track('DISCOVER: Feedback clicked')}
+                >
+                  Have a feature request? Let us know!
+                </a>
+              </div>  
+            )
+          }
         </ArticleChunkContainer>
     )
   });
