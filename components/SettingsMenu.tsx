@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import Link from 'next/link';
 
+import SettingsFooter from './SettingsFooter';
 
 type MenuOptionProps = {
   selected: boolean;
@@ -26,7 +26,7 @@ const SettingsMenu = ({
   settingsOption: string;
   setSettingsOption: (option: string) => void;
 }): React.ReactElement => (
-    <div className="col-span-2 mr-4 h-full">
+    <div className="col-span-2 mr-4 h-full text-center">
       <menu className="p-0 mt-0">
         {settingsOptions.map(option => (
           <MenuOption
@@ -42,41 +42,9 @@ const SettingsMenu = ({
         ))}
       </menu>
 
-      <footer className="text-xs border-t border-gray-200 pt-4">
-        <Link href="/about">
-          <a className="mr-4 inline-block">
-            About
-          </a>
-        </Link>
-
-        <Link href="/faq">
-          <a className="mr-4 inline-block">
-            FAQ
-          </a>
-        </Link>
-
-        <a 
-          className="mr-4 inline-block"
-          href="https://feedback.getbard.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(): void => window.analytics.track('MENU: Feedback clicked')}
-        >
-          Feedback
-        </a>
-
-        <Link href="/privacy">
-          <a className="mr-4 inline-block">
-            Privacy
-          </a>
-        </Link>
-
-        <Link href="/terms">
-          <a className="mr-4 inline-block">
-            Terms
-          </a>
-        </Link>
-      </footer>
+      <div className="hidden sm:block">
+        <SettingsFooter />
+      </div>
     </div>
   );
 

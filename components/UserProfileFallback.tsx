@@ -2,8 +2,8 @@ import ArticlesFallback from '../components/ArticlesFallback';
 
 function UserProfileFallback(): React.ReactElement {
   return (
-    <div className="px-5 pt-5 grid grid-cols-4 gap-5">
-      <div className="flex items-center flex-col">
+    <div className="px-5 pt-5 grid grid-cols-1 sm:grid-cols-4 gap-2 sm:gap-5">
+      <div className="flex items-center flex-col mb-10">
         {/* Name */}
         <div className="bg-gray-100 h-10 w-full mb-4"></div>
 

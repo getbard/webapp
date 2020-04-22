@@ -6,8 +6,8 @@ function EmptyState({
   children: React.ReactChild | React.ReactChild[] | React.ReactChildren;
 }): React.ReactElement {
   return (
-    <div className="flex justify-center items-center flex-col p-40 text-lg">
-      <div className="text-4xl font-serif">
+    <div className="flex justify-center items-center flex-col p-10 md:p-40 md:text-lg text-center">
+      <div className="text-2xl md:text-4xl font-serif">
         {title}
       </div>
 

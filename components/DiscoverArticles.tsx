@@ -107,7 +107,7 @@ function DiscoverArticles({
   }
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3">
+    <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 md:gap-3">
       {blocks}
     </div>
   );
