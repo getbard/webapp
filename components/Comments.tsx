@@ -12,7 +12,6 @@ import CommentsByResourceIdQuery from '../queries/CommentsByResourceIdQuery';
 import CommentEditor from './CommentEditor';
 import CommentRow from './CommentRow';
 import CommentsFallback from './CommentsFallback';
-import GenericError from './GenericError';
 
 function Comments({
   resourceId,
