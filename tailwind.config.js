@@ -20,6 +20,9 @@ module.exports = {
           '800': '#424242',
           '900': '#212121',
         },
+      },
+      minHeight: {
+        'page': 'calc(100vh - 54px - 184px)',
       }
     },
   },

@@ -117,7 +117,7 @@ const ResetPassword: NextPage = (): React.ReactElement => {
         description="Handle auth actions for your Bard account."
       />
 
-      <div className="sm:w-3/5 px-5 pt-5 pb-40 container mx-auto relative">
+      <div className="sm:w-3/5 px-5 pt-5 pb-40 container mx-auto relative min-h-page">
         <PageHeader>
           {mode.title}
         </PageHeader>
@@ -194,6 +194,20 @@ const ResetPassword: NextPage = (): React.ReactElement => {
 
                 <div>
                   {error}
+                </div>
+              </div>
+            )
+          }
+
+          {
+            !success && !error && !router?.query?.mode && (
+              <div>
+                <div className="font-bold mb-2">
+                  Hmm...
+                </div>
+
+                <div>
+                  We don&apos;t see the data we were expecting on this page. Perhaps you got here by accident?
                 </div>
               </div>
             )
