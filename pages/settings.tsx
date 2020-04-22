@@ -9,6 +9,7 @@ import SettingsMenu from '../components/SettingsMenu';
 import Subscriptions from '../components/SubscriptionSettings';
 import VerifyEmailAlert from '../components/VerifyEmailAlert';
 import AccountSettings from '../components/AccountSettings';
+import SettingsFooter from '../components/SettingsFooter';
 
 const settingsComponents: { [key: string]: any } = {
   account: AccountSettings,
@@ -33,7 +34,7 @@ const Settings: NextPage = (): React.ReactElement => {
           Settings
         </PageHeader>
 
-        <div className="grid grid-cols-8">
+        <div className="grid grid-cols-1 sm:grid-cols-8">
           <SettingsMenu
             settingsOptions={Object.keys(settingsComponents)}
             settingsOption={settingsOption}
@@ -42,6 +43,10 @@ const Settings: NextPage = (): React.ReactElement => {
 
           <div className="col-span-6">
             <Component />
+          </div>
+
+          <div className="sm:hidden mt-4">
+            <SettingsFooter />
           </div>
         </div>
       </div>

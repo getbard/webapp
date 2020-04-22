@@ -34,8 +34,8 @@ const BardError = ({
         description={description}
       />
 
-      <div className="flex justify-center items-center flex-col p-40 text-lg">
-        <div className="text-4xl text-center font-serif">
+      <div className="flex justify-center items-center flex-col p-10 md:p-40 md:text-lg text-center">
+        <div className="text-2xl md:text-4xl text-center font-serif">
           <div>
             {title}
           </div>

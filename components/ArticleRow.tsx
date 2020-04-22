@@ -95,7 +95,15 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
             resource={article}
             action={article?.publishedAt ? 'Published' : 'Created'}
             dateParam={article?.publishedAt ? 'publishedAt' : 'createdAt'}
-          /> | {readingTime}
+          />
+          
+          <span className="hidden sm:inline-block">
+            &nbsp;| {readingTime}
+          </span>
+
+          <div className="block sm:hidden">
+            {readingTime}
+          </div>
         </div>
       </div>
 
@@ -106,7 +114,7 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
             (
               <span
                 id={`a-${article.id}-copy`} 
-                className="relative"
+                className="relative hidden sm:block"
                 onClick={(): void => {
                   window.analytics.track('ARTICLE ROW: Copy article clicked', trackingData);
                   navigator.clipboard.writeText(`https://getbard.com/articles/s/${article.slug}`);

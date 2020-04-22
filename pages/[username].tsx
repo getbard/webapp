@@ -95,13 +95,13 @@ const Author: NextPage = (): React.ReactElement => {
   } = useQuery(ArticlesSummaryQuery, { variables: { userId: user.id } });
 
   return (
-    <div className="px-5 pt-5 grid grid-cols-4 gap-5">
+    <div className="px-5 pt-5 grid grid-cols-1 sm:grid-cols-4 gap-2 sm:gap-5">
       <NextSeo
         title={`${user?.firstName} ${user?.lastName}` || user.username}
         description={`Read and support ${user.firstName} on Bard.`}
       />
 
-      <div className="text-center break-words">
+      <div className="text-center break-words mb-10">
         <div className="text-4xl font-serif font-bold">{user.firstName} {user.lastName}</div>
         <div className="text-xl text-gray-600 mb-2">{user.username}</div>
         

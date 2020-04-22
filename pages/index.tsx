@@ -14,6 +14,7 @@ import DiscoverArticles from '../components/DiscoverArticles';
 import Feed from '../components/Feed';
 import GenericError from '../components/GenericError';
 import DiscoverArticlesFallback from '../components/DiscoverArticlesFallback';
+import CategoryDropdown from '../components/CategoryDropdown';
 
 const defaultCategories = ['all'];
 for (const category in Category) {
@@ -110,12 +111,17 @@ const Discover: NextPage = (): React.ReactElement => {
     categories.unshift('feed');
   }
 
+  const handleSelectCategory = (category: string): void => {
+    window.analytics.track(`DISCOVER: ${category} clicked`);
+    setSelectedCategory(category);
+  }
+
   return (
     <div className="px-5 pt-5">
-      <div className="w-full px-5 pb-5 text-center">
+      <div className="hidden md:block w-full px-5 pb-5 text-center">
         {
           categories.map(category => {
-            let classes = 'capitalize mx-4 inline-block text-center hover:cursor-pointer hover:text-primary font-medium';
+            let classes = 'inline-block capitalize mx-4 text-center hover:cursor-pointer hover:text-primary font-medium';
 
             if (selectedCategory === category) {
               classes = `${classes} text-primary`;
@@ -126,8 +132,7 @@ const Discover: NextPage = (): React.ReactElement => {
                 key={category}
                 className={classes}
                 onClick={(): void => {
-                  window.analytics.track(`DISCOVER: ${category} clicked`);
-                  setSelectedCategory(category);
+                  handleSelectCategory(category);
                 }}
               >
                 {category}
@@ -136,6 +141,23 @@ const Discover: NextPage = (): React.ReactElement => {
           })
         }
       </div>
+
+      {
+        <div className="md:hidden pb-5 text-center">
+          <div
+            className="inline-block capitalize mx-4 text-center hover:cursor-pointer hover:text-primary font-medium"
+            onClick={(): void => handleSelectCategory('feed')}
+          >
+            feed
+          </div>
+
+          <CategoryDropdown
+            categories={categories.length === 12 ? categories.slice(1) : categories}
+            category={selectedCategory}
+            setCategory={handleSelectCategory}
+          />
+        </div>
+      }
 
       {
         selectedCategory === 'feed'

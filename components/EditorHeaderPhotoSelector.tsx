@@ -26,7 +26,7 @@ export function EditorHeaderPhotoSelector({
   return (
     <div className="relative inline-block">
       <button
-        className="flex items-center hover:bg-gray-200 text-gray-500 hover:text-gray-800 w-auto px-2 py-1 -ml-2 rounded-sm transition duration-500 focus:outline-none"
+        className="flex items-center hover:bg-gray-200 text-gray-500 hover:text-gray-800 w-auto max-w-screen px-2 py-1 -ml-2 rounded-sm transition duration-500 focus:outline-none"
         onClick={(): void => setDisplay(!display)}
       >
         <FiImage className="mr-1" /> {headerImage?.url ? 'Change' : 'Add'} Header Photo

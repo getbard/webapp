@@ -32,6 +32,10 @@ const ImageThumbnail = styled.div`
 
 const EmptyPhotoResults = styled.div`
   min-width: 28rem;
+
+  @media (max-width: 640px) {
+    min-width: calc(100vw - 4rem);
+  }
 `;
 
 const UnsplashThumbnail = ({
@@ -95,10 +99,10 @@ export function PhotoSelector({
         onChange={(e): void => debouncedSetSearch(e.target.value)}
       />
 
-      <div className="grid grid-cols-5 gap-2">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
         {
           !unsplashPhoto.length && (
-            <EmptyPhotoResults className="col-span-5 flex flex-col justify-center items-center py-10">
+            <EmptyPhotoResults className="col-span-2 md:col-span-5 flex flex-col justify-center items-center py-10">
               <div className="text-center">
                 We couldn&apos;t find any photos.
               </div>
