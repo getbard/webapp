@@ -244,11 +244,11 @@ export const onKeyDownList = (e: React.KeyboardEvent<HTMLDivElement>, editor: Ed
   }
 };
 
+// The average adult reads 200 - 250 words per minute
+export const timeToReadNumber = (wordCount: number): number => ~~(wordCount / 200);
+
 export const timeToRead = (wordCount: number): string => {
-  // The average adult reads 200 - 250 words per minute
-  const t = ~~(wordCount / 200);
-  // const minutes = t.toFixed(0);
-  return `${Math.max(1, t)} min read`;
+  return `${Math.max(1, timeToReadNumber(wordCount))} min read`;
 }
 
 export const serializeText = (nodes: Node[]): string => {
