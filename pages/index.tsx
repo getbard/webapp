@@ -144,12 +144,16 @@ const Discover: NextPage = (): React.ReactElement => {
 
       {
         <div className="md:hidden pb-5 text-center">
-          <div
-            className="inline-block capitalize mx-4 text-center hover:cursor-pointer hover:text-primary font-medium"
-            onClick={(): void => handleSelectCategory('feed')}
-          >
-            feed
-          </div>
+          {
+            auth?.userId && (
+              <div
+                className="inline-block capitalize mx-4 text-center hover:cursor-pointer hover:text-primary font-medium"
+                onClick={(): void => handleSelectCategory('feed')}
+              >
+                feed
+              </div>
+            )
+          }
 
           <CategoryDropdown
             categories={categories.length === 12 ? categories.slice(1) : categories}
