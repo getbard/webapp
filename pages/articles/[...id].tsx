@@ -36,6 +36,7 @@ const Article: NextPage = (): React.ReactElement => {
   const [idType, id] = idParams;
   const articleQuery = idType === 's' ? ArticleBySlugQuery : ArticleByIdQuery;
   const [readTracked, setReadTracked] = useState(false);
+  const [viewTracked, setViewTracked] = useState(false);
   const [readStarted] = useState(Date.now());
   const [endOfArticleRef, articleBottomInView] = useInView();
 
@@ -85,7 +86,8 @@ const Article: NextPage = (): React.ReactElement => {
     }
   }
 
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && !viewTracked) {
+    setViewTracked(true);
     window.analytics.track(`ARTICLE: Article viewed`, articleTrackingData);
   }
 
