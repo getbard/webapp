@@ -10,6 +10,9 @@ body {
 a:hover:not(.logo):not(.button) {
   cursor: pointer !important;
   @apply text-primary;
+  transition: color;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
 }
 
 .icon-spin {
