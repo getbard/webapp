@@ -73,7 +73,9 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   }
 
   useEffect(() => {
-    if (saveData?.createOrUpdateArticle?.id !== articleId) {
+    // When you have created or updated an article
+    // store the ID; but not if an article was already published
+    if (saveData?.createOrUpdateArticle?.id !== articleId && !article?.publishedAt) {
       setArticleId(saveData?.createOrUpdateArticle?.id);
     }
   }, [saveData?.createOrUpdateArticle?.id]);
