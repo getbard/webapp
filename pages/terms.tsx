@@ -158,7 +158,7 @@ const Terms: NextPage = (): React.ReactElement => {
 
           <h2 className="text-2xl font-serif font-bold mb-4 mt-10">Section 18 - Governing Law</h2>
 
-          <p className="mb-4">These Terms of Service and any separate agreements whereby we provide you Services shall be governed by and construed in accordance with the laws of 1809 1820 Willingdon Ave, Burnaby, BC, V5C 0K5, Canada.</p>
+          <p className="mb-4">These Terms of Service and any separate agreements whereby we provide you Services shall be governed by and construed in accordance with the laws of 2900 - 550 Burrard Street Vancouver, BC V6C 0A3 Canada.</p>
 
           <h2 className="text-2xl font-serif font-bold mb-4 mt-10">Section 19 - Changes To Terms Of Service</h2>
 

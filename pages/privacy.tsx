@@ -84,7 +84,7 @@ const Privacy: NextPage = (): React.ReactElement => {
 
           <p className="mb-4">For more information about our privacy practices, if you have questions, or if you would like to make a complaint, please contact us by e-mail at <a href="mailto:hello@getbard.com">hello@getbard.com</a> or by mail using the details provided below:</p>
 
-          <p className="mb-4">1809 1820 Willingdon Ave, Burnaby, BC, BC, V5C 0K5, Canada</p>
+          <p className="mb-4">2900 - 550 Burrard Street Vancouver, BC V6C 0A3 Canada</p>
         </section>
       </div>
 
