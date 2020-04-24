@@ -8,16 +8,16 @@ import { Article } from '../generated/graphql';
 
 import { timeToRead } from '../lib/editor';
 
-const ArticleCardContainer = styled.a`
+const ArticleCardContainer = styled.div`
   &:hover {
     border-color: #bdbdbd;
 
-    h1 {
-      color: #616161;
-    }
-
     .sub-only {
       display: flex;
+    }
+    
+    .reading-time {
+      color: #004346;
     }
   }
 `;
@@ -45,90 +45,105 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
     ? `${article.summary.substr(0, article.summary.lastIndexOf(' ', 75))}...`
     : article.summary
 
+  const trackingData = {
+    article: {
+      id: article.id,
+      title: article.title,
+      slug: article.slug,
+      readingTime,
+      subscribersOnly: article.subscribersOnly,
+      category: article.category,
+    },
+    author: {
+      id: article.author.id,
+    },
+  };
+
   const handleClick = (): void => {
-    window.analytics.track(`ARTICLE CARD: clicked`, {
-      article: {
-        id: article.id,
-        title: article.title,
-        slug: article.slug,
-        readingTime,
-        subscribersOnly: article.subscribersOnly,
-        category: article.category,
-      },
-      author: {
-        id: article.author.id,
-      },
-    });
+    window.analytics.track(`ARTICLE CARD: clicked`, trackingData);
   }
-  
+
+  const handleAuthorClick = (): void => {
+    window.analytics.track(`ARTICLE CARD: author name clicked`, trackingData);
+  }
+
   return (
-    <Link href="/articles/[...id]" as={articleHref} passHref={true}>
-      <ArticleCardContainer
-        className="p-4 border border-gray-300 rounded-sm hover:cursor-pointer transition duration-150 ease-in flex justify-between flex-col"
-        onClick={handleClick}
-      >
-        {
-          article?.headerImage?.url &&
-          <ProgressiveImage
-            delay={500}
-            src={`${article.headerImage.url}&w=400`}
-            placeholder={`${article.headerImage.url}&w=200&q=50&blur=80`}
-          >
-            {(src: string): React.ReactElement => 
-              <ArticleCardImage className="flex-grow flex items-end h-40 rounded-t-sm -mt-3 -mx-3 mb-3" url={src}>
-                {
-                  article?.subscribersOnly && (
-                    <span className="sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 hidden items-center text-xs text-primary font-sans">
-                      <FiFeather className="mr-1" /> Supporters Only
-                    </span>
-                  )
-                }
-              </ArticleCardImage>
-            }
-          </ProgressiveImage>
-        }
-      
-        <div>
-          <textarea
-            id={`${article.id}-card-title`}
-            className="cursor-pointer outline-none font-serif font-bold text-xl transition duration-150 ease-in resize-none w-full overflow-hidden"
-            rows={article.title.length > 25 ? 2 : 1}
-            value={articleTitle}
-            readOnly
-          />
-
-          <textarea
-            id={`${article.id}-card-summary`}
-            className="cursor-pointer outline-none text-gray-600 text-sm resize-none w-full overflow-hidden"
-            rows={2}
-            value={articleSummary || ''}
-            readOnly
-          />
-          
-          <div className="text-xs mt-2 font-medium flex justify-between">
-            <div className="text-gray-700">
-              {authorName}
-            </div> 
-
-            <div>
-              {
-                article.publishedAt
-                  ? (
-                    <span className="text-gray-700">
-                      {format(new Date(article.publishedAt), 'LLL d')} |&nbsp;
-                    </span>
-                  )
-                  : ''
+    <ArticleCardContainer
+      className="p-4 border border-gray-300 rounded-sm transition duration-150 ease-in flex justify-between flex-col"
+      onClick={handleClick}
+    >
+      <Link href="/articles/[...id]" as={articleHref} passHref={true}>
+        <a className="hover:cursor-pointer">
+          {
+            article?.headerImage?.url &&
+            <ProgressiveImage
+              delay={500}
+              src={`${article.headerImage.url}&w=400`}
+              placeholder={`${article.headerImage.url}&w=200&q=50&blur=80`}
+            >
+              {(src: string): React.ReactElement =>
+                <ArticleCardImage className="flex-grow flex items-end h-40 rounded-t-sm -mt-3 -mx-3 mb-3" url={src}>
+                  {
+                    article?.subscribersOnly && (
+                      <span className="sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 hidden items-center text-xs text-primary font-sans">
+                        <FiFeather className="mr-1" /> Supporters Only
+                      </span>
+                    )
+                  }
+                </ArticleCardImage>
               }
+            </ProgressiveImage>
+          }
 
-              <span>
-                {readingTime}
-              </span>
-            </div>
+          <div>
+            <textarea
+              id={`${article.id}-card-title`}
+              className="cursor-pointer outline-none font-serif font-bold text-xl transition duration-150 ease-in resize-none w-full overflow-hidden"
+              rows={article.title.length > 25 ? 2 : 1}
+              value={articleTitle}
+              readOnly
+            />
+
+            <textarea
+              id={`${article.id}-card-summary`}
+              className="cursor-pointer outline-none text-gray-600 text-sm resize-none w-full overflow-hidden"
+              rows={2}
+              value={articleSummary || ''}
+              readOnly
+            />
+          </div>
+        </a>
+      </Link>
+
+      <div>
+        <div className="text-xs mt-2 font-medium flex justify-between">
+          <Link href={`/${article.author.username}`} >
+            <a
+              className="text-gray-700"
+              onClick={handleAuthorClick}
+            >
+              {authorName}
+            </a>
+          </Link>
+
+          <div>
+            {
+              article.publishedAt
+                ? (
+                  <span className="text-gray-700">
+                    {format(new Date(article.publishedAt), 'LLL d')} |&nbsp;
+                  </span>
+                )
+                : ''
+            }
+
+            <span className="reading-time">
+              {readingTime}
+            </span>
           </div>
         </div>
-      </ArticleCardContainer>
-    </Link>
+      </div>
+    </ArticleCardContainer>
   );
 }
 
