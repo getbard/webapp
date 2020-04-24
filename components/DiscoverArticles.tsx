@@ -113,25 +113,23 @@ function DiscoverArticles({
   for (let i = 0; i < articleBlocks.length; i++) {
     if (i >= articleChunkBlocks.length) {
       blocks.push(
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 col-span-1 lg:col-span-4 row-span-2">
+        <div key={`block-${i}`} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 col-span-1 lg:col-span-4 row-span-2">
           {articleBlocks[i]}
         </div>
       );
     } else {
+      const articleBlock = (
+        <div key={`block-${i}`} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 col-span-1 lg:col-span-3 row-span-2">
+          {articleBlocks[i]}
+        </div>
+      );
+
       if (lastInserted === 'left') {
-        blocks.push(
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 col-span-1 lg:col-span-3 row-span-2">
-            {articleBlocks[i]}
-          </div>
-        );
+        blocks.push(articleBlock);
         blocks.push(articleChunkBlocks[i]);
       } else {
         blocks.push(articleChunkBlocks[i]);
-        blocks.push(
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 col-span-1 lg:col-span-3 row-span-2">
-            {articleBlocks[i]}
-          </div>
-        );
+        blocks.push(articleBlock);
       }
     }
 

@@ -54,7 +54,8 @@ function ArticlesContainer({
   const debounceFetchMore = debounce(fetchMore, 2000, { leading: true });
 
   useEffect(() => {
-    if (!loadingMore && endOfCardsInView) {
+    if (!loadingMore && endOfCardsInView && articlesWithHeader.length > 6) {
+      console.log('LOADING MORE!!');
       setLoadingMore(true);
 
       debounceFetchMore({
@@ -73,13 +74,13 @@ function ArticlesContainer({
             ...previousArticles.articlesWithHeader || [],
             ...newArticles.articlesWithHeader || []
           ];
-          const headerCursor = articlesWithHeader[articlesWithHeader.length - 1]?.id;
+          const headerCursor = articlesWithHeader[articlesWithHeader.length - 1]?.id || null;
   
           const articlesWithoutHeader = [
             ...previousArticles.articlesWithoutHeader || [],
             ...newArticles.articlesWithoutHeader || []
           ];
-          const headlessCursor = articlesWithoutHeader[articlesWithoutHeader.length - 1]?.id;
+          const headlessCursor = articlesWithoutHeader[articlesWithoutHeader.length - 1]?.id || null;
 
           return {
             articles: {
@@ -117,15 +118,9 @@ const Discover: NextPage = (): React.ReactElement => {
   const [selectedCategory, setSelectedCategory] = useState(router?.query?.category as string || 'all');
   const [hasSetCategories, setHasSetCategories] = useState(false);
   const [categories, setCategories] = useState<string[]>(defaultCategories);
-  const { loading, data, error, refetch, fetchMore } = useQuery(DiscoverArticlesQuery, {
+  const { loading, data, error, fetchMore } = useQuery(DiscoverArticlesQuery, {
     variables: { category: selectedCategory },
   });
-
-  useEffect(() => {
-    refetch({
-      category: selectedCategory,
-    });
-  }, [selectedCategory]);
 
   useEffect(() => {
     if (hasSetCategories) {
