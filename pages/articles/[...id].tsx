@@ -28,6 +28,7 @@ import BardError from '../_error';
 import AuthorSupport from '../../components/AuthorSupport';
 import ArticleHeaderSupport from '../../components/ArticleHeaderSupport';
 import ContentBlocker from '../../components/ContentBlocker';
+import Button from '../../components/Button';
 
 const Article: NextPage = (): React.ReactElement => {
   const auth = useAuth();
@@ -93,6 +94,11 @@ const Article: NextPage = (): React.ReactElement => {
 
   const handleAuthorClick = (): void => {
     window.analytics.track(`ARTICLE: author name clicked`, articleTrackingData);
+  }
+
+  const handleEditClick = (): void => {
+    window.analytics.track(`ARTICLE: edit article clicked`, articleTrackingData);
+    router.push(`/edit/${article.id}`);
   }
 
   return (
@@ -200,13 +206,17 @@ const Article: NextPage = (): React.ReactElement => {
               </div>
             </div>
 
-            {
-              auth.userId !== article.author.id && (
-                <ArticleHeaderSupport
-                  author={article.author}
-                />
-              )
-            }
+            <div className="text-right">
+              {
+                auth.userId === article.author.id
+                  ? (
+                    <Button onClick={handleEditClick} >
+                      Edit this article
+                    </Button>
+                  )
+                  : <ArticleHeaderSupport author={article.author} />
+              }
+            </div>
           </div>
         </div>
 

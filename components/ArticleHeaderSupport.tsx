@@ -20,7 +20,7 @@ function AuthorSupport({
   const displaySupport = author?.stripeUserId && author?.stripePlan && !isSubscriber;
 
   return (
-    <div className="flex justify-end items-center">
+    <>
       {
         displaySupport
           ? (
@@ -31,13 +31,12 @@ function AuthorSupport({
           )
           : (
             <FollowButton
-              className="mr-2"
               user={author}
               follower={auth.userId || ''}
             />
           )
       }
-    </div>
+    </>
   );
 }
 
