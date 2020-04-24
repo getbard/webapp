@@ -12,10 +12,6 @@ const ArticleCardContainer = styled.div`
   &:hover {
     border-color: #bdbdbd;
 
-    .sub-only {
-      display: flex;
-    }
-    
     .reading-time {
       color: #004346;
     }
@@ -85,7 +81,7 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
                 <ArticleCardImage className="flex-grow flex items-end h-40 rounded-t-sm -mt-3 -mx-3 mb-3" url={src}>
                   {
                     article?.subscribersOnly && (
-                      <span className="sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 hidden items-center text-xs text-primary font-sans">
+                      <span className="sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 flex items-center text-xs text-primary font-sans">
                         <FiFeather className="mr-1" /> Supporters Only
                       </span>
                     )

@@ -9,10 +9,6 @@ import { timeToRead } from '../lib/editor';
 
 const ArticleCardContainer = styled.div`
   &:hover {
-    .sub-only {
-      display: flex;
-    }
-
     .time-to-read {
       color: #004346;
     }
@@ -68,7 +64,7 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
 
             {
               article.subscribersOnly && (
-                <SubOnlyIcon className="sub-only hidden items-center text-primary">
+                <SubOnlyIcon className="pt-1 text-primary">
                   <FiFeather />
                 </SubOnlyIcon>
               )
