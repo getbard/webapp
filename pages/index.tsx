@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
+import { useInView } from 'react-intersection-observer';
+import debounce from 'lodash/debounce';
 
-import { Category, Article } from '../generated/graphql';
+import { Category, Article, ArticlesPayload } from '../generated/graphql';
 import DiscoverArticlesQuery from '../queries/DiscoverArticlesQuery';
 
 import { useAuth } from '../hooks/useAuth';
@@ -23,25 +25,89 @@ for (const category in Category) {
   }
 }
 
+type ArticlesData = {
+  articles: ArticlesPayload;
+}
+
 function ArticlesContainer({
-  articles = [],
+  articlesWithHeader = [],
+  articlesWithoutHeader = [],
   error,
   loading,
   category,
+  headerCursor,
+  headlessCursor,
+  fetchMore,
 }: {
-  articles: Article[];
+  articlesWithHeader: Article[];
+  articlesWithoutHeader: Article[];
   error: any;
   loading: boolean;
   category: string;
+  headerCursor: string;
+  headlessCursor: string;
+  fetchMore: (options: any) => any;
 }): React.ReactElement {
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [endOfCards, endOfCardsInView] = useInView();
+
+  const debounceFetchMore = debounce(fetchMore, 2000, { leading: true });
+
+  useEffect(() => {
+    if (!loadingMore && endOfCardsInView) {
+      setLoadingMore(true);
+
+      debounceFetchMore({
+        query: DiscoverArticlesQuery,
+        variables: { category, headerCursor, headlessCursor },
+        updateQuery: ((
+          previousResult: ArticlesData,
+          { fetchMoreResult }: { fetchMoreResult: ArticlesData }
+        ): ArticlesData => {
+          setLoadingMore(false);
+
+          const { articles: previousArticles } = previousResult as ArticlesData;
+          const { articles: newArticles } = fetchMoreResult as ArticlesData;
+  
+          const articlesWithHeader = [
+            ...previousArticles.articlesWithHeader || [],
+            ...newArticles.articlesWithHeader || []
+          ];
+          const headerCursor = articlesWithHeader[articlesWithHeader.length - 1]?.id;
+  
+          const articlesWithoutHeader = [
+            ...previousArticles.articlesWithoutHeader || [],
+            ...newArticles.articlesWithoutHeader || []
+          ];
+          const headlessCursor = articlesWithoutHeader[articlesWithoutHeader.length - 1]?.id;
+
+          return {
+            articles: {
+              articlesWithHeader,
+              articlesWithoutHeader,
+              headerCursor,
+              headlessCursor,
+              __typename: previousArticles.__typename,
+            },
+          }
+        }),
+      });
+    }
+  }, [endOfCardsInView]);
+
   if (error) return <div><GenericError title /></div>
   if (loading) return <DiscoverArticlesFallback />;
 
   return (
-    <DiscoverArticles
-      articles={articles}
-      category={category}
-    />
+    <>
+      <DiscoverArticles
+        articlesWithHeader={articlesWithHeader}
+        articlesWithoutHeader={articlesWithoutHeader}
+        category={category}
+      />
+
+      <div  ref={endOfCards}></div>
+    </>
   );
 }
 
@@ -51,7 +117,7 @@ const Discover: NextPage = (): React.ReactElement => {
   const [selectedCategory, setSelectedCategory] = useState(router?.query?.category as string || 'all');
   const [hasSetCategories, setHasSetCategories] = useState(false);
   const [categories, setCategories] = useState<string[]>(defaultCategories);
-  const { loading, data, error, refetch } = useQuery(DiscoverArticlesQuery, {
+  const { loading, data, error, refetch, fetchMore } = useQuery(DiscoverArticlesQuery, {
     variables: { category: selectedCategory },
   });
 
@@ -66,7 +132,10 @@ const Discover: NextPage = (): React.ReactElement => {
       return;
     }
 
-    const articles = data?.articles || [];
+    const articles: Article[] = [
+      ...data?.articles?.articlesWithHeader || [],
+      ...data?.articles?.articlesWithoutHeader || [],
+    ];
   
     const categoryCounter = new Map();
   
@@ -105,7 +174,7 @@ const Discover: NextPage = (): React.ReactElement => {
 
     setCategories(newCategories);
     setHasSetCategories(true);
-  }, [data?.articles.length]);
+  }, [data?.articlesWitHeader?.length]);
 
   if (auth.userId && categories[0] !== 'feed') {
     categories.unshift('feed');
@@ -117,7 +186,7 @@ const Discover: NextPage = (): React.ReactElement => {
   }
 
   return (
-    <div className="px-5 pt-5">
+    <div className="p-5">
       <div className="hidden md:block w-full px-5 pb-5 text-center">
         {
           categories.map(category => {
@@ -170,8 +239,12 @@ const Discover: NextPage = (): React.ReactElement => {
             <ArticlesContainer
               error={error}
               loading={loading}
-              articles={data?.articles}
+              articlesWithHeader={data?.articles?.articlesWithHeader}
+              articlesWithoutHeader={data?.articles?.articlesWithoutHeader}
               category={selectedCategory}
+              headerCursor={data?.articles?.headerCursor}
+              headlessCursor={data?.articles?.headlessCursor}
+              fetchMore={fetchMore}
             />
           )
       }

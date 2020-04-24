@@ -1,26 +1,47 @@
 import gql from 'graphql-tag';
 
 const DiscoverArticlesQuery = gql`
-  query articles($category: String) {
-    articles(category: $category) {
-      id
-      title
-      summary
-      content
-      slug
-      publishedAt
-      subscribersOnly
-      wordCount
-      category
-      author {
+  query articles($category: String, $headerCursor: String, $headlessCursor: String) {
+    articles(category: $category, headerCursor: $headerCursor, headlessCursor: $headlessCursor) {
+      headerCursor
+      headlessCursor
+      articlesWithHeader {
         id
-        username
-        firstName
-        lastName
+        title
+        summary
+        content
+        slug
+        publishedAt
+        subscribersOnly
+        wordCount
+        category
+        author {
+          id
+          username
+          firstName
+          lastName
+        }
+        headerImage {
+          id
+          url
+        }
       }
-      headerImage {
+      articlesWithoutHeader {
         id
-        url
+        title
+        summary
+        content
+        slug
+        publishedAt
+        subscribersOnly
+        wordCount
+        category
+        author {
+          id
+          username
+          firstName
+          lastName
+        }
       }
     }
   }
