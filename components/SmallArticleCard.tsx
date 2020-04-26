@@ -9,6 +9,10 @@ import { timeToRead } from '../lib/editor';
 
 const ArticleCardContainer = styled.div`
   &:hover {
+    .sub-only {
+      display: flex;
+    }
+
     .time-to-read {
       color: #004346;
     }
@@ -54,7 +58,7 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
       <Link href="/articles/[...id]" as={articleHref} passHref={true}>
         <a>
           <div className={`${article.subscribersOnly && 'grid grid-cols-8'}`}>
-            <h1 className="col-span-7 font-serif font-bold transition duration-150 ease-in">
+            <h1 className="col-span-7 font-serif font-bold">
               {
                 article.title.length > 45
                   ? `${article.title.substr(0, article.title.lastIndexOf(' ', 45))}...`
@@ -64,7 +68,7 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
 
             {
               article.subscribersOnly && (
-                <SubOnlyIcon className="pt-1 text-primary">
+                <SubOnlyIcon className="sub-only block md:hidden pt-1 text-primary">
                   <FiFeather />
                 </SubOnlyIcon>
               )
