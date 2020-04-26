@@ -31,9 +31,7 @@ function OneTimeSupportButton({
   const [createStripeSession, { data, error, loading }] = useMutation(CreateStripeSessionMutation);
 
   const trackingData = {
-    author: {
-      id: author.id,
-    },
+    authorId: author.id,
     page: router.asPath,
   };
 

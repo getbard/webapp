@@ -34,9 +34,7 @@ function BecomeSupporterButton({
   const subscribers = userSupportData?.user?.subscribers || [];
 
   const trackingData = {
-    author: {
-      id: author.id,
-    },
+    authorId: author.id,
     page: router.asPath,
   };
 

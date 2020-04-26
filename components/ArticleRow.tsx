@@ -27,17 +27,13 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
   });
 
   const trackingData = {
-    article: {
-      id: article.id,
-      title: article.title,
-      slug: article.slug,
-      readingTime,
-      subscribersOnly: article.subscribersOnly,
-      category: article.category,
-    },
-    author: {
-      id: article.userId,
-    }
+    articleId: article.id,
+    title: article.title,
+    slug: article.slug,
+    readingTime,
+    subscribersOnly: article.subscribersOnly,
+    category: article.category,
+    authorId: article.userId,
   }
 
   const handleDelete = (): void => {

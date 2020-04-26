@@ -29,17 +29,13 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
   const readingTime = timeToRead(article.wordCount);
 
   const trackingData = {
-    article: {
-      id: article.id,
-      title: article.title,
-      slug: article.slug,
-      readingTime,
-      subscribersOnly: article.subscribersOnly,
-      category: article.category,
-    },
-    author: {
-      id: article.author.id,
-    }
+    articleId: article.id,
+    title: article.title,
+    slug: article.slug,
+    readingTime,
+    subscribersOnly: article.subscribersOnly,
+    category: article.category,
+    authorId: article.author.id,
   };
 
   const handleClick = (): void => {
