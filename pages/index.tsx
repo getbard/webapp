@@ -55,7 +55,6 @@ function ArticlesContainer({
 
   useEffect(() => {
     if (!loadingMore && endOfCardsInView && articlesWithHeader.length > 6) {
-      console.log('LOADING MORE!!');
       setLoadingMore(true);
 
       debounceFetchMore({
