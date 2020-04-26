@@ -97,6 +97,7 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
               className="cursor-pointer outline-none font-serif font-bold text-xl transition duration-150 ease-in resize-none w-full overflow-hidden"
               rows={article.title.length > 25 ? 2 : 1}
               value={articleTitle}
+              title={article.title}
               readOnly
             />
 
@@ -105,6 +106,7 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
               className="cursor-pointer outline-none text-gray-600 text-sm resize-none w-full overflow-hidden"
               rows={2}
               value={articleSummary || ''}
+              title={article.summary || ''}
               readOnly
             />
           </div>

@@ -54,7 +54,10 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
       <Link href="/articles/[...id]" as={articleHref} passHref={true}>
         <a>
           <div className={`${article.subscribersOnly && 'grid grid-cols-8'}`}>
-            <h1 className="col-span-7 font-serif font-bold">
+            <h1
+              className="col-span-7 font-serif font-bold"
+              title={article.title}
+            >
               {
                 article.title.length > 45
                   ? `${article.title.substr(0, article.title.lastIndexOf(' ', 45))}...`
@@ -74,7 +77,10 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
 
           {
             article.summary && (
-              <div className="text-gray-600 mt-1 text-sm">
+              <div
+                className="text-gray-600 mt-1 text-sm"
+                title={article.summary || ''}
+              >
                 {
                   article.summary.length > 100
                     ? `${article.summary.substr(0, article.summary.lastIndexOf(' ', 100))}...`
