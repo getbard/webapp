@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
 import StripeSessionQuery from '../queries/StripeSessionQuery';
@@ -22,21 +23,24 @@ function SupportConfirmation({
       authorId,
     }
   });
+  const [eventTracked, setEventTracked] = useState(false);
   const sessionSucceededOrSubscription = data?.stripeSession?.status === 'succeeded' || data?.stripeSession?.subscription;
   const supportConfirmationFailed = (error || (data?.stripeSession?.status !== 'succeeded' && !data?.stripeSession?.subscription))
 
   if (typeof window !== 'undefined') {
-    if (sessionSucceededOrSubscription) {
+    if (sessionSucceededOrSubscription && !eventTracked) {
       window.analytics.track('SUPPORT CONFIRMATION: Succeeded', { stripeUserId });
+      setEventTracked(true);
     }
   
-    if (supportConfirmationFailed) {
+    if (supportConfirmationFailed && !eventTracked) {
       window.analytics.track('SUPPORT CONFIRMATION: Failed', {
         stripeUserId,
         error: {
           message: error?.message,
         }
       });
+      setEventTracked(true);
     }
   }
 
