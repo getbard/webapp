@@ -68,17 +68,17 @@ function ArticlesContainer({
 
           const { articles: previousArticles } = previousResult as ArticlesData;
           const { articles: newArticles } = fetchMoreResult as ArticlesData;
-  
-          const articlesWithHeader = [
-            ...previousArticles.articlesWithHeader || [],
-            ...newArticles.articlesWithHeader || []
-          ];
+
+          const uniqueArticlesWithHeader = new Map();
+          previousArticles?.articlesWithHeader?.forEach(article => uniqueArticlesWithHeader.set(article?.id, article));
+          newArticles?.articlesWithHeader?.forEach(article => uniqueArticlesWithHeader.set(article?.id, article));
+          const articlesWithHeader = [...uniqueArticlesWithHeader.values()];
           const headerCursor = articlesWithHeader[articlesWithHeader.length - 1]?.id || null;
   
-          const articlesWithoutHeader = [
-            ...previousArticles.articlesWithoutHeader || [],
-            ...newArticles.articlesWithoutHeader || []
-          ];
+          const uniqueArticlesWithoutHeader = new Map();
+          previousArticles?.articlesWithoutHeader?.forEach(article => uniqueArticlesWithoutHeader.set(article?.id, article));
+          newArticles?.articlesWithoutHeader?.forEach(article => uniqueArticlesWithoutHeader.set(article?.id, article));
+          const articlesWithoutHeader = [...uniqueArticlesWithoutHeader.values()];
           const headlessCursor = articlesWithoutHeader[articlesWithoutHeader.length - 1]?.id || null;
 
           return {
