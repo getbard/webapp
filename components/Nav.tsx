@@ -15,7 +15,10 @@ function LoggedInMenu(): React.ReactElement {
     <div className="flex items-center">
       {!isAboutPage && (
         <Link href="/about">
-          <a className={`${!isWritePage ? 'mr-4' : ''}`}>
+          <a
+            className={`${!isWritePage ? 'mr-4' : ''}`}
+            onClick={(): void => window.analytics.track('NAV: Why Bard? clicked')}
+          >
             Why Bard?
           </a>
         </Link>
@@ -37,8 +40,22 @@ function LoggedInMenu(): React.ReactElement {
 }
 
 function LoggedOutMenu(): React.ReactElement {
+  const router = useRouter();
+  const isAboutPage = router.pathname === '/about';
+
   return (
     <div className="flex items-center">
+      {!isAboutPage && (
+        <Link href="/about">
+          <a
+            className="mr-4"
+            onClick={(): void => window.analytics.track('NAV: Why Bard? clicked')}
+          >
+            Why Bard?
+          </a>
+        </Link>
+      )}
+
       <Link href = "/login">
         <a
           className="mr-4"
