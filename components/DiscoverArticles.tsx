@@ -11,32 +11,17 @@ const ArticleChunkContainer = styled.div`
   > div:not(:first-of-type) {
     padding-top: 0.5rem;
   }
-
-  > div:not(:last-child) {
-    border-bottom: 1px solid;
-    border-color: #e0e0e0;
-  }
 `;
 
 function DiscoverArticles({
-  articles,
+  articlesWithHeader,
+  articlesWithoutHeader,
   category,
 }: {
-  articles: Article[];
+  articlesWithHeader: Article[];
+  articlesWithoutHeader: Article[];
   category: string;
 }): React.ReactElement {
-  const articleChunks: Article[][] = [];
-  const articlesWithoutHeader: Article[] = [];
-  const articlesWithHeader: Article[] = [];
-
-  articles.forEach((article: Article) => {
-    if (article.headerImage?.url) {
-      articlesWithHeader.push(article);
-    } else {
-      articlesWithoutHeader.push(article);
-    }
-  });
-
   if (!articlesWithHeader.length) {
     return (
       <EmptyState title="We're at a loss for words...">
@@ -59,17 +44,41 @@ function DiscoverArticles({
     );
   }
 
+  const articleChunks: Article[][] = [];
+  const articleBlocks = [];
+
   for (let i = 0; i < articlesWithoutHeader.length; i += 6) {
     articleChunks.push(articlesWithoutHeader.slice(i, i + 6));
   }
 
-  const articleBlocks = articlesWithHeader.map((article: Article) => {
-    return <ArticleCard key={article.id} article={article} />;
-  });
+  let articleWithHeaderIndex = 0;
+  for (let i = 0; i < articleChunks.length; i++) {
+    const sampleArticlesWithHeader = articlesWithHeader.slice(articleWithHeaderIndex, articleWithHeaderIndex + 6);
+
+    const cards = sampleArticlesWithHeader.map((article: Article) => {
+      return <ArticleCard key={article.id} article={article} />;
+    });
+
+    articleBlocks.push(cards);
+    articleWithHeaderIndex += 6;
+  }
+
+  for (let i = articleWithHeaderIndex; i < articlesWithHeader.length; i += 8) {
+    const sampleArticlesWithHeader = articlesWithHeader.slice(i, i + 8);
+
+    const cards = sampleArticlesWithHeader.map((article: Article) => {
+      return <ArticleCard key={article.id} article={article} />;
+    });
+
+    articleBlocks.push(cards);
+  }
 
   const articleChunkBlocks = articleChunks.map((articleChunk: Article[], index: number) => {
     return (
-        <ArticleChunkContainer className="row-span-2 col-span-1 border border-gray-300 p-2" key={index}>
+        <ArticleChunkContainer
+          key={index}
+          className="row-span-2 col-span-1 border border-gray-300 p-2 md:grid lg:block grid-cols-2 divide-y"
+        >
           {articleChunk.map((article: Article) => {
             return (
               <SmallArticleCard key={article.id} article={article} />
@@ -98,27 +107,36 @@ function DiscoverArticles({
   const blocks = [];
 
   let lastInserted = 'left';
-  let insertedSince = 0;
-  let articleBlockIndex = 0;
-  let articleChunkBlockIndex = 0;
-  let articleBlocksCount = articleBlocks.length;
 
   // This algorithm will cause articles without images to not show up
   // if there are not enough articles with images to display nicely
-  while (articleBlocksCount >= 0) {
-    const shouldInsertRight = (lastInserted === 'left' && insertedSince === 10) || (articleBlockIndex === 3 && insertedSince === 3);
-    const shouldInsertLeft = lastInserted === 'right' && insertedSince === 3;
-
-    if (shouldInsertRight || shouldInsertLeft) {
-      blocks.push(articleChunkBlocks[articleChunkBlockIndex]);
-      articleChunkBlockIndex++;
-      lastInserted = lastInserted === 'left' ? 'right' : 'left';
-      insertedSince = 0;
+  for (let i = 0; i < articleBlocks.length; i++) {
+    if (i > articleChunkBlocks.length) {
+      blocks.push(
+        <div key={`block-${i}`} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 col-span-1 lg:col-span-4 row-span-2">
+          {articleBlocks[i]}
+        </div>
+      );
     } else {
-      blocks.push(articleBlocks[articleBlockIndex]);
-      articleBlockIndex++;
-      articleBlocksCount--;
-      insertedSince++;
+      const rowSpan = articleBlocks[i].length === 3 ? 'row-span-1' : 'row-span-2';
+      const articleBlock = (
+        <div key={`block-${i}`} className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 col-span-1 lg:col-span-3 ${rowSpan}`}>
+          {articleBlocks[i]}
+        </div>
+      );
+
+      if (lastInserted === 'left') {
+        blocks.push(articleBlock);
+
+        if (articleBlocks[i].length >= 3) {
+          blocks.push(articleChunkBlocks[i]);
+          lastInserted = 'right';
+        }
+      } else {
+        blocks.push(articleChunkBlocks[i]);
+        blocks.push(articleBlock);
+        lastInserted = 'left';
+      }
     }
   }
 

@@ -57,18 +57,14 @@ const Article: NextPage = (): React.ReactElement => {
     : textContent.substr(0, textContent.lastIndexOf('.', 180));
 
   const articleTrackingData = {
-    article: {
-      id: article.id,
-      title: article.title,
-      slug: article.slug,
-      readingTime,
-      subscribersOnly: article.subscribersOnly,
-      category: article.category,
-      headerImage: article.headerImage,
-    },
-    author: {
-      id: article.author.id,
-    }
+    articleId: article.id,
+    title: article.title,
+    slug: article.slug,
+    readingTime,
+    subscribersOnly: article.subscribersOnly,
+    category: article.category,
+    headerImage: article.headerImage,
+    authorId: article.author.id,
   };
 
   if (articleBottomInView && !readTracked && !article?.contentBlocked) {

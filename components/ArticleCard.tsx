@@ -15,7 +15,7 @@ const ArticleCardContainer = styled.div`
     .sub-only {
       display: flex;
     }
-    
+
     .reading-time {
       color: #004346;
     }
@@ -46,17 +46,13 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
     : article.summary
 
   const trackingData = {
-    article: {
-      id: article.id,
-      title: article.title,
-      slug: article.slug,
-      readingTime,
-      subscribersOnly: article.subscribersOnly,
-      category: article.category,
-    },
-    author: {
-      id: article.author.id,
-    },
+    articleId: article.id,
+    title: article.title,
+    slug: article.slug,
+    readingTime,
+    subscribersOnly: article.subscribersOnly,
+    category: article.category,
+    authorId: article.author.id,
   };
 
   const handleClick = (): void => {
@@ -85,7 +81,7 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
                 <ArticleCardImage className="flex-grow flex items-end h-40 rounded-t-sm -mt-3 -mx-3 mb-3" url={src}>
                   {
                     article?.subscribersOnly && (
-                      <span className="sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 hidden items-center text-xs text-primary font-sans">
+                      <span className="sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 flex md:hidden items-center text-xs text-primary font-sans">
                         <FiFeather className="mr-1" /> Supporters Only
                       </span>
                     )
@@ -101,6 +97,7 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
               className="cursor-pointer outline-none font-serif font-bold text-xl transition duration-150 ease-in resize-none w-full overflow-hidden"
               rows={article.title.length > 25 ? 2 : 1}
               value={articleTitle}
+              title={article.title}
               readOnly
             />
 
@@ -109,6 +106,7 @@ function ArticleCard({ article }: { article: Article }): React.ReactElement {
               className="cursor-pointer outline-none text-gray-600 text-sm resize-none w-full overflow-hidden"
               rows={2}
               value={articleSummary || ''}
+              title={article.summary || ''}
               readOnly
             />
           </div>

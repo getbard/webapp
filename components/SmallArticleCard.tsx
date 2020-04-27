@@ -29,17 +29,13 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
   const readingTime = timeToRead(article.wordCount);
 
   const trackingData = {
-    article: {
-      id: article.id,
-      title: article.title,
-      slug: article.slug,
-      readingTime,
-      subscribersOnly: article.subscribersOnly,
-      category: article.category,
-    },
-    author: {
-      id: article.author.id,
-    }
+    articleId: article.id,
+    title: article.title,
+    slug: article.slug,
+    readingTime,
+    subscribersOnly: article.subscribersOnly,
+    category: article.category,
+    authorId: article.author.id,
   };
 
   const handleClick = (): void => {
@@ -58,7 +54,10 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
       <Link href="/articles/[...id]" as={articleHref} passHref={true}>
         <a>
           <div className={`${article.subscribersOnly && 'grid grid-cols-8'}`}>
-            <h1 className="col-span-7 font-serif font-bold transition duration-150 ease-in">
+            <h1
+              className="col-span-7 font-serif font-bold"
+              title={article.title}
+            >
               {
                 article.title.length > 45
                   ? `${article.title.substr(0, article.title.lastIndexOf(' ', 45))}...`
@@ -68,7 +67,7 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
 
             {
               article.subscribersOnly && (
-                <SubOnlyIcon className="sub-only hidden items-center text-primary">
+                <SubOnlyIcon className="sub-only block md:hidden pt-1 text-primary">
                   <FiFeather />
                 </SubOnlyIcon>
               )
@@ -78,7 +77,10 @@ function SmallArticleCard({ article }: { article: Article }): React.ReactElement
 
           {
             article.summary && (
-              <div className="text-gray-600 mt-1 text-sm">
+              <div
+                className="text-gray-600 mt-1 text-sm"
+                title={article.summary || ''}
+              >
                 {
                   article.summary.length > 100
                     ? `${article.summary.substr(0, article.summary.lastIndexOf(' ', 100))}...`

@@ -60,11 +60,9 @@ function FollowButton({
   const isFollower = followerIds?.includes(follower);
 
   const trackingData = {
-    user: {
-      id: user.id,
-    },
+    userId: user.id,
     follower,
-  }
+  };
 
   const handleFollow = (): void => {
     if (!auth.userId) {
