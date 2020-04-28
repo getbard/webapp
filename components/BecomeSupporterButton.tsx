@@ -94,7 +94,7 @@ function BecomeSupporterButton({
           : (
             <>
               <Button onClick={handleClick}>
-                Become a supporter
+                Support {author.firstName}
               </Button>
         
               <Modal
