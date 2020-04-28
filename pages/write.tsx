@@ -8,12 +8,12 @@ import EditorContainer from '../components/EditorContainer';
 const Write: NextPage = (): React.ReactElement => {
   return (
     <>
-    <NextSeo
-      title="Write"
-      description="Write your next masterpiece."
-    />
+      <NextSeo
+        title="Write"
+        description="Write your next masterpiece."
+      />
 
-    <EditorContainer />
+      <EditorContainer />
     </>
   );
 }
