@@ -181,6 +181,15 @@ const Discover: NextPage = (): React.ReactElement => {
 
   return (
     <div className="p-5">
+      {
+        !auth.userId && (
+          <div className="text-center p-4 rounded -mt-1 mb-4 bg-primary text-white font-bold shadow-sm">
+            <div>Welcome to Bard, a place where writers are supported by the readers.</div>
+            <div>You have the power to support the writing you love. And writers get paid for it.</div>
+          </div>
+        )
+      }
+
       <div className="hidden md:block w-full px-5 pb-5 text-center">
         {
           categories.map(category => {

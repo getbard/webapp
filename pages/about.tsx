@@ -55,17 +55,26 @@ const About: NextPage = (): React.ReactElement => {
         <div className="min-h-screen flex flex-col justify-between container mx-auto px-10">
           <section className="flex items-center pb-20 md:pb-48 lg:px-10 text-white">
             <div className="md:w-1/2 inline-block z-10">
-              <h1 className="font-bold text-3xl xl:text-4xl md:inline font-serif">Quality writing rarely earns you cash.</h1>
-              &nbsp;<h1 className="font-extrabold text-3xl xl:text-4xl md:inline underline font-serif">Until now.</h1>
+              <div className="font-bold text-3xl xl:text-4xl font-serif">Better for writers. </div>
+              <div className="font-extrabold text-3xl xl:text-4xl font-serif">Better for readers.</div>
 
-              <p className="text-xl xl:text-2xl my-10">Whether you have a large audience, starting from scratch, or something in-between, we let you focus on writing — we handle the rest.</p>
+              <p className="text-xl xl:text-2xl my-10">On Bard, writers are supported by the readers. This means that readers have the power to support the writing they love. And writers get paid for it.</p>
 
               <Link href="/signup">
                 <a
-                  className="bg-white hover:shadow-xl hover:bg-secondary text-primary text-3xl button transition duration-150 ease-in-out px-5 py-3 rounded-sm"
+                  className="text-center mb-2 lg:mr-4 block lg:inline bg-white hover:shadow-xl hover:bg-secondary text-primary text-3xl transition duration-150 ease-in-out px-5 py-3 rounded-sm"
                   onClick={(): void => window.analytics.track('ABOUT: Header Start writing clicked')}
                 >
                   Start writing
+                </a>
+              </Link>
+
+              <Link href="/">
+                <a
+                  className="text-center block lg:inline bg-white hover:shadow-xl hover:bg-secondary text-primary text-3xl transition duration-150 ease-in-out px-5 py-3 rounded-sm"
+                  onClick={(): void => window.analytics.track('ABOUT: Header Start reading clicked')}
+                >
+                  Start reading
                 </a>
               </Link>
             </div>
@@ -85,19 +94,18 @@ const About: NextPage = (): React.ReactElement => {
             </div>
 
             <p className="mb-4">
-              Something about writing online just isn&apos;t right. Good writers are writing about things they’re not passionate about. They’re using clickbait or altering their message to please curators and publications. Some are being forced to publish over four times per week, focusing on quantity over quality.
+              Something about writing online just isn&apos;t right.
             </p>
 
-            <p className="mb-4">
-              And when they provide value, they’re not getting compensated for it. A writer today could write an article for a publication that goes viral, without getting any piece of the revenue.
-            </p>
+            <ul className="list-disc px-5 mb-4">
+              <li className="mb-2">Clickbait reduces quality.</li>
+              <li className="mb-2">Advertisers and editors shape content more than writers.</li>
+              <li className="mb-2">Readers have no power to influence they content they see.</li>
+              <li className="mb-2">Great writers are struggling to make money.</li>
+            </ul>
 
             <p className="mb-4">
-              Writers should be incentivized to provide value for their readers, rather than aiming to please advertisers, curators, or obscure revenue-sharing algorithms.
-            </p>
-
-            <p className="mb-4">
-              And readers, who are currently on the sidelines, should have the power to reward and incentivize the content they love.
+              Here&apos;s what we plan to do about that.
             </p>
           </section>
 
@@ -108,20 +116,14 @@ const About: NextPage = (): React.ReactElement => {
               </div>
 
               <p className="mb-4">
-                We’re taking the power away from the advertisers and publications and giving it to the readers.
+                Readers should have the power to reward and incentivize the content they love.
               </p>
 
-              <p className="mb-4">
-                Readers get to reward the content they love so that they get more of it.
-              </p>
-
-              <p className="mb-4">
-                They determine which content is valuable, not curators. Curation always comes with a bias.
-              </p>
-
-              <p className="mb-4">
-                And readers can interact with the writers they love so they can be active players in what gets created.
-              </p>
+              <ul className="list-disc px-5 mb-4">
+                <li className="mb-2">We’re taking the power away from the advertisers and publications and giving it to the readers.</li>
+                <li className="mb-2">Readers get to reward the content they love so that they get more of it.</li>
+                <li className="mb-2">Readers can interact with the writers they love so they can be active players in what gets created.</li>
+              </ul>
             </div>
 
             <div className="col-span-1 p-4 border border-gray-300 rounded-sm shadow-xl bg-white mb-10 md:mb-0">
@@ -130,20 +132,14 @@ const About: NextPage = (): React.ReactElement => {
               </div>
 
               <p className="mb-4">
-                Writers should be incentivized to provide the most value they can, rather than to play with silly marketing tactics.
+                Writers should provide value for their readers, rather than aiming to please advertisers, curators, or algorithms.
               </p>
 
-              <p className="mb-4">
-                Writers should be able to focus on their writing, rather than having to create websites, products, or services they aren&apos;t passionate about simply because they need to make a living.
-              </p>
-
-              <p className="mb-4">
-                Writers with small, but passionate audiences, should be able to thrive. Niche writers matter just as much as their popular counterparts.
-              </p>
-
-              <p className="mb-4">
-                Writing is an end in itself. Quality writing should be rewarded in proportion to the value generated.
-              </p>
+              <ul className="list-disc px-5 mb-4">
+                <li className="mb-2">Writers should get paid when they deliver what their readers crave.</li>
+                <li className="mb-2">Writers should focus on their writing, not on creating websites or products.</li>
+                <li className="mb-2">It’s not about the size of the audience but how passionate they are.</li>
+              </ul>
             </div>
           </section>
 
@@ -153,15 +149,19 @@ const About: NextPage = (): React.ReactElement => {
             </div>
 
             <p className="mb-4">
-              Anyone can write on Bard. Authors choose which content is accessible and which to put behind a paywall. The choice is theirs. Readers show their support for writers in one-time donations or in monthly subscriptions.
+              Anyone can write on Bard.
             </p>
 
             <p className="mb-4">
+              Authors choose which content is accessible and which to put behind a paywall. The choice is theirs. Readers show their support for writers in one-time donations or in monthly subscriptions.
+            </p>
+
+            <p className="mb-4 bg-gray-200 italic text-xl font-serif p-4 border-l-4 border-primary">
               &quot;A society that has no respect, no regard for its bards, its historians, its storytellers, is a society in steep decline, a society that has lost its very soul and may never find its way.&quot;
             </p>
 
             <p className="mb-4">
-              So let’s rally behind the writers that are bringing us value. Because bards, historians, and storytellers matter.
+            Let&apos;s rally behind the writers that are bringing us value. Because bards, historians, and storytellers matter.
             </p>
           </section>
         </div>
@@ -171,10 +171,19 @@ const About: NextPage = (): React.ReactElement => {
       <div className="text-center my-10 mb-20 md:mb-10">
         <Link href="/signup">
           <a
-            className="bg-primary hover:shadow-xl hover:bg-secondary text-white text-3xl button transition duration-150 ease-in-out px-5 py-3 rounded-sm"
+            className="inline-block mb-2 mr-2 mx-auto bg-primary hover:shadow-xl hover:bg-secondary text-white text-3xl transition duration-150 ease-in-out px-5 py-3 rounded-sm"
             onClick={(): void => window.analytics.track('ABOUT: Bottom Start writing clicked')}
           >
             Start writing
+          </a>
+        </Link>
+
+        <Link href="/">
+          <a
+            className="inline-block mx-auto bg-primary hover:shadow-xl hover:bg-secondary text-white text-3xl transition duration-150 ease-in-out px-5 py-3 rounded-sm"
+            onClick={(): void => window.analytics.track('ABOUT: Bottom Start reading clicked')}
+          >
+            Start reading
           </a>
         </Link>
       </div>

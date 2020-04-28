@@ -80,14 +80,14 @@ function OneTimeSupportButton({
   return (
     <>
       <Button secondary onClick={handleClick}>
-        One-Time Support
+        One-Time Donation
       </Button>
 
       <Modal open={displayDonationPrompt} onModalClose={(): void => setDisplayDonationPrompt(false)}>
         <h2 className="text-xl font-bold mb-2">Thank you!</h2>
 
         <p className="mb-4">
-          Supporting {author.firstName} helps them focus on what matters most, their content.
+          Donating to {author.firstName} helps them focus on what matters most, their content.
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -122,7 +122,7 @@ function OneTimeSupportButton({
 
           <div className="flex items-center md:justify-between justify-center">
             <Button className="w-full md:w-auto" loading={loading}>
-              Pay now
+              Donate
             </Button>
           </div>
         </form>
