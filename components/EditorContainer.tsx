@@ -54,7 +54,6 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   const [headerImage, setHeaderImage] = useState(article?.headerImage || null);
   const [category, setCategory] = useState(article?.category || null);
   const [notification, setNotification] = useState('');
-  const noContent = !title && !summary && content === emptyDocumentString;
   const [articleId, setArticleId] = useState(article?.id || null);
   const [publishable, setPublishable] = useState(false);
 
@@ -74,7 +73,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   useEffect(() => {
     // When you have created or updated an article
     // store the ID; but not if an article was already published
-    if (saveData?.createOrUpdateArticle?.id !== articleId && !article?.publishedAt) {
+    if (!articleId && !article?.publishedAt) {
       setArticleId(saveData?.createOrUpdateArticle?.id);
     }
   }, [saveData?.createOrUpdateArticle?.id]);
@@ -100,6 +99,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   const publishButtonText = article?.publishedAt ? 'Save and Publish' : 'Publish';
 
   useEffect(() => {
+    const noContent = !title && !summary && content === emptyDocumentString;
     if (noContent || article?.publishedAt) {
       return;
     }
