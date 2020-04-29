@@ -52,9 +52,7 @@ const Article: NextPage = (): React.ReactElement => {
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName}`;
   const readingTime = timeToRead(article.wordCount);
   const textContent = serializeText(JSON.parse(article.content)).trim();
-  const seoDescription = article?.summary
-    ? article.summary.substr(0, article.summary.lastIndexOf('.', 180))
-    : textContent.substr(0, textContent.lastIndexOf('.', 180));
+  const seoDescription = article?.summary ? article.summary : textContent.substr(0, textContent.lastIndexOf('.', 200));
 
   const articleTrackingData = {
     articleId: article.id,
@@ -104,7 +102,9 @@ const Article: NextPage = (): React.ReactElement => {
         description={seoDescription}
         openGraph={{
           title: article.title,
+          type: 'website',
           description: seoDescription,
+          url: `https://getbard.com/articles/i/${article.id}`,
           images: [{
             url: `${article.headerImage?.url}&w=960` || 'https://getbard.com/og.png',
             alt: article.title,
@@ -112,18 +112,26 @@ const Article: NextPage = (): React.ReactElement => {
           article: {
             publishedTime: article.publishedAt,
             authors: [authorName],
-          }
+          },
         }}
+        additionalMetaTags={[{
+          property: 'twitter:label1',
+          content: 'Reading time',
+        }, {
+          property: 'twitter:data1',
+          content: readingTime,
+        }]}
       />
 
       <Head>
-        {/* {/*
-          // @ts-ignore */}
-        <meta name="twitter:label1" value="Reading time" />
-
-        {/*
-          // @ts-ignore */}
-        <meta name="twitter:data1" value={readingTime} />
+        {/* Make sure the proper header tags are set */}
+        {/* seems like this is required because of a next-seo bug: https://github.com/garmeeh/next-seo/issues/203 */}
+        <meta property="og:url" content={`https://getbard.com/articles/i/${article.id}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={article.title} />
+        <meta property="og:description" content={seoDescription} />
+        <meta property="og:image" content={`${article.headerImage?.url}&w=960` || 'https://getbard.com/og.png'} />
+        <meta property="og:image:alt" content={article.title} />
       </Head>
 
       <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
