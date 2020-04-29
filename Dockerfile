@@ -1,7 +1,7 @@
 ########
 ## Build
 ########
-FROM node:14-alpine AS builder
+FROM node:12-alpine AS builder
 WORKDIR /build
 
 # Set release in env
@@ -19,7 +19,7 @@ RUN yarn build && rm -rf .next/cache
 ########
 ## Run
 ########
-FROM node:14-alpine
+FROM node:12-alpine
 WORKDIR /usr/src/app
 
 # Set release in env
@@ -27,6 +27,7 @@ ARG RELEASE
 ENV RELEASE=$RELEASE
 
 # Install dependencies
+COPY --from=builder /build/node_modules node_modules
 COPY package.json yarn.lock ./
 RUN yarn --production --frozen-lockfile
 
