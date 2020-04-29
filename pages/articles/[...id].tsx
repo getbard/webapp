@@ -1,16 +1,15 @@
 import { useState } from 'react';
-import { NextPage } from 'next';
+import { NextPage, GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
 import ProgressiveImage from 'react-progressive-image';
 import { NextSeo } from 'next-seo';
-import Head from 'next/head';
 import { differenceInSeconds } from 'date-fns';
 import { useInView } from 'react-intersection-observer';
 
-import ArticleBySlugQuery from '../../queries/ArticleBySlugQuery';
-import ArticleByIdQuery from '../../queries/ArticleByIdQuery';
+import ArticleBySlugQuery, { ArticleBySlugQueryString } from '../../queries/ArticleBySlugQuery';
+import ArticleByIdQuery, { ArticleByIdQueryString } from '../../queries/ArticleByIdQuery';
 
 import { useAuth } from '../../hooks/useAuth';
 
@@ -30,7 +29,7 @@ import ArticleHeaderSupport from '../../components/ArticleHeaderSupport';
 import ContentBlocker from '../../components/ContentBlocker';
 import Button from '../../components/Button';
 
-const Article: NextPage = (): React.ReactElement => {
+const ArticleContainer: NextPage = (props: any): React.ReactElement => {
   const auth = useAuth();
   const router = useRouter();
   const { id: idParams, sessionId } = router.query;
@@ -43,18 +42,16 @@ const Article: NextPage = (): React.ReactElement => {
 
   const { loading, error, data, refetch } = useQuery(articleQuery, { variables: { id } });
 
-  if (loading) return <ArticleFallback />;
+  if (loading && !props?.article?.id) return <ArticleFallback />;
 
   if (error?.message.includes('Article not found')) return <BardError statusCode={404} hasGetInitialPropsRun={true} err={null} />;
   if (error) return <div><GenericError title /></div>;
 
-  const article = data?.article || data?.articleBySlug;
+  const article = data?.article || data?.articleBySlug || props?.article;
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName}`;
   const readingTime = timeToRead(article.wordCount);
   const textContent = serializeText(JSON.parse(article.content)).trim();
-  const seoDescription = article?.summary
-    ? article.summary.substr(0, article.summary.lastIndexOf('.', 180))
-    : textContent.substr(0, textContent.lastIndexOf('.', 180));
+  const seoDescription = article?.summary ? article.summary : textContent.substr(0, textContent.lastIndexOf('.', 200));
 
   const articleTrackingData = {
     articleId: article.id,
@@ -104,7 +101,9 @@ const Article: NextPage = (): React.ReactElement => {
         description={seoDescription}
         openGraph={{
           title: article.title,
+          type: 'website',
           description: seoDescription,
+          url: `https://getbard.com/articles/i/${article.id}`,
           images: [{
             url: `${article.headerImage?.url}&w=960` || 'https://getbard.com/og.png',
             alt: article.title,
@@ -112,19 +111,16 @@ const Article: NextPage = (): React.ReactElement => {
           article: {
             publishedTime: article.publishedAt,
             authors: [authorName],
-          }
+          },
         }}
+        additionalMetaTags={[{
+          property: 'twitter:label1',
+          content: 'Reading time',
+        }, {
+          property: 'twitter:data1',
+          content: readingTime,
+        }]}
       />
-
-      <Head>
-        {/* {/*
-          // @ts-ignore */}
-        <meta name="twitter:label1" value="Reading time" />
-
-        {/*
-          // @ts-ignore */}
-        <meta name="twitter:data1" value={readingTime} />
-      </Head>
 
       <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
         <div className="mb-8">
@@ -275,4 +271,31 @@ const Article: NextPage = (): React.ReactElement => {
   );
 }
 
-export default withApollo({ ssr: true })(withLayout(Article));
+export const getServerSideProps: GetServerSideProps = async context => {
+  const idParams = context?.params?.id;
+  const [idType, id] = idParams || [null, null];
+  const articleQuery = idType === 's' ? ArticleBySlugQueryString : ArticleByIdQueryString;
+
+  const res = await fetch(process.env.GRAPHQL_URI!, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+      operationName: 'article',
+      query: articleQuery,
+      variables: { id },
+    }),
+  });
+
+  const { data } = await res.json() || {};
+
+  return {
+    props: {
+      article: data?.article || data?.articleBySlug || null,
+    },
+  };
+}
+
+export default withApollo({ ssr: false })(withLayout(ArticleContainer));
