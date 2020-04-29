@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
 import ProgressiveImage from 'react-progressive-image';
 import { NextSeo } from 'next-seo';
-import Head from 'next/head';
 import { differenceInSeconds } from 'date-fns';
 import { useInView } from 'react-intersection-observer';
 
@@ -30,7 +29,7 @@ import ArticleHeaderSupport from '../../components/ArticleHeaderSupport';
 import ContentBlocker from '../../components/ContentBlocker';
 import Button from '../../components/Button';
 
-const Article: NextPage = (): React.ReactElement => {
+const ArticleContainer: NextPage = (): React.ReactElement => {
   const auth = useAuth();
   const router = useRouter();
   const { id: idParams, sessionId } = router.query;
@@ -122,17 +121,6 @@ const Article: NextPage = (): React.ReactElement => {
           content: readingTime,
         }]}
       />
-
-      <Head>
-        {/* Make sure the proper header tags are set */}
-        {/* seems like this is required because of a next-seo bug: https://github.com/garmeeh/next-seo/issues/203 */}
-        <meta property="og:url" content={`https://getbard.com/articles/i/${article.id}`} />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={article.title} />
-        <meta property="og:description" content={seoDescription} />
-        <meta property="og:image" content={`${article.headerImage?.url}&w=960` || 'https://getbard.com/og.png'} />
-        <meta property="og:image:alt" content={article.title} />
-      </Head>
 
       <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
         <div className="mb-8">
@@ -283,4 +271,4 @@ const Article: NextPage = (): React.ReactElement => {
   );
 }
 
-export default withApollo({ ssr: true })(withLayout(Article));
+export default withApollo()(withLayout(ArticleContainer));

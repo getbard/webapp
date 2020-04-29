@@ -15,7 +15,7 @@ const protectedRoutes = [
 import Nav from './Nav';
 
 function withLayout(PageComponent: NextPage): NextPage {
-  const PageComponentWithLayout = (): React.ReactElement => {
+  const PageComponentWithLayout = ({ ...pageProps }): React.ReactElement => {
     const router = useRouter();
     const isAuthenticated = cookie.get('token') && protectedRoutes.includes(router.pathname);
 
@@ -29,7 +29,10 @@ function withLayout(PageComponent: NextPage): NextPage {
       <div>
         <Nav />
   
-        {(isAuthenticated || !protectedRoutes.includes(router.pathname)) && <PageComponent />}
+        {
+          (isAuthenticated || !protectedRoutes.includes(router.pathname))
+          && <PageComponent {...pageProps} />
+        }
       </div>
     );
   }

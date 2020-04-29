@@ -30,6 +30,7 @@ ENV RELEASE=$RELEASE
 COPY --from=builder /build/node_modules node_modules
 COPY package.json yarn.lock ./
 RUN yarn --production --frozen-lockfile
+RUN yarn cache clean
 
 COPY --from=builder /build/.next .next
 COPY --from=builder /build/generated generated
