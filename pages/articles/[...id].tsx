@@ -42,7 +42,6 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
 
   const { loading, error, data, refetch } = useQuery(articleQuery, { variables: { id } });
 
-  console.log('SSR:', props.article, loading, loading && !props?.article?.id);
   if (loading && !props?.article?.id) return <ArticleFallback />;
 
   if (error?.message.includes('Article not found')) return <BardError statusCode={404} hasGetInitialPropsRun={true} err={null} />;
