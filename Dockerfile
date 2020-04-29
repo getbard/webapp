@@ -10,7 +10,7 @@ ENV RELEASE=$RELEASE
 
 # Install dependencies
 COPY . ./
-RUN yarn
+RUN yarn --frozen-lockfile
 
 # Build the project
 RUN yarn build && rm -rf .next/cache
@@ -28,7 +28,7 @@ ENV RELEASE=$RELEASE
 
 # Install dependencies
 COPY package.json yarn.lock ./
-RUN yarn --production
+RUN yarn --production --frozen-lockfile
 
 COPY --from=builder /build/.next .next
 COPY --from=builder /build/generated generated
