@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { format } from 'date-fns';
 import { ApolloError } from 'apollo-client';
 import { NextSeo } from 'next-seo';
+import styled from '@emotion/styled';
 
 import { Article, User, ProfileSection } from '../generated/graphql';
 import AuthorProfileQuery from '../queries/AuthorProfileQuery';
@@ -27,6 +28,15 @@ import ProfileFeed from '../components/ProfileFeed';
 import GenericError from '../components/GenericError';
 import BardError from './_error';
 import ProfileSectionDisplay from '../components/ProfileSectionDisplay';
+
+
+type BorderHackProps = {
+  width: number | undefined;
+}
+
+const BorderHack = styled.div`
+  width: ${(props: BorderHackProps): string => props?.width ? props.width.toString() + 'px' : '100%'};
+`;
 
 function Articles({
   loading,
@@ -78,7 +88,7 @@ const Author: NextPage = (): React.ReactElement => {
   const querySection = router?.query?.section as string;
   const [section, setSection] = useState(querySection || 'articles');
   const [sectionContent, setSectionContent] = useState<ProfileSection | null>(null);
-  const { loading, error, data, refetch: authorRefetch } = useQuery(AuthorProfileQuery, { variables: { username } });
+  const { loading, error, data } = useQuery(AuthorProfileQuery, { variables: { username } });
   const sectionsContainer = useRef<HTMLDivElement>(null);
   const [sectionsOverflowing, setSectionsOverflowing] = useState(false);
 
@@ -174,52 +184,63 @@ const Author: NextPage = (): React.ReactElement => {
 
         <div className="col-span-3 relative">
           <div
-            className="mb-2 pb-4 border-b-2 border-gray-300 w-full overflow-x-scroll"
+            className="mb-2 relative w-full overflow-x-scroll"
             ref={sectionsContainer}
           >
-            <ProfileSectionSelector
-              name="Articles"
-              setSection={setSection}
-              section={section}
-            />
+            <div className="space-x-8">
+              <ProfileSectionSelector
+                name="Articles"
+                setSection={setSection}
+                section={section}
+              />
 
-            <ProfileSectionSelector
-              name="Activity"
-              setSection={setSection}
-              section={section}
-            />
+              <ProfileSectionSelector
+                name="Activity"
+                setSection={setSection}
+                section={section}
+              />
 
-            <div className="inline whitespace-no-wrap">
+              <div className="inline whitespace-no-wrap space-x-8">
+                {
+                  user?.profileSections && user.profileSections.map(profileSection => (
+                    <ProfileSectionSelector
+                      key={profileSection?.id}
+                      name={profileSection?.title || ''}
+                      setSection={setSection}
+                      section={section.toLowerCase()}
+                    />
+                  ))
+                }
+              </div>
+
               {
-                user?.profileSections && user.profileSections.map(profileSection => (
-                  <ProfileSectionSelector
-                    key={profileSection?.id}
-                    name={profileSection?.title || ''}
-                    setSection={setSection}
-                    section={section.toLowerCase()}
-                  />
-                ))
+                user.id === auth.userId && (
+                  <div
+                    title="Add profile section"
+                    className="inline text-2xl text-gray-500 hover:text-primary hover:cursor-pointer"
+                    onClick={handleAddSectionClick}
+                  >
+                    +
+                  </div>
+                )
+              }
+
+              {
+                sectionsOverflowing && (
+                  <div
+                    className="absolute mt-8 top-0 right-0 text-xs text-gray-300"
+                    title="Scroll for more sections"
+                  >
+                    more sections &gt;
+                  </div>
+                )
               }
             </div>
 
-            <div
-              title="Add profile section"
-              className="inline text-2xl text-gray-500 hover:text-primary hover:cursor-pointer"
-              onClick={handleAddSectionClick}
-            >
-              +
-            </div>
-
-            {
-              sectionsOverflowing && (
-                <div
-                  className="absolute mt-8 top-0 right-0 text-xs text-gray-300"
-                  title="Scroll for more sections"
-                >
-                  more sections &gt;
-                </div>
-              )
-            }
+            <BorderHack
+              width={sectionsContainer?.current?.scrollWidth}
+              className="m-0 pt-4 border-b-2 border-gray-300 bottom-0"
+            ></BorderHack>
           </div>
 
           {
@@ -246,9 +267,10 @@ const Author: NextPage = (): React.ReactElement => {
           {
             section !== 'articles' && section !== 'activity' && sectionContent && (
               <ProfileSectionDisplay
+                key={sectionContent.id}
                 section={sectionContent}
+                user={user}
                 onDelete={(): void => {
-                  authorRefetch();
                   setSection('articles');
                 }}
               />

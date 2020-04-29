@@ -6,9 +6,10 @@ import ProgressiveImage from 'react-progressive-image';
 
 import { useAuth } from '../hooks/useAuth';
 
-import { ProfileSection } from '../generated/graphql';
+import { ProfileSection, User } from '../generated/graphql';
 import ProfileSectionQuery from '../queries/ProfileSectionQuery';
 import DeleteProfileSectionMutation from '../queries/DeleteProfileSectionMutation';
+import AuthorProfileQuery from '../queries/AuthorProfileQuery';
 
 import Button from './Button';
 import Notification from './Notification';
@@ -19,19 +20,39 @@ import GenericLoader from './GenericLoader';
 function ProfileSectionDisplay({
   section,
   onDelete,
+  user,
 }: {
   section: ProfileSection;
   onDelete: () => void;
+  user: User;
 }): React.ReactElement {
   const auth = useAuth();
   const router = useRouter();
+  const profileSections = user?.profileSections || [];
 
   const { loading, data, error } = useQuery(ProfileSectionQuery, { variables: { id: section?.id } });
 
   const [deleteSection, {
     loading: deleteLoading,
     error: deleteError,
-  }] = useMutation(DeleteProfileSectionMutation);
+  }] = useMutation(DeleteProfileSectionMutation, {
+    update(cache) {
+      cache.writeQuery({
+        query: AuthorProfileQuery,
+        variables: { username: user.username },
+        data: {
+          user: {
+            ...user,
+            profileSections: profileSections.filter((profileSection: any) => profileSection?.id !== section?.id),
+          },
+        },
+      });
+
+      if (onDelete) {
+        onDelete();
+      }
+    }
+  });
   
   if (loading) return <GenericLoader />;
   
@@ -43,16 +64,18 @@ function ProfileSectionDisplay({
   const { profileSection } = data;
 
   const handleDeleteSection = (): void => {
-    deleteSection({
-      variables: {
-        input: {
-          id: profileSection.id,
-        },
-      },
-    });
+    const deleteConfirmed = confirm('Are you sure you want to delete this section?');
 
-    if (onDelete) {
-      onDelete();
+    if (deleteConfirmed) {
+      window.analytics.track('PROFILE SECTION DISPLAY: Delete confirm clicked',  { ...profileSection });
+
+      deleteSection({
+        variables: {
+          input: {
+            id: profileSection.id,
+          },
+        },
+      });
     }
   }
 
