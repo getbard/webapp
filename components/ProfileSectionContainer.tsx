@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Node } from 'slate';
 import { useRouter } from 'next/router';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -13,6 +13,7 @@ import Notification from './Notification';
 import { ProfileSection, CreateProfileSectionInput, UpdateProfileSectionInput } from '../generated/graphql';
 import CreateProfileSectionMutation from '../queries/CreateProfileSectionMutation';
 import UpdateProfileSectionMutation from '../queries/UpdateProfileSectionMutation';
+import UsernameQuery from '../queries/UsernameQuery';
 
 const emptyDocumentString = '[{"type":"paragraph","children":[{"text":""}]}]';
 
@@ -22,6 +23,8 @@ function ProfileSectionContainer({ section }: { section?: ProfileSection }): Rea
   const [title, setTitle] = useState(section?.title || '');
   const [content, setContent] = useState(section?.content || emptyDocumentString);
   const [headerImage, setHeaderImage] = useState(section?.headerImage || null);
+
+  const { data: userData } = useQuery(UsernameQuery, { variables: { username: 'me' } });
 
   const [createProfileSection, {
     called: createMutationCalled,
@@ -42,7 +45,8 @@ function ProfileSectionContainer({ section }: { section?: ProfileSection }): Rea
     const mutationWasCalled = createMutationCalled || updateMutationCalled;
 
     if (noMutationErrors && mutationWasCalled) {
-      router.push(`/me?section=${title}`);
+      const username = userData?.user?.username || 'me';
+      router.push(`/${username}?section=${title}`);
     }
   }, [createMutationLoading, updateMutationLoading]);
 
