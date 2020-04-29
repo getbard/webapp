@@ -1,7 +1,7 @@
 ########
 ## Build
 ########
-FROM node:12-alpine AS builder
+FROM node:14-alpine AS builder
 WORKDIR /build
 
 # Set release in env
@@ -19,7 +19,7 @@ RUN yarn build && rm -rf .next/cache
 ########
 ## Run
 ########
-FROM node:12-alpine
+FROM node:14-alpine
 WORKDIR /usr/src/app
 
 # Set release in env
