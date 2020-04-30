@@ -201,7 +201,7 @@ const Author: NextPage = (): React.ReactElement => {
               />
 
               {
-                user?.profileSections && (
+                user?.profileSections?.length && (
                   <div className="inline whitespace-no-wrap space-x-8">
                     {user.profileSections.map(profileSection => (
                       <ProfileSectionSelector
