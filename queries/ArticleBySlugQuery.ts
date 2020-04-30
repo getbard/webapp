@@ -31,6 +31,7 @@ const ArticleBySlugQuery = gql`
         url
         photographerName
         photographerUrl
+        downloadUrl
       }
     }
   }

@@ -10,7 +10,7 @@ export function ProfileSectionSelector({
   name,
 }: ProfileSectionSelectorProps): React.ReactElement {
   const active = section === name.toLowerCase();
-  const classes = `${active && 'border-b-2 border-primary'} ${active && 'text-primary'} text-gray-500 pb-5 inline mr-8 text-2xl hover:cursor-pointer hover:text-primary transition duration-150 ease-in-out`;
+  const classes = `${active && 'border-b-2 border-primary'} ${active && 'text-primary'} text-gray-500 pb-5 inline text-2xl hover:cursor-pointer hover:text-primary transition duration-150 ease-in-out`;
   
   return (
     <div

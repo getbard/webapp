@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Thu Apr 23 2020 15:27:20 GMT-0700 (Pacific Daylight Time)
+# timestamp: Tue Apr 28 2020 15:40:14 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -136,6 +136,16 @@ type CreateOrUpdateArticlePayload {
   id: ID!
 }
 
+input CreateProfileSectionInput {
+  title: String!
+  content: String!
+  headerImage: ArticleHeaderImageInput
+}
+
+type CreateProfileSectionPayload {
+  id: ID!
+}
+
 input CreateStripeSessionInput {
   amount: Int
   plan: StripePlanInput
@@ -185,6 +195,15 @@ input DeleteCommentInput {
 }
 
 type DeleteCommentPayload {
+  id: ID!
+  deletedAt: String!
+}
+
+input DeleteProfileSectionInput {
+  id: ID!
+}
+
+type DeleteProfileSectionPayload {
   id: ID!
   deletedAt: String!
 }
@@ -239,6 +258,9 @@ type Mutation {
   updateComment(input: UpdateCommentInput!): UpdateCommentPayload!
   deleteComment(input: DeleteCommentInput!): DeleteCommentPayload!
   uploadImage(input: UploadImageInput!): UploadImagePayload!
+  createProfileSection(input: CreateProfileSectionInput!): CreateProfileSectionPayload!
+  updateProfileSection(input: UpdateProfileSectionInput!): UpdateProfileSectionPayload!
+  deleteProfileSection(input: DeleteProfileSectionInput!): DeleteProfileSectionPayload!
 }
 
 type Plan {
@@ -251,6 +273,17 @@ type Plan {
 type ProfileFeed {
   next: String!
   results: [FeedActivity]!
+}
+
+type ProfileSection {
+  id: ID!
+  title: String!
+  content: String
+  headerImage: ArticleHeaderImage
+  createdAt: String!
+  updatedAt: String!
+  deletedAt: String
+  userId: String!
 }
 
 input PublishArticleInput {
@@ -273,6 +306,8 @@ type Query {
   feed: Feed
   profileFeed(userId: ID): ProfileFeed
   stripeSession(id: ID!, stripeUserId: ID!, authorId: ID!): StripeSession!
+  profileSection(id: ID!): ProfileSection
+  profileSections(userId: ID!): [ProfileSection]
   subscription(id: ID!): Subscription!
   user(username: String!): User
   unsplashPhoto(search: String): [UnsplashPhoto]
@@ -348,6 +383,17 @@ type UpdateCommentPayload {
   updatedAt: String!
 }
 
+input UpdateProfileSectionInput {
+  id: ID!
+  title: String!
+  content: String!
+  headerImage: ArticleHeaderImageInput
+}
+
+type UpdateProfileSectionPayload {
+  id: ID!
+}
+
 input UpdateUserInput {
   id: ID!
   firstName: String!
@@ -391,4 +437,5 @@ type User {
   stripeUserId: String
   stripePlanId: String
   stripePlan: StripePlan
+  profileSections: [ProfileSection]
 }

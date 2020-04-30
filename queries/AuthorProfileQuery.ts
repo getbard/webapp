@@ -19,6 +19,10 @@ const AuthorProfileQuery = gql`
         currency
         interval
       }
+      profileSections {
+        id
+        title
+      }
     }
   }
 `;
