@@ -201,18 +201,20 @@ const Author: NextPage = (): React.ReactElement => {
               />
 
               {
-                user?.profileSections?.length && (
-                  <div className="inline whitespace-no-wrap space-x-8">
-                    {user.profileSections.map(profileSection => (
-                      <ProfileSectionSelector
-                        key={profileSection?.id}
-                        name={profileSection?.title || ''}
-                        setSection={setSection}
-                        section={section.toLowerCase()}
-                      />
-                    ))}
-                  </div>
-                )
+                user?.profileSections?.length
+                  ? (
+                    <div className="inline whitespace-no-wrap space-x-8">
+                      {user.profileSections.map(profileSection => (
+                        <ProfileSectionSelector
+                          key={profileSection?.id}
+                          name={profileSection?.title || ''}
+                          setSection={setSection}
+                          section={section.toLowerCase()}
+                        />
+                      ))}
+                    </div>
+                  )
+                  : ''
               }
 
               {
