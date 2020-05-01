@@ -15,7 +15,8 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "schema": "graphql get-schema dev",
     "generate": "graphql-codegen --config codegen.yaml",
-    "test": "jest --coverage",
+    "test": "is-ci test:coverage test:watch",
+    "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "test:debug": "node --inspect-bk ./node_modules/jest/bin/jest.js --runInBand --watch"
   },
@@ -89,6 +90,7 @@
     "eslint-plugin-react": "^7.19.0",
     "graphql-cli": "^3.0.14",
     "identity-obj-proxy": "^3.0.0",
+    "is-ci-cli": "^2.0.0",
     "jest": "^25.5.3",
     "jest-watch-typeahead": "^0.5.0",
     "react-test-renderer": "^16.13.1",
