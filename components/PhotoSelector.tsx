@@ -8,10 +8,6 @@ import { ArticleHeaderImage } from '../generated/graphql';
 import { UnsplashPhoto } from '../generated/graphql';
 import UnsplashPhotoQuery from '../queries/UnsplashPhotoQuery';
 
-const UnsplashContainer = styled.div`
-  width: max-content;
-`;
-
 type ImageThumbnailProps = {
   url: string;
 }
@@ -65,10 +61,8 @@ const UnsplashThumbnail = ({
 
 export function PhotoSelector({
   onSelect,
-  setDisplay,
 }: {
-  onSelect: (headerImage: ArticleHeaderImage | null) => void;
-  setDisplay: (display: boolean) => void;
+  onSelect: (headerImage: ArticleHeaderImage | string | null) => void;
 }): React.ReactElement {
   const [search, setSearch] = useState('');
   const { loading, error, data } = useQuery(UnsplashPhotoQuery, { variables: { search } });
@@ -83,7 +77,6 @@ export function PhotoSelector({
     }
 
     onSelect(headerImage);
-    setDisplay(false);
   }
 
   if (loading && !data) return <></>;
@@ -92,7 +85,7 @@ export function PhotoSelector({
   const { unsplashPhoto } = data;
 
   return (
-    <UnsplashContainer className="absolute top-0 -ml-2 z-10 mt-8 bg-gray-100 p-2 rounded-sm border border-gray-300">
+    <>
       <input
         className="w-full mb-2 border border-gray-300 rounded-sm py-2 px-3 focus:outline-none focus:border-primary"
         placeholder="Don&apos;t like what you see? Try searching to narrow your results."
@@ -122,7 +115,7 @@ export function PhotoSelector({
           )
         }
       </div>
-    </UnsplashContainer>
+    </>
   );
 }
 

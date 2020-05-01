@@ -1,18 +1,12 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import { Transforms, Editor } from 'slate'
 import styled from '@emotion/styled';
 import { FiImage } from 'react-icons/fi';
-import { useDropzone } from 'react-dropzone';
-import { useMutation } from '@apollo/react-hooks';
-import { FiLoader } from 'react-icons/fi';
-
-import UploadImageMutation from '../queries/UploadImageMutation';
-
-const MAX_FILE_SIZE = 5000000;
 
 import Portal from './Portal';
 import Modal from './Modal';
+import ImageUploader from './ImageUploader';
 
 const Menu = styled.div`
   margin-top: -6px;
@@ -20,77 +14,10 @@ const Menu = styled.div`
   transition-duration: 500ms;
 `;
 
-const DropContainer = styled.div`
-  width: 50vw;
-`;
-
 function EditorInsertImage(): React.ReactElement {
   const ref = useRef<HTMLDivElement>();
   const editor = useSlate();
   const [display, setDisplay] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [uploadImage, { loading, data, error: uploadError }] = useMutation(UploadImageMutation);
-
-  if (uploadError) {
-    setError('Something went wrong. Please give it another shot!');
-  }
-
-  useEffect(() => {
-    // Handle upload image
-    if (data?.uploadImage?.url) {
-      const text = { text: '' };
-      const image = { type: 'image', url: data?.uploadImage?.url, children: [text] };
-
-      // Insert the image into the editor
-      Transforms.insertNodes(editor, image);
-      setDisplay(false);
-      setError(null);
-
-      // Focus the editor
-      ReactEditor.focus(editor);
-      Transforms.select(editor, Editor.end(editor, []));
-    }
-  }, [loading]);
-
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    // Called on accepted and rejected drops
-    if (!acceptedFiles.length) {
-      return;
-    }
-
-    if (acceptedFiles.length > 1) {
-      setError('Please select one image at a time');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (): void => {
-        uploadImage({
-          variables: {
-            input: {
-              name: acceptedFiles[0].name,
-              type: acceptedFiles[0].type,
-              content: reader.result,
-            },
-          },
-        });
-      }
-    reader.readAsDataURL(acceptedFiles[0]);
-  }, []);
-
-  const onDropRejected = (rejectedFiles: File[]): void => {
-    const error = rejectedFiles[0].size > MAX_FILE_SIZE
-      ? 'The file you tried to upload is too large'
-      : 'The file type you tried to upload is not allowed'
-    setError(error);
-  };
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    onDropRejected,
-    accept: 'image/*',
-    maxSize: MAX_FILE_SIZE,
-  });
 
   useEffect(() => {
     const el = ref.current;
@@ -119,6 +46,19 @@ function EditorInsertImage(): React.ReactElement {
     el.style.left = `${(editorBounds?.x || 0) - 20}px`;
   });
 
+  const handleSelect = (url: string): void => {
+    const text = { text: '' };
+    const image = { type: 'image', url, children: [text] };
+
+    // Insert the image into the editor
+    Transforms.insertNodes(editor, image);
+    setDisplay(false);
+
+    // Focus the editor
+    ReactEditor.focus(editor);
+    Transforms.select(editor, Editor.end(editor, []));
+  }
+
   return (
     <Portal selector="body">
       <Menu
@@ -132,26 +72,7 @@ function EditorInsertImage(): React.ReactElement {
       </Menu>
 
       <Modal open={display} onModalClose={(): void => setDisplay(false)}>
-        <DropContainer
-          {...getRootProps()}
-          className={`${isDragActive && 'border-primary'} hover:cursor-pointer p-20 border border-gray-300 border-dashed rounded-sm focus:outline-none text-center`}
-        >
-          <input {...getInputProps()} disabled={loading} />
-
-          {
-            loading
-              ? <FiLoader className="inline-block icon-spin text-lg mr-1" />
-              : <p>Drop an image or click to browse your images (5MB size limit)</p>
-          }
-          
-          {
-            error && (
-              <p className="text-xs font-bold text-red-600 mt-2">
-                {error}
-              </p>
-            )
-          }
-        </DropContainer>
+        <ImageUploader onSelect={handleSelect} />
       </Modal>
     </Portal>
   );

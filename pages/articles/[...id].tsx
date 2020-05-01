@@ -7,6 +7,7 @@ import ProgressiveImage from 'react-progressive-image';
 import { NextSeo } from 'next-seo';
 import { differenceInSeconds } from 'date-fns';
 import { useInView } from 'react-intersection-observer';
+import cookie from 'js-cookie';
 
 import ArticleBySlugQuery, { ArticleBySlugQueryString } from '../../queries/ArticleBySlugQuery';
 import ArticleByIdQuery, { ArticleByIdQueryString } from '../../queries/ArticleByIdQuery';
@@ -33,7 +34,7 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
   const auth = useAuth();
   const router = useRouter();
   const { id: idParams, sessionId } = router.query;
-  const [idType, id] = idParams;
+  const [idType, id] = idParams || [null, null];
   const articleQuery = idType === 's' ? ArticleBySlugQuery : ArticleByIdQuery;
   const [readTracked, setReadTracked] = useState(false);
   const [viewTracked, setViewTracked] = useState(false);
@@ -135,24 +136,28 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
                   {(src: string): React.ReactElement => <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-1" url={src} />}
                 </ProgressiveImage>
 
-                <div className="text-xs text-center">
-                  Photo by&nbsp;
-                  <a
-                    className="underline"
-                    href={`${article.headerImage.photographerUrl}?utm_source=bard&utm_medium=referral`}
-                    onClick={(): void => window.analytics.track(`ARTICLE: Unsplash photographer URL clicked`, articleTrackingData)}
-                  >
-                    {article.headerImage.photographerName}
-                  </a>
-                  &nbsp;on&nbsp;
-                  <a
-                    className="underline"
-                    href="https://unsplash.com?utm_source=bard&utm_medium=referral"
-                    onClick={(): void => window.analytics.track(`ARTICLE: Unsplash URL clicked`, articleTrackingData)}
-                  >
-                    Unsplash
-                  </a>
-                </div>
+                {
+                  article.headerImage?.photographerUrl && (
+                    <div className="text-xs text-center">
+                      Photo by&nbsp;
+                      <a
+                        className="underline"
+                        href={`${article.headerImage.photographerUrl}?utm_source=bard&utm_medium=referral`}
+                        onClick={(): void => window.analytics.track(`ARTICLE: Unsplash photographer URL clicked`, articleTrackingData)}
+                      >
+                        {article.headerImage.photographerName}
+                      </a>
+                      &nbsp;on&nbsp;
+                      <a
+                        className="underline"
+                        href="https://unsplash.com?utm_source=bard&utm_medium=referral"
+                        onClick={(): void => window.analytics.track(`ARTICLE: Unsplash URL clicked`, articleTrackingData)}
+                      >
+                        Unsplash
+                      </a>
+                    </div>
+                  )
+                }
               </div>
             )
           }
@@ -276,6 +281,10 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const [idType, id] = idParams || [null, null];
   const articleQuery = idType === 's' ? ArticleBySlugQueryString : ArticleByIdQueryString;
 
+  // TODO: Don't do this here...
+  const userIdCookie = context?.req?.headers?.cookie?.match(/uid=(.*?)(?:;|,(?!\s))/) || [];
+  const userId = userIdCookie.length ? userIdCookie[1] : null;
+
   const res = await fetch(process.env.GRAPHQL_URI!, {
     method: 'POST',
     headers: {
@@ -293,6 +302,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   return {
     props: {
+      userId,
       article: data?.article || data?.articleBySlug || null,
     },
   };

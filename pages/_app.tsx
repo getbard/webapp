@@ -33,7 +33,7 @@ class BardApp extends App {
     // @ts-ignore
     const { Component, pageProps, err } = this.props;
     const modifiedPageProps = { ...pageProps, err };
-
+console.log(pageProps);
     return (
       <>
         <DefaultSeo {...SEO} />
