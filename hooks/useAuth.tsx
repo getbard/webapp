@@ -127,7 +127,6 @@ function useAuthContext(ctxUserId: string): AuthContext {
 }
 
 export function AuthProvider({ children, userId }: React.PropsWithChildren<{userId: string}>): React.ReactElement {
-  console.log(userId);
   const auth = useAuthContext(userId);
 
   return (

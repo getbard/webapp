@@ -7,7 +7,6 @@ import ProgressiveImage from 'react-progressive-image';
 import { NextSeo } from 'next-seo';
 import { differenceInSeconds } from 'date-fns';
 import { useInView } from 'react-intersection-observer';
-import cookie from 'js-cookie';
 
 import ArticleBySlugQuery, { ArticleBySlugQueryString } from '../../queries/ArticleBySlugQuery';
 import ArticleByIdQuery, { ArticleByIdQueryString } from '../../queries/ArticleByIdQuery';
