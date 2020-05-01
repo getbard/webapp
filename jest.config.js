@@ -20,4 +20,8 @@ module.exports = {
     '/node_modules/',
   ],
   setupFilesAfterEnv: ['<rootDir>/test/setupTests.ts'],
+  watchPlugins: [
+    'jest-watch-typeahead/filename',
+    'jest-watch-typeahead/testname',
+  ],
 };
