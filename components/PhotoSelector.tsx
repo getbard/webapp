@@ -8,9 +8,7 @@ import { ArticleHeaderImage } from '../generated/graphql';
 import { UnsplashPhoto } from '../generated/graphql';
 import UnsplashPhotoQuery from '../queries/UnsplashPhotoQuery';
 
-const UnsplashContainer = styled.div`
-  width: max-content;
-`;
+import PhotoSelectorFallback from './PhotoSelectorFallback';
 
 type ImageThumbnailProps = {
   url: string;
@@ -30,7 +28,7 @@ const ImageThumbnail = styled.div`
   background-image: url(${(props: ImageThumbnailProps): string => props.url});
 `;
 
-const EmptyPhotoResults = styled.div`
+const EmptyPhotoResultsContainer = styled.div`
   min-width: 28rem;
 
   @media (max-width: 640px) {
@@ -63,14 +61,26 @@ const UnsplashThumbnail = ({
   );
 }
 
+function EmptyPhotoResults(): React.ReactElement {
+  return (
+    <EmptyPhotoResultsContainer className="col-span-2 md:col-span-5 flex flex-col justify-center items-center py-10">
+      <div className="text-center">
+        We couldn&apos;t find any photos.
+      </div>
+
+      <div className="text-center">
+        Change your search and try again.
+      </div>
+    </EmptyPhotoResultsContainer>
+  );
+}
+
 export function PhotoSelector({
   onSelect,
-  setDisplay,
 }: {
-  onSelect: (headerImage: ArticleHeaderImage | null) => void;
-  setDisplay: (display: boolean) => void;
+  onSelect: (headerImage: ArticleHeaderImage | string | null) => void;
 }): React.ReactElement {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState('random');
   const { loading, error, data } = useQuery(UnsplashPhotoQuery, { variables: { search } });
 
   const debouncedSetSearch = debounce(setSearch, 1000);
@@ -83,16 +93,16 @@ export function PhotoSelector({
     }
 
     onSelect(headerImage);
-    setDisplay(false);
   }
 
-  if (loading && !data) return <></>;
-  if (error) return <></>;
+  if (loading && !data) return <PhotoSelectorFallback />;
+
+  if (error) return <EmptyPhotoResults />;
 
   const { unsplashPhoto } = data;
 
   return (
-    <UnsplashContainer className="absolute top-0 -ml-2 z-10 mt-8 bg-gray-100 p-2 rounded-sm border border-gray-300">
+    <>
       <input
         className="w-full mb-2 border border-gray-300 rounded-sm py-2 px-3 focus:outline-none focus:border-primary"
         placeholder="Don&apos;t like what you see? Try searching to narrow your results."
@@ -102,15 +112,7 @@ export function PhotoSelector({
       <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
         {
           !unsplashPhoto.length && (
-            <EmptyPhotoResults className="col-span-2 md:col-span-5 flex flex-col justify-center items-center py-10">
-              <div className="text-center">
-                We couldn&apos;t find any photos.
-              </div>
-
-              <div className="text-center">
-                Change your search and try again.
-              </div>
-            </EmptyPhotoResults>
+            <EmptyPhotoResults />
           )
         }
 
@@ -122,7 +124,7 @@ export function PhotoSelector({
           )
         }
       </div>
-    </UnsplashContainer>
+    </>
   );
 }
 

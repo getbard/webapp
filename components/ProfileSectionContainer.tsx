@@ -7,7 +7,6 @@ import TextareaAutosize from 'react-textarea-autosize';
 import Editor from './Editor';
 import Button from './Button';
 import EditorHeaderPhotoSelector from './EditorHeaderPhotoSelector';
-import HeaderImage from './HeaderImage';
 import Notification from './Notification';
 
 import { ProfileSection, CreateProfileSectionInput, UpdateProfileSectionInput } from '../generated/graphql';
@@ -101,7 +100,7 @@ function ProfileSectionContainer({ section }: { section?: ProfileSection }): Rea
       <div className="editor-container sm:w-3/5 px-5 container mx-auto">
         {
           headerImage?.url
-          && <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-4" url={headerImage?.url} />
+          && <img src={headerImage?.url} className="max-h-screen mx-auto mb-4" />
         }
 
         <div className="w-full">

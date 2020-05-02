@@ -17,7 +17,6 @@ import { timeToRead, timeToReadNumber, serializeText } from '../../lib/editor';
 import { withApollo } from '../../lib/apollo';
 import withLayout from '../../components/withLayout';
 import Editor from '../../components/Editor';
-import HeaderImage from '../../components/HeaderImage';
 import SupportConfirmation from '../../components/SupportConfirmation';
 import Comments from '../../components/Comments';
 import DateMeta from '../../components/DateMeta';
@@ -33,7 +32,7 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
   const auth = useAuth();
   const router = useRouter();
   const { id: idParams, sessionId } = router.query;
-  const [idType, id] = idParams;
+  const [idType, id] = idParams || [null, null];
   const articleQuery = idType === 's' ? ArticleBySlugQuery : ArticleByIdQuery;
   const [readTracked, setReadTracked] = useState(false);
   const [viewTracked, setViewTracked] = useState(false);
@@ -122,19 +121,19 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
         }]}
       />
 
-      <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
-        <div className="mb-8">
-          {
-            article?.headerImage?.url && (
-              <div className="mb-4">
-                <ProgressiveImage
-                  delay={500}
-                  src={article.headerImage.url}
-                  placeholder={`${article.headerImage.url}&w=400&blur=80`}
-                >
-                  {(src: string): React.ReactElement => <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-1" url={src} />}
-                </ProgressiveImage>
+      {
+        article?.headerImage?.url && (
+          <div className="mb-4">
+            <ProgressiveImage
+              delay={500}
+              src={article.headerImage.url}
+              placeholder={`${article.headerImage.url}&blur=80`}
+            >
+              {(src: string): React.ReactElement => <img src={src} className="mx-auto max-h-screen mb-1 mt-5" />}
+            </ProgressiveImage>
 
+            {
+              article.headerImage?.photographerUrl && (
                 <div className="text-xs text-center">
                   Photo by&nbsp;
                   <a
@@ -153,10 +152,15 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
                     Unsplash
                   </a>
                 </div>
-              </div>
-            )
-          }
-          
+              )
+            }
+          </div>
+        )
+      }
+
+      <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
+        <div className="mb-8">
+        
           {
             article?.category && (
               <Link href={`/?category=${article.category}`}>
@@ -276,6 +280,10 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const [idType, id] = idParams || [null, null];
   const articleQuery = idType === 's' ? ArticleBySlugQueryString : ArticleByIdQueryString;
 
+  // TODO: Don't do this here...
+  const userIdCookie = context?.req?.headers?.cookie?.match(/uid=(.*?)(?:;|,(?!\s))/) || [];
+  const userId = userIdCookie.length ? userIdCookie[1] : null;
+
   const res = await fetch(process.env.GRAPHQL_URI!, {
     method: 'POST',
     headers: {
@@ -293,6 +301,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
 
   return {
     props: {
+      userId,
       article: data?.article || data?.articleBySlug || null,
     },
   };

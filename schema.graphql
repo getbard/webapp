@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Tue Apr 28 2020 15:40:14 GMT-0700 (Pacific Daylight Time)
+# timestamp: Fri May 01 2020 15:52:11 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -27,17 +27,17 @@ type Article {
 type ArticleHeaderImage {
   id: ID!
   url: String!
-  downloadUrl: String!
-  photographerName: String!
-  photographerUrl: String!
+  downloadUrl: String
+  photographerName: String
+  photographerUrl: String
 }
 
 input ArticleHeaderImageInput {
   id: ID!
   url: String!
-  downloadUrl: String!
-  photographerName: String!
-  photographerUrl: String!
+  downloadUrl: String
+  photographerName: String
+  photographerUrl: String
 }
 
 type ArticlesPayload {
