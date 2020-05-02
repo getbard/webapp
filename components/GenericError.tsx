@@ -1,10 +1,16 @@
+import * as Sentry from '@sentry/node';
+
 function GenericError({
   title,
   message = `Something went wrong but we're working on it. Try again in a bit.`,
+  error,
 }: {
   title?: boolean;
   message?: string;
+  error: any;
 }): React.ReactElement {
+  Sentry.captureException(error);
+
   return (
     <div className="flex justify-center items-center flex-col p-40 text-lg">
       {

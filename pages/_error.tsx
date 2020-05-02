@@ -60,7 +60,7 @@ BardError.getInitialProps = async ({ res, err, asPath }: any): Promise<any> => {
   // @ts-ignore
   const errorInitialProps = await Error.getInitialProps({ res, err });
 
-  errorInitialProps.hasGetInitialPropsRun = true
+  errorInitialProps.hasGetInitialPropsRun = true;
 
   if (res) {
     if (res.statusCode === 404) {
@@ -69,12 +69,12 @@ BardError.getInitialProps = async ({ res, err, asPath }: any): Promise<any> => {
     }
 
     if (err) {
-      Sentry.captureException(err)
+      Sentry.captureException(err);
       return errorInitialProps;
     }
   } else {
     if (err) {
-      Sentry.captureException(err)
+      Sentry.captureException(err);
       return errorInitialProps;
     }
   }

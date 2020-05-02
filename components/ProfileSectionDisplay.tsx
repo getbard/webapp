@@ -58,7 +58,7 @@ function ProfileSectionDisplay({
   if (error?.message.includes('Section not found')) {
     return <BardError statusCode={404} hasGetInitialPropsRun={true} err={null} />;
   }
-  if (error) return <div><GenericError title /></div>;
+  if (error) return <div><GenericError title error={error} /></div>;
 
   const { profileSection } = data;
 

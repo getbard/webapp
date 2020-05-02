@@ -21,7 +21,7 @@ const Edit: NextPage = (): React.ReactElement => {
   const { loading, error, data } = useQuery(ArticleByIdQuery, { variables: { id } });
 
   if (loading || !auth?.user?.uid) return <GenericLoader />;
-  if (error) return <div><GenericError title /></div>;
+  if (error) return <div><GenericError title error={error} /></div>;
 
   const { article } = data;
 

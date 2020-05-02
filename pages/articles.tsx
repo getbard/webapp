@@ -34,7 +34,7 @@ function ArticlesDisplay({
   });
 
   if (loading) return <ArticlesFallback />;
-  if (error) return <div><GenericError title /></div>;
+  if (error) return <div><GenericError title error={error} /></div>;
 
   const { articlesByUser } = data;
 
