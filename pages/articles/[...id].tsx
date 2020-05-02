@@ -122,45 +122,46 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
         }]}
       />
 
+      {
+        article?.headerImage?.url && (
+          <div className="mb-4">
+            <ProgressiveImage
+              delay={500}
+              src={article.headerImage.url}
+              placeholder={`${article.headerImage.url}&w=400&blur=80`}
+            >
+              {(src: string): React.ReactElement => <HeaderImage className="mb-1 mt-5" url={src} />}
+            </ProgressiveImage>
+
+            {
+              article.headerImage?.photographerUrl && (
+                <div className="text-xs text-center">
+                  Photo by&nbsp;
+                  <a
+                    className="underline"
+                    href={`${article.headerImage.photographerUrl}?utm_source=bard&utm_medium=referral`}
+                    onClick={(): void => window.analytics.track(`ARTICLE: Unsplash photographer URL clicked`, articleTrackingData)}
+                  >
+                    {article.headerImage.photographerName}
+                  </a>
+                  &nbsp;on&nbsp;
+                  <a
+                    className="underline"
+                    href="https://unsplash.com?utm_source=bard&utm_medium=referral"
+                    onClick={(): void => window.analytics.track(`ARTICLE: Unsplash URL clicked`, articleTrackingData)}
+                  >
+                    Unsplash
+                  </a>
+                </div>
+              )
+            }
+          </div>
+        )
+      }
+
       <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
         <div className="mb-8">
-          {
-            article?.headerImage?.url && (
-              <div className="mb-4">
-                <ProgressiveImage
-                  delay={500}
-                  src={article.headerImage.url}
-                  placeholder={`${article.headerImage.url}&w=400&blur=80`}
-                >
-                  {(src: string): React.ReactElement => <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-1" url={src} />}
-                </ProgressiveImage>
-
-                {
-                  article.headerImage?.photographerUrl && (
-                    <div className="text-xs text-center">
-                      Photo by&nbsp;
-                      <a
-                        className="underline"
-                        href={`${article.headerImage.photographerUrl}?utm_source=bard&utm_medium=referral`}
-                        onClick={(): void => window.analytics.track(`ARTICLE: Unsplash photographer URL clicked`, articleTrackingData)}
-                      >
-                        {article.headerImage.photographerName}
-                      </a>
-                      &nbsp;on&nbsp;
-                      <a
-                        className="underline"
-                        href="https://unsplash.com?utm_source=bard&utm_medium=referral"
-                        onClick={(): void => window.analytics.track(`ARTICLE: Unsplash URL clicked`, articleTrackingData)}
-                      >
-                        Unsplash
-                      </a>
-                    </div>
-                  )
-                }
-              </div>
-            )
-          }
-          
+        
           {
             article?.category && (
               <Link href={`/?category=${article.category}`}>

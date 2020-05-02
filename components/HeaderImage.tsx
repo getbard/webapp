@@ -5,9 +5,11 @@ type HeaderImageProps = {
 }
 
 const HeaderImage = styled.div`
-  height: 28rem;
-  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   background-image: url(${(props: HeaderImageProps): string => props.url});
 `;
 

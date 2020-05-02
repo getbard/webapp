@@ -205,12 +205,12 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
         </div>
       </div>
 
-      <div className="editor-container sm:w-3/5 px-5 container mx-auto">
-        {
-          headerImage?.url
-          && <HeaderImage className="w-auto -mx-5 sm:-mx-40 mb-4" url={headerImage?.url} />
-        }
+      {
+        headerImage?.url
+        && <HeaderImage className="mb-4" url={headerImage?.url} />
+      }
 
+      <div className="editor-container sm:w-3/5 px-5 container mx-auto">
         <div className="w-full">
           <EditorHeaderPhotoSelector
             headerImage={headerImage}
