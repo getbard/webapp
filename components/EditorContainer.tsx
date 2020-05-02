@@ -14,6 +14,7 @@ import EditorHeaderPhotoSelector from './EditorHeaderPhotoSelector';
 import EditorCategorySelector from './EditorCategorySelector';
 import Notification from './Notification';
 import VerifyEmailAlert from './VerifyEmailAlert';
+import HeaderImage from './HeaderImage';
 
 import { CreateOrUpdateArticleInput, Article, PublishArticleInput } from '../generated/graphql';
 import CreateOrUpdateArticleMutation from '../queries/CreateOrUpdateArticleMutation';
@@ -206,7 +207,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
 
       {
         headerImage?.url
-        && <img src={headerImage?.url} className="max-h-screen mb-4" />
+        && <HeaderImage src={headerImage?.url} className="mb-4" />
       }
 
       <div className="editor-container sm:w-3/5 px-5 container mx-auto">

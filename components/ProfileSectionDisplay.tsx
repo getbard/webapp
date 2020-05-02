@@ -15,6 +15,7 @@ import Notification from './Notification';
 import BardError from '../pages/_error';
 import GenericError from './GenericError';
 import GenericLoader from './GenericLoader';
+import HeaderImage from './HeaderImage';
 
 function ProfileSectionDisplay({
   section,
@@ -86,9 +87,9 @@ function ProfileSectionDisplay({
                 <ProgressiveImage
                   delay={500}
                   src={profileSection.headerImage.url}
-                  placeholder={`${profileSection.headerImage.url}&blur=80`}
+                  placeholder={`${profileSection.headerImage.url}&auto=compress&blur=80`}
                 >
-                  {(src: string): React.ReactElement => <img src={src} className="max-h-screen mx-auto mb-1" />}
+                  {(src: string): React.ReactElement => <HeaderImage src={src} className="mx-auto mb-1" />}
                 </ProgressiveImage>
 
                 <div className="text-xs text-center">
