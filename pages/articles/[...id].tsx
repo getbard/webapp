@@ -27,6 +27,7 @@ import AuthorSupport from '../../components/AuthorSupport';
 import ArticleHeaderSupport from '../../components/ArticleHeaderSupport';
 import ContentBlocker from '../../components/ContentBlocker';
 import Button from '../../components/Button';
+import HeaderImage from '../../components/HeaderImage';
 
 const ArticleContainer: NextPage = (props: any): React.ReactElement => {
   const auth = useAuth();
@@ -125,16 +126,11 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
         article?.headerImage?.url && (
           <div className="mb-4">
             <ProgressiveImage
-              delay={500}
+              delay={1000}
               src={article.headerImage.url}
               placeholder={`${article.headerImage.url}&auto=compress&blur=80`}
             >
-              {(src: string, loading: boolean): React.ReactElement => (
-                <img
-                  src={src}
-                  className={`mx-auto ${loading ? 'min-h-screen' : ''} max-h-screen mb-1 mt-5`}
-                />  
-              )}
+              {(src: string): React.ReactElement => <HeaderImage src={src} className="mx-auto mb-1 mt-5" />}
             </ProgressiveImage>
 
             {
