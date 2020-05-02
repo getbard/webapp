@@ -17,7 +17,6 @@ import { timeToRead, timeToReadNumber, serializeText } from '../../lib/editor';
 import { withApollo } from '../../lib/apollo';
 import withLayout from '../../components/withLayout';
 import Editor from '../../components/Editor';
-import HeaderImage from '../../components/HeaderImage';
 import SupportConfirmation from '../../components/SupportConfirmation';
 import Comments from '../../components/Comments';
 import DateMeta from '../../components/DateMeta';
@@ -128,9 +127,9 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
             <ProgressiveImage
               delay={500}
               src={article.headerImage.url}
-              placeholder={`${article.headerImage.url}&w=400&blur=80`}
+              placeholder={`${article.headerImage.url}&blur=80`}
             >
-              {(src: string): React.ReactElement => <HeaderImage className="mb-1 mt-5" url={src} />}
+              {(src: string): React.ReactElement => <img src={src} className="mx-auto max-h-screen mb-1 mt-5" />}
             </ProgressiveImage>
 
             {

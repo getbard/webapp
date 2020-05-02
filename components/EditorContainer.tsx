@@ -12,7 +12,6 @@ import Button from './Button';
 import SubscribersOnlyToggle from './SubcribersOnlyToggle';
 import EditorHeaderPhotoSelector from './EditorHeaderPhotoSelector';
 import EditorCategorySelector from './EditorCategorySelector';
-import HeaderImage from './HeaderImage';
 import Notification from './Notification';
 import VerifyEmailAlert from './VerifyEmailAlert';
 
@@ -207,7 +206,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
 
       {
         headerImage?.url
-        && <HeaderImage className="mb-4" url={headerImage?.url} />
+        && <img src={headerImage?.url} className="max-h-screen mb-4" />
       }
 
       <div className="editor-container sm:w-3/5 px-5 container mx-auto">

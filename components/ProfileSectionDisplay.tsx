@@ -1,6 +1,5 @@
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import Editor from './Editor';
-import HeaderImage from './HeaderImage';
 import { useRouter } from 'next/router';
 import ProgressiveImage from 'react-progressive-image';
 
@@ -87,9 +86,9 @@ function ProfileSectionDisplay({
                 <ProgressiveImage
                   delay={500}
                   src={profileSection.headerImage.url}
-                  placeholder={`${profileSection.headerImage.url}&w=400&blur=80`}
+                  placeholder={`${profileSection.headerImage.url}&blur=80`}
                 >
-                  {(src: string): React.ReactElement => <HeaderImage className="w-auto mb-1" url={src} />}
+                  {(src: string): React.ReactElement => <img src={src} className="max-h-screen mx-auto mb-1" />}
                 </ProgressiveImage>
 
                 <div className="text-xs text-center">
