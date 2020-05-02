@@ -125,7 +125,7 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
         article?.headerImage?.url && (
           <div className="mb-4">
             <ProgressiveImage
-              delay={800}
+              delay={500}
               src={article.headerImage.url}
               placeholder={`${article.headerImage.url}&auto=compress&blur=80`}
             >

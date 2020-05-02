@@ -9,7 +9,7 @@ const ImageElement = ({ attributes, children, element }: RenderElementProps): Re
       <ProgressiveImage
         delay={500}
         src={`${element.url}`}
-        placeholder={`${element.url}&q=50&blur=80`}
+        placeholder={`${element.url}&auto=compress&blur=80`}
       >
         {(src: string): React.ReactElement => 
           <img src={src} className="mx-auto" />
