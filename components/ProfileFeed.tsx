@@ -101,7 +101,7 @@ function ProfileFeed({ userId, name }: { userId: string; name: string }): React.
 
   if (loading) return <FeedFallback />;
 
-  if (error) return <div><GenericError title /></div>;
+  if (error) return <div><GenericError title error={error} /></div>;
 
   const { profileFeed } = data;
 

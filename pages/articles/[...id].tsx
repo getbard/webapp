@@ -44,7 +44,7 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
   if (loading && !props?.article?.id) return <ArticleFallback />;
 
   if (error?.message.includes('Article not found')) return <BardError statusCode={404} hasGetInitialPropsRun={true} err={null} />;
-  if (error) return <div><GenericError title /></div>;
+  if (error) return <div><GenericError title error={error} /></div>;
 
   const article = data?.article || data?.articleBySlug || props?.article;
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName}`;

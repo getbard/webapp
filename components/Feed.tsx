@@ -106,7 +106,7 @@ function Feed(): React.ReactElement {
   const { loading, error, data } = useQuery(FeedQuery);
 
   if (loading) return <FeedFallback />;
-  if (error) return <div><GenericError title /></div>;
+  if (error) return <div><GenericError title error={error} /></div>;
 
   const { feed } = data;
 

@@ -95,7 +95,7 @@ function ArticlesContainer({
     }
   }, [endOfCardsInView]);
 
-  if (error) return <div><GenericError title /></div>
+  if (error) return <div><GenericError title error={error} /></div>
   if (loading) return <DiscoverArticlesFallback />;
 
   return (
