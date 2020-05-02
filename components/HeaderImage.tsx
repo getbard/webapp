@@ -5,7 +5,7 @@ type HeaderImageProps = {
 }
 
 const HeaderImage = styled.div`
-  height: 100vh;
+  max-height: 100vh;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;

@@ -130,7 +130,7 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
               src={article.headerImage.url}
               placeholder={`${article.headerImage.url}&auto=compress&blur=80`}
             >
-              {(src: string): React.ReactElement => <HeaderImage src={src} className="mx-auto mb-1 mt-5" />}
+              {(src: string): React.ReactElement => <img src={src} className="max-h-screen mx-auto mb-1 mt-5" />}
             </ProgressiveImage>
 
             {

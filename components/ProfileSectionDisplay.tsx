@@ -89,7 +89,7 @@ function ProfileSectionDisplay({
                   src={profileSection.headerImage.url}
                   placeholder={`${profileSection.headerImage.url}&auto=compress&blur=80`}
                 >
-                  {(src: string): React.ReactElement => <HeaderImage src={src} className="mx-auto mb-1" />}
+                  {(src: string): React.ReactElement => <img src={src} className="max-h-screen mx-auto mb-1" />}
                 </ProgressiveImage>
 
                 <div className="text-xs text-center">
