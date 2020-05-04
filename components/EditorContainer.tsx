@@ -117,7 +117,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
       wordCount,
       category,
     };
-
+    console.log('SAVING:', input);
     saveArticle({
       createOrUpdateArticle,
       input,
