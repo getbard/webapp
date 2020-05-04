@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { Slate, Editable, withReact } from 'slate-react';
 import { createEditor, Node } from 'slate';
 import { withHistory } from 'slate-history';
@@ -34,6 +34,12 @@ function BardEditor({
   const editor = useMemo(() => withList(withLinks(withImages(withHtml(withHistory(withReact(createEditor())))))), []);
   const renderLeaf = useCallback((props): JSX.Element => <EditorLeaf {...props} />, []);
   const renderElement = useCallback((props): JSX.Element => <EditorElement {...props} />, []);
+
+  useEffect(() => {
+    if (initialValue && JSON.stringify(initialValue) !== JSON.stringify(value)) {
+      setValue(initialValue);
+    }
+  }, [initialValue]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>): void => {
     onKeyDownList(e, editor);

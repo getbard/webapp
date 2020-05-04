@@ -27,7 +27,6 @@ import AuthorSupport from '../../components/AuthorSupport';
 import ArticleHeaderSupport from '../../components/ArticleHeaderSupport';
 import ContentBlocker from '../../components/ContentBlocker';
 import Button from '../../components/Button';
-import HeaderImage from '../../components/HeaderImage';
 
 const ArticleContainer: NextPage = (props: any): React.ReactElement => {
   const auth = useAuth();
@@ -46,8 +45,8 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
 
   if (error?.message.includes('Article not found')) return <BardError statusCode={404} hasGetInitialPropsRun={true} err={null} />;
   if (error) return <div><GenericError title error={error} /></div>;
-
   const article = data?.article || data?.articleBySlug || props?.article;
+
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName}`;
   const readingTime = timeToRead(article.wordCount);
   const textContent = serializeText(JSON.parse(article.content)).trim();
@@ -282,14 +281,17 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const articleQuery = idType === 's' ? ArticleBySlugQueryString : ArticleByIdQueryString;
 
   // TODO: Don't do this here...
-  const userIdCookie = context?.req?.headers?.cookie?.match(/uid=(.*?)(?:;|,(?!\s))/) || [];
+  const userIdCookie = context?.req?.headers?.cookie?.match(/uid=([^;]+)/) || [];
+  const tokenCookie = context?.req?.headers?.cookie?.match(/token=([^;]+)/) || [];
   const userId = userIdCookie.length ? userIdCookie[1] : null;
+  const token = tokenCookie.length ? tokenCookie[1] : null;
 
   const res = await fetch(process.env.GRAPHQL_URI!, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
+      authorization: token ? `Bearer ${token}` : '',
     },
     body: JSON.stringify({
       operationName: 'article',
