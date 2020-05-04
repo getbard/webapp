@@ -207,7 +207,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
 
       {
         headerImage?.url
-        && <img src={headerImage?.url} className="max-h-screen mb-4" />
+        && <img src={headerImage?.url} className="max-h-screen mb-4 mx-auto" />
       }
 
       <div className="editor-container sm:w-3/5 px-5 container mx-auto">
