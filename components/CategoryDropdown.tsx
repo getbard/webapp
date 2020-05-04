@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import { FiFolder } from 'react-icons/fi';
 
 import { Category } from '../generated/graphql';
 
