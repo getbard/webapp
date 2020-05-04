@@ -16,8 +16,12 @@ export function EditorHeaderPhotoSelector({
   const [display, setDisplay] = useState(false);
 
   const categories = [];
-  for (const category in Category) {
-    categories.push(category.toLowerCase());
+  for (let category in Category) {
+    category = category
+      .split(/(?=[A-Z])/)
+      .join(' ')
+      .toLowerCase();
+    categories.push(category);
   }
 
   useOnClickOutside(menuRef, () => {
@@ -40,7 +44,7 @@ export function EditorHeaderPhotoSelector({
         display && (
           <div
             ref={menuRef}
-            className="absolute top-0 mt-8 ml-2 left-0 right-0 bg-white border border-gray-300 shadow-sm z-10"
+            className="absolute top-0 mt-8 ml-2 left-0 right-0 bg-white border border-gray-300 shadow-sm z-10 whitespace-no-wrap"
           >
             {
               categories.map(category => {
