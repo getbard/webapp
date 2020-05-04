@@ -92,24 +92,28 @@ function ProfileSectionDisplay({
                   {(src: string): React.ReactElement => <img src={src} className="max-h-screen mx-auto mb-1" />}
                 </ProgressiveImage>
 
-                <div className="text-xs text-center">
-                  Photo by&nbsp;
-                  <a
-                    className="underline"
-                    href={`${profileSection.headerImage.photographerUrl}?utm_source=bard&utm_medium=referral`}
-                    onClick={(): void => window.analytics.track('PROFILE SECTION: Unsplash photographer URL clicked')}
-                  >
-                    {profileSection.headerImage.photographerName}
-                  </a>
-                  &nbsp;on&nbsp;
-                  <a
-                    className="underline"
-                    href="https://unsplash.com?utm_source=bard&utm_medium=referral"
-                    onClick={(): void => window.analytics.track('PROFILE SECTION: Unsplash URL clicked')}
-                  >
-                    Unsplash
-                  </a>
-                </div>
+                {
+                  profileSection?.headerImage?.photographerUrl && (
+                    <div className="text-xs text-center">
+                      Photo by&nbsp;
+                      <a
+                        className="underline"
+                        href={`${profileSection.headerImage.photographerUrl}?utm_source=bard&utm_medium=referral`}
+                        onClick={(): void => window.analytics.track('PROFILE SECTION: Unsplash photographer URL clicked')}
+                      >
+                        {profileSection.headerImage.photographerName}
+                      </a>
+                      &nbsp;on&nbsp;
+                      <a
+                        className="underline"
+                        href="https://unsplash.com?utm_source=bard&utm_medium=referral"
+                        onClick={(): void => window.analytics.track('PROFILE SECTION: Unsplash URL clicked')}
+                      >
+                        Unsplash
+                      </a>
+                    </div>
+                  )
+                }
               </div>
             )
           }
