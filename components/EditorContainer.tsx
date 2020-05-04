@@ -16,7 +16,8 @@ import Notification from './Notification';
 import VerifyEmailAlert from './VerifyEmailAlert';
 
 import { CreateOrUpdateArticleInput, Article, PublishArticleInput } from '../generated/graphql';
-import CreateOrUpdateArticleMutation from '../queries/CreateOrUpdateArticleMutation';
+import CreateArticleMutation from '../queries/CreateArticleMutation';
+import UpdateArticleMutation from '../queries/UpdateArticleMutation';
 import PublishArticleMutation from '../queries/PublishArticleMutation';
 import ArticlesSummaryQuery from '../queries/ArticlesSummaryQuery';
 
@@ -56,26 +57,35 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   const [articleId, setArticleId] = useState(article?.id || null);
   const [publishable, setPublishable] = useState(false);
 
-  const [createOrUpdateArticle, {
-    data: saveData,
-    loading: mutationLoading,
-    error: mutationError,
-    called,
-  }] = useMutation(CreateOrUpdateArticleMutation);
+  const [createArticle, {
+    data: createData,
+    loading: createLoading,
+    error: createError,
+    called: createCalled,
+  }] = useMutation(CreateArticleMutation);
 
-  if (mutationLoading && notification !== 'Saving...') {
+  const [updateArticle, {
+    loading: updateLoading,
+    error: updateError,
+    called: updateCalled,
+  }] = useMutation(UpdateArticleMutation);
+
+  if ((createLoading || updateLoading) && notification !== 'Saving...') {
     setNotification('Saving...');
-  } else if (!mutationLoading && notification === 'Saving...') {
+  } else if (!(createLoading || updateLoading) && notification === 'Saving...') {
     setTimeout(() => setNotification('Saved!'), 500);
   }
 
   useEffect(() => {
     // When you have created or updated an article
     // store the ID; but not if an article was already published
-    if (!articleId && !article?.publishedAt && saveData?.createOrUpdateArticle?.id) {
-      setArticleId(saveData?.createOrUpdateArticle?.id);
+    if (!articleId && !article?.publishedAt && createData?.createOrUpdateArticle?.id) {
+      // Clear the debounced calls from before having an ID
+      saveArticle.cancel();
+
+      setArticleId(createData?.createOrUpdateArticle?.id);
     }
-  }, [saveData?.createOrUpdateArticle?.id]);
+  }, [createData?.createOrUpdateArticle?.id]);
 
   const [publishArticle, {
     data: publishData,
@@ -90,10 +100,19 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   // and the user has been verified
   useEffect(() => {
     const articleIsEmpty = (!articleId || !title || content === emptyDocumentString);
-    const mutationCalledAndLoading = (called && mutationLoading);
+    const mutationCalledAndLoading = (createCalled && createLoading) || (updateCalled && updateLoading);
     const userEmailVerified = !!auth?.user?.emailVerified;
     setPublishable(!articleIsEmpty && !mutationCalledAndLoading && userEmailVerified);
-  }, [articleId, title, content, called, mutationLoading, auth?.user?.emailVerified]);
+  }, [
+    articleId,
+    title,
+    content,
+    createCalled,
+    createLoading,
+    updateCalled,
+    updateLoading,
+    auth?.user?.emailVerified
+  ]);
 
   const publishButtonText = article?.publishedAt ? 'Save and Publish' : 'Publish';
 
@@ -117,9 +136,11 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
       wordCount,
       category,
     };
-    console.log('SAVING:', input);
+
+    const mutation = articleId ? updateArticle : createArticle;
+
     saveArticle({
-      createOrUpdateArticle,
+      createOrUpdateArticle: mutation,
       input,
       userId,
     });
@@ -240,8 +261,8 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
         <Editor initialValue={JSON.parse(content)} setContent={handleContentChange} />
 
         <Notification
-          showNotification={mutationLoading}
-          error={mutationError || publishError}
+          showNotification={createLoading || updateLoading}
+          error={createError || updateError || publishError}
           bgColor="bg-primary"
         >
           {notification}
