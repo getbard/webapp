@@ -34,7 +34,6 @@ function EditorInsertImage(): React.ReactElement {
     // or the editor is not focused
     // remove styling and return early
     if (((domSelection?.rangeCount || 0) <= 0) || !ReactEditor.isFocused(editor)) {
-      console.log('HIDE ICON', display);
       el.style.opacity = '0';
       return;
     }
@@ -68,7 +67,6 @@ function EditorInsertImage(): React.ReactElement {
         onClick={(): void => {
           setDisplay(true);
           window.analytics.track('EDITOR IMAGE INSERTER: Inserter opened');
-          console.log('DEBUG EDITOR');
         }}
       >
         <FiImage />
