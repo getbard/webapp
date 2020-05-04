@@ -34,7 +34,8 @@ function EditorInsertImage(): React.ReactElement {
     // or the editor is not focused
     // remove styling and return early
     if (((domSelection?.rangeCount || 0) <= 0) || !ReactEditor.isFocused(editor)) {
-      el.removeAttribute('style');
+      console.log('HIDE ICON', display);
+      el.style.opacity = '0';
       return;
     }
 
