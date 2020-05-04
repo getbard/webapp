@@ -72,7 +72,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   useEffect(() => {
     // When you have created or updated an article
     // store the ID; but not if an article was already published
-    if (!articleId && !article?.publishedAt) {
+    if (!articleId && !article?.publishedAt && saveData?.createOrUpdateArticle?.id) {
       setArticleId(saveData?.createOrUpdateArticle?.id);
     }
   }, [saveData?.createOrUpdateArticle?.id]);
@@ -108,6 +108,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
     }
 
     const input: CreateOrUpdateArticleInput = {
+      id: articleId,
       title,
       summary,
       content,
@@ -116,10 +117,6 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
       wordCount,
       category,
     };
-
-    if (articleId) {
-      input.id = articleId;
-    }
 
     saveArticle({
       createOrUpdateArticle,
