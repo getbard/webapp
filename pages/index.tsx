@@ -19,7 +19,12 @@ import DiscoverArticlesFallback from '../components/DiscoverArticlesFallback';
 import CategoryDropdown from '../components/CategoryDropdown';
 
 const defaultCategories = ['all'];
-for (const category in Category) {
+for (let category in Category) {
+  category = category
+    .split(/(?=[A-Z])/)
+    .join(' ')
+    .toLowerCase();
+
   if (defaultCategories.length !== 11) {
     defaultCategories.push(category);
   }
@@ -145,9 +150,14 @@ const Discover: NextPage = (): React.ReactElement => {
       }
     });
 
-    for (const category in Category) {
-      if (!categoryCounter.has(category.toLowerCase()) && categoryCounter.size !== 10) {
-        categoryCounter.set(category.toLowerCase(), 0);
+    for (let category in Category) {
+      category = category
+        .split(/(?=[A-Z])/)
+        .join(' ')
+        .toLowerCase();
+
+      if (!categoryCounter.has(category) && categoryCounter.size !== 10) {
+        categoryCounter.set(category, 0);
       }
     }
   
