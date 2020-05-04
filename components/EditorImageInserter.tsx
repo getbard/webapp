@@ -66,9 +66,9 @@ function EditorInsertImage(): React.ReactElement {
         className="hidden sm:block hover:cursor-pointer hover:bg-gray-200 text-gray-500 hover:text-gray-800 text-lg rounded-sm px-2 py-2 absolute z-10 opacity-0"
       >
         <FiImage onClick={(): void => {
+          setDisplay(true);
           window.analytics.track('EDITOR IMAGE INSERTER: Inserter opened');
           console.log('DEBUG EDITOR');
-          setDisplay(true);
         }} />
       </Menu>
 
