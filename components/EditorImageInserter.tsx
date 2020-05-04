@@ -67,6 +67,7 @@ function EditorInsertImage(): React.ReactElement {
       >
         <FiImage onClick={(): void => {
           window.analytics.track('EDITOR IMAGE INSERTER: Inserter opened');
+          console.log('DEBUG EDITOR');
           setDisplay(true);
         }} />
       </Menu>
