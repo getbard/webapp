@@ -34,7 +34,7 @@ function EditorInsertImage(): React.ReactElement {
     // or the editor is not focused
     // remove styling and return early
     if (((domSelection?.rangeCount || 0) <= 0) || !ReactEditor.isFocused(editor)) {
-      el.removeAttribute('style');
+      el.style.opacity = '0';
       return;
     }
 
@@ -64,11 +64,12 @@ function EditorInsertImage(): React.ReactElement {
       <Menu
         ref={ref as React.RefObject<any>}
         className="hidden sm:block hover:cursor-pointer hover:bg-gray-200 text-gray-500 hover:text-gray-800 text-lg rounded-sm px-2 py-2 absolute z-10 opacity-0"
-      >
-        <FiImage onClick={(): void => {
-          window.analytics.track('EDITOR IMAGE INSERTER: Inserter opened');
+        onClick={(): void => {
           setDisplay(true);
-        }} />
+          window.analytics.track('EDITOR IMAGE INSERTER: Inserter opened');
+        }}
+      >
+        <FiImage />
       </Menu>
 
       <Modal open={display} onModalClose={(): void => setDisplay(false)}>
