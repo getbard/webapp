@@ -79,13 +79,13 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   useEffect(() => {
     // When you have created or updated an article
     // store the ID; but not if an article was already published
-    if (!articleId && !article?.publishedAt && createData?.createOrUpdateArticle?.id) {
+    if (!articleId && !article?.publishedAt && createData?.createArticle?.id) {
       // Clear the debounced calls from before having an ID
       saveArticle.cancel();
 
-      setArticleId(createData?.createOrUpdateArticle?.id);
+      setArticleId(createData?.createArticle?.id);
     }
-  }, [createData?.createOrUpdateArticle?.id]);
+  }, [createData?.createArticle?.id]);
 
   const [publishArticle, {
     data: publishData,
