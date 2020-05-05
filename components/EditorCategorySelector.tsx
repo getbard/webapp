@@ -44,7 +44,7 @@ export function EditorHeaderPhotoSelector({
         display && (
           <div
             ref={menuRef}
-            className="absolute top-0 mt-8 ml-2 left-0 right-0 bg-white border border-gray-300 shadow-sm z-10 whitespace-no-wrap"
+            className="absolute top-0 mt-8 mb-2 ml-2 left-0 bg-white border border-gray-300 shadow-sm z-10 whitespace-no-wrap"
           >
             {
               categories.map(category => {
@@ -62,6 +62,16 @@ export function EditorHeaderPhotoSelector({
                 );
               })
             }
+
+            <a 
+              className="px-4 py-1 block hover:bg-gray-200 text-gray-500 hover:text-gray-800 font-medium"
+              href="https://feedback.getbard.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(): void => window.analytics.track('CATEGORY DROPDOWN: Feedback clicked')}
+            >
+              Suggest a category
+            </a>
           </div>
         )
       }
