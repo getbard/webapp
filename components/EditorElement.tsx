@@ -1,5 +1,12 @@
 import { RenderElementProps } from 'slate-react';
 import ProgressiveImage from 'react-progressive-image';
+import styled from '@emotion/styled';
+
+const CaptionElement = styled.div`
+  span {
+    width: 100%;
+  }
+`;
 
 const ImageElement = ({ attributes, children, element }: RenderElementProps): React.ReactElement => {
   return (
@@ -53,6 +60,8 @@ const EditorElement = (props: RenderElementProps): React.ReactElement => {
       );
     case 'image':
       return <ImageElement {...props} />;
+    case 'caption':
+      return <CaptionElement className="caption italic text-sm text-gray-600 mx-auto w-full text-center mt-1" {...attributes}>{children}</CaptionElement>
   }
 }
 

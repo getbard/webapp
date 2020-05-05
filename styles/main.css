@@ -20,7 +20,7 @@ a:hover:not(.logo):not(.button) {
 }
 
 /* Let the Slate elements breathe */
-[data-slate-editor] > * + * {
+[data-slate-editor] > * + *:not(.caption) {
   @apply mt-4;
 }
 

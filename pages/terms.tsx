@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 
@@ -108,7 +107,7 @@ const Terms: NextPage = (): React.ReactElement => {
 
           <h2 className="text-2xl font-serif font-bold mb-4 mt-10">Section 10 - Personal Information</h2>
 
-          <p className="mb-4">Your submission of personal information through the store is governed by our Privacy Policy. To view our Privacy Policy.</p>
+          <p className="mb-4">Your submission of personal information through the store is governed by our Privacy Policy.</p>
 
           <h2 className="text-2xl font-serif font-bold mb-4 mt-10">Section 11 - Errors, Inaccuracies And Omissions</h2>
 

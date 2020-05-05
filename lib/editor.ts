@@ -96,7 +96,7 @@ export const toggleList = (editor: Editor, listType: string): void => {
 
 export const isBlockTextEmpty = (node: Ancestor): boolean => {
   return node.children
-    && node.children[node.children.length - 1]?.text?.length === 0
+    && node.children[node.children.length - 1]?.text?.length === 0;
 };
 
 export const isFirstChild = (path: Path): boolean => path[path.length - 1] === 0;
