@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Mon May 04 2020 10:14:19 GMT-0700 (Pacific Daylight Time)
+# timestamp: Tue May 05 2020 09:45:32 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -210,6 +210,7 @@ type DeleteProfileSectionPayload {
 }
 
 type Feed {
+  id: String
   next: String!
   results: [FeedItem]!
   unseen: Int!
@@ -274,6 +275,7 @@ type Plan {
 }
 
 type ProfileFeed {
+  id: String
   next: String!
   results: [FeedActivity]!
 }
