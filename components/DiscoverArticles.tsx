@@ -88,6 +88,19 @@ function DiscoverArticles({
           {
             articleChunk.length < 6 && (
               <div className="text-center my-4">
+                <a
+                  className="mx-auto"
+                  href="https://www.producthunt.com/posts/bard?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-bard"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    className="mx-auto w-2/3 my-1"
+                    src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=197014&theme=light"
+                    alt="Bard - The ultimate hub for writers who want to get paid | Product Hunt Embed"
+                  />
+                </a>
+
                 <a 
                   className="font-bold"
                   href="https://feedback.getbard.com"
