@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 const ProfileFeedQuery = gql`
   query profileFeed($userId: ID) {
     profileFeed(userId: $userId) {
+      id
       next
       results {
         id
@@ -16,20 +17,24 @@ const ProfileFeedQuery = gql`
         time
         object {
           ... on Article {
+            id
             slug
             title
             summary
             wordCount
             headerImage {
+              id
               url
             }
             author {
+              id
               firstName
               lastName
               username
             }
           }
           ... on Comment {
+            id
             message
             resource {
               id
@@ -43,6 +48,7 @@ const ProfileFeedQuery = gql`
               }
             }
             user {
+              id
               firstName
               lastName
               username

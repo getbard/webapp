@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 const FeedQuery = gql`
   query feed {
     feed {
+      id
       next
       results {
         id
@@ -13,6 +14,7 @@ const FeedQuery = gql`
         activities {
           id
           actor {
+            id
             firstName
             lastName
             username
@@ -21,20 +23,24 @@ const FeedQuery = gql`
           time
           object {
             ... on Article {
+              id
               slug
               title
               summary
               wordCount
               headerImage {
+                id
                 url
               }
               author {
+                id
                 firstName
                 lastName
                 username
               }
             }
             ... on Comment {
+              id
               message
               resource {
                 id
@@ -48,6 +54,7 @@ const FeedQuery = gql`
                 }
               }
               user {
+                id
                 firstName
                 lastName
                 username
