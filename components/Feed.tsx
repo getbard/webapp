@@ -104,7 +104,7 @@ function Item({ item }: { item: FeedItem }): React.ReactElement {
 
 function Feed(): React.ReactElement {
   const { loading, error, data } = useQuery(FeedQuery);
-console.log(error);
+
   if (loading) return <FeedFallback />;
   if (error) return <div><GenericError title error={error} /></div>;
 
