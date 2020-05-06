@@ -24,10 +24,10 @@ const SuccessInfo = (): React.ReactElement => {
     <div>
       <p className="mb-4">Looks like you&apos;re good to go!</p>
 
-      <p className="mb-4">Readers can now subscribe to support you monthly.</p>
+      <p className="mb-4">Readers can now support you monthly for <strong className="text-primary">$10 USD / month</strong>.</p>
 
       <p>
-        We have setup a default plan for <strong className="text-primary">$10 USD / month</strong>. You can adjust the plan <Link href="/settings"><a onClick={(): void => window.analytics.track('STRIPE CONNECT: Settings clicked')}>in your settings</a></Link> at any time.
+        You can adjust this price <Link href="/settings"><a onClick={(): void => window.analytics.track('STRIPE CONNECT: Settings clicked')}>in your settings</a></Link> at any time.
       </p>
     </div>
   );
