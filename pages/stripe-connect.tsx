@@ -27,7 +27,7 @@ const SuccessInfo = (): React.ReactElement => {
       <p className="mb-4">Readers can now support you monthly for <strong className="text-primary">$10 USD / month</strong>.</p>
 
       <p>
-        You can adjust this price <Link href="/settings"><a onClick={(): void => window.analytics.track('STRIPE CONNECT: Settings clicked')}>in your settings</a></Link> at any time.
+        You can adjust this price <Link href="/settings"><a className="underline" onClick={(): void => window.analytics.track('STRIPE CONNECT: Settings clicked')}>in your settings</a></Link> at any time.
       </p>
     </div>
   );
