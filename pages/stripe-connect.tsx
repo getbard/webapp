@@ -1,6 +1,5 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import Error from 'next/error';
 import { useMutation } from '@apollo/react-hooks';
 import Link from 'next/link';
 import { NextSeo } from 'next-seo';

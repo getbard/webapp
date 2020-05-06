@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
-import { Range, Editor } from 'slate';
+import { Range, Editor, Node } from 'slate';
 import styled from '@emotion/styled';
 import { IconType } from 'react-icons';
 import { FiLink } from 'react-icons/fi';
@@ -168,6 +168,16 @@ function HoveringToolbar(): React.ReactElement {
       Range.isCollapsed(selection) ||
       Editor.string(editor, selection) === ''
     ) {
+      el.removeAttribute('style');
+      return;
+    }
+
+    // Don't show the tool bar on captions
+    const parent = Editor.above(editor, {
+      match: n => n.type === 'caption',
+    });
+
+    if (parent) {
       el.removeAttribute('style');
       return;
     }

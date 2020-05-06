@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
-import { Transforms, Editor } from 'slate'
+import { Transforms, Editor, Point } from 'slate'
 import styled from '@emotion/styled';
 import { FiImage } from 'react-icons/fi';
 
@@ -18,6 +18,7 @@ function EditorInsertImage(): React.ReactElement {
   const ref = useRef<HTMLDivElement>();
   const editor = useSlate();
   const [display, setDisplay] = useState(false);
+  const [imagePath, setImagePath] = useState<Point | undefined>(undefined);
 
   useEffect(() => {
     const el = ref.current;
@@ -51,12 +52,16 @@ function EditorInsertImage(): React.ReactElement {
     const image = { type: 'image', url, children: [text] };
 
     // Insert the image into the editor
-    Transforms.insertNodes(editor, image);
+    Transforms.insertNodes(editor, image, {
+      at: imagePath,
+    });
     setDisplay(false);
 
     // Focus the editor
+    Transforms.select(editor, imagePath || Editor.end(editor, []));
     ReactEditor.focus(editor);
-    Transforms.select(editor, Editor.end(editor, []));
+
+    setImagePath(undefined);
   }
 
   return (
@@ -67,6 +72,13 @@ function EditorInsertImage(): React.ReactElement {
         onClick={(): void => {
           setDisplay(true);
           window.analytics.track('EDITOR IMAGE INSERTER: Inserter opened');
+        }}
+        onMouseEnter={(): void => {
+          for (const point of Editor.positions(editor)) {
+            if (!imagePath) {
+              setImagePath(point);
+            }
+          }
         }}
       >
         <FiImage />

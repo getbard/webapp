@@ -198,7 +198,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
   }
 
   return (
-    <div className="relative py-5">
+    <div className="relative pt-5 pb-10">
       <VerifyEmailAlert />
 
       <div className={`${auth?.user?.emailVerified && 'sticky'} bg-white z-20 top-0 min-w-screen py-2 mb-4`}>
