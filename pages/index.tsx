@@ -180,7 +180,7 @@ const Discover: NextPage = (): React.ReactElement => {
 
         {
           categoriesOverflowing && !categoriesScrollEnd && (
-            <OverflowGradient className="w-1/12 h-full absolute top-0 bottom-0 right-0 pointer-events-none" />
+            <OverflowGradient className="w-1/6 h-full absolute top-0 bottom-0 right-0 pointer-events-none" />
           )
         }
       </div>

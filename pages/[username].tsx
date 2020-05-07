@@ -40,7 +40,7 @@ const BorderHack = styled.div`
 `;
 
 const OverflowGradient = styled.div`
-  width: ${(props: BorderHackProps): string => props?.width ? '8.333333%' : '0px'};
+  width: ${(props: BorderHackProps): string => props?.width ? '16.666667%' : '0px'};
   background: linear-gradient(270deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
 `;
 
@@ -231,16 +231,16 @@ const Author: NextPage = (): React.ReactElement => {
               width={sectionsContainer?.current?.scrollWidth}
               className="m-0 pt-4 border-b-2 border-gray-300 bottom-0"
             ></BorderHack>
-          </div>
 
-          {
-            sectionsOverflowing && !sectionsScrollEnd && (
-              <OverflowGradient
-                width={sectionsContainer?.current?.scrollWidth}
-                className="h-full absolute top-0 bottom-0 right-0 pointer-events-none"
-              ></OverflowGradient>
-            )
-          }
+            {
+              sectionsOverflowing && !sectionsScrollEnd && (
+                <OverflowGradient
+                  width={sectionsContainer?.current?.scrollWidth}
+                  className="h-full absolute top-0 bottom-0 right-0 pointer-events-none"
+                ></OverflowGradient>
+              )
+            }
+          </div>
 
           {
             section === 'articles' && (
