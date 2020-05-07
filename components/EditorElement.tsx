@@ -1,5 +1,5 @@
 import { RenderElementProps, useEditor, useReadOnly } from 'slate-react';
-import { Editor, Transforms, Node, Text } from 'slate';
+import { Editor, Transforms, Node } from 'slate';
 import ProgressiveImage from 'react-progressive-image';
 import styled from '@emotion/styled';
 
@@ -7,6 +7,10 @@ const CaptionElement = styled.div`
   span {
     width: 100%;
   }
+`;
+
+const Divider = styled.div`
+  height: 2px;
 `;
 
 const ImageElement = ({ attributes, children, element }: RenderElementProps): React.ReactElement => {
@@ -117,6 +121,8 @@ const EditorElement = (props: RenderElementProps): React.ReactElement => {
       return <ImageElement {...props} />;
     case 'caption':
       return <CaptionVoidElement {...props} />
+    case 'divider':
+      return <Divider {...attributes} className="my-8 mx-auto w-full bg-gray-200">{children}</Divider>
   }
 }
 

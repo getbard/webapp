@@ -44,12 +44,19 @@ const CommentRow = ({
   }, [loading]);
 
   useEffect(() => {
-    if (JSON.stringify(initialValue) === JSON.stringify(emptyValue)) {
+    if (JSON.stringify(initialValue) === JSON.stringify(emptyValue) && called) {
       setShowReplyEditor(false);
     }
   }, [initialValue]);
 
-  useOnClickOutside(replyEditorRef, (): void => {
+  useOnClickOutside(replyEditorRef, (e): void => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
+    const toolbarClicked = e?.target?.closest('.editor-toolbar');
+    if (toolbarClicked) {
+      return;
+    }
+
     setShowReplyEditor(false);
   });
 

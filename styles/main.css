@@ -20,7 +20,7 @@ a:hover:not(.logo):not(.button) {
 }
 
 /* No top margin on the first Slate element */
-[data-slate-editor]:first-child {
+[data-slate-editor] *:first-child {
   @apply mt-0;
 }
 

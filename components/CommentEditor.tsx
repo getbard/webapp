@@ -22,6 +22,7 @@ import Notification from './Notification';
 const EmojiPicker = dynamic(() => import('./EmojiPicker'));
 import { withLinks, insertLink } from './withLinks';
 import { withList } from './withList';
+import { withDividers } from './withDividers';
 
 const emptyValue = [{
   type: 'paragraph',
@@ -59,7 +60,9 @@ function CommentEditor({
 }): React.ReactElement {
   const auth = useAuth();
   const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
-  const editor = useMemo(() => withList(withLinks(withHistory(withReact(createEditor())))), []);
+  const editor = useMemo(() => withDividers(withList(withLinks(
+    withHistory(withReact(createEditor()))
+  ))), []);
   const renderLeaf = useCallback((props): JSX.Element => <EditorLeaf {...props} />, []);
   const renderElement = useCallback((props): JSX.Element => <EditorElement {...props} />, []);
 
