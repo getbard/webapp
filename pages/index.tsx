@@ -33,6 +33,16 @@ type ArticlesData = {
   articles: ArticlesPayload;
 }
 
+const CategoriesDiv = styled.div`
+  > *:first-child {
+    padding-left: 2rem;
+  }
+
+  > *:last-child {
+    padding-right: 2rem;
+  }
+`;
+
 const OverflowGradient = styled.div`
   background: linear-gradient(270deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
 `;
@@ -151,8 +161,8 @@ const Discover: NextPage = (): React.ReactElement => {
       }
 
       <div className="relative">
-        <div
-          className={`${categoriesOverflowing ? '' : 'justify-center'} flex w-full pb-5 space-x-4 overflow-x-scroll whitespace-no-wrap`}
+        <CategoriesDiv
+          className={`${categoriesOverflowing ? '' : 'justify-center'} flex w-full pb-5 space-x-8 overflow-x-scroll whitespace-no-wrap`}
           ref={categoriesContainer}
         >
           {
@@ -176,7 +186,7 @@ const Discover: NextPage = (): React.ReactElement => {
               );
             })
           }
-        </div>
+        </CategoriesDiv>
 
         {
           categoriesOverflowing && !categoriesScrollEnd && (
