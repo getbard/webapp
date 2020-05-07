@@ -6,19 +6,22 @@ import { withApollo } from '../lib/apollo';
 import withLayout from '../components/withLayout';
 import PageHeader from '../components/PageHeader';
 import SettingsMenu from '../components/SettingsMenu';
-import Subscriptions from '../components/SubscriptionSettings';
+import SubscriptionSettings from '../components/SubscriptionSettings';
 import VerifyEmailAlert from '../components/VerifyEmailAlert';
 import AccountSettings from '../components/AccountSettings';
 import SettingsFooter from '../components/SettingsFooter';
+import StripeSettings from '../components/StripeSettings';
 
 const settingsComponents: { [key: string]: any } = {
   account: AccountSettings,
-  subscriptions: Subscriptions,
+  stripe: StripeSettings,
+  subscriptions: SubscriptionSettings,
 };
 
 const Settings: NextPage = (): React.ReactElement => {
   const [settingsOption, setSettingsOption] = useState('account');
   const Component = settingsComponents[settingsOption];
+  const settingsOptions = Object.keys(settingsComponents);
 
   return (
     <div className="py-5">
@@ -36,7 +39,7 @@ const Settings: NextPage = (): React.ReactElement => {
 
         <div className="grid grid-cols-1 sm:grid-cols-8">
           <SettingsMenu
-            settingsOptions={Object.keys(settingsComponents)}
+            settingsOptions={settingsOptions}
             settingsOption={settingsOption}
             setSettingsOption={setSettingsOption}
           />

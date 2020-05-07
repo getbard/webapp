@@ -26,7 +26,7 @@ const SettingsMenu = ({
   settingsOption: string;
   setSettingsOption: (option: string) => void;
 }): React.ReactElement => (
-    <div className="col-span-2 mr-4 h-full text-center">
+    <div className="col-span-2 mr-6 h-full text-center md:text-right">
       <menu className="p-0 mt-0">
         {settingsOptions.map(option => (
           <MenuOption
