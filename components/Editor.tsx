@@ -9,6 +9,7 @@ import withHtml from './withHtml';
 import withImages from './withImages';
 import { withLinks, insertLink } from './withLinks';
 import { withList } from './withList';
+import { withDividers } from './withDividers';
 import EditorLeaf from './EditorLeaf';
 import EditorElement from './EditorElement';
 import EditorToolbar from './EditorToolbar';
@@ -31,7 +32,9 @@ function BardEditor({
   placeholder?: string;
 }): React.ReactElement {
   const [value, setValue] = useState<Node[]>(initialValue || emptyValue);
-  const editor = useMemo(() => withList(withLinks(withImages(withHtml(withHistory(withReact(createEditor())))))), []);
+  const editor = useMemo(() => withDividers(withList(withLinks(
+    withImages(withHtml(withHistory(withReact(createEditor()))))
+  ))), []);
   const renderLeaf = useCallback((props): JSX.Element => <EditorLeaf {...props} />, []);
   const renderElement = useCallback((props): JSX.Element => <EditorElement {...props} />, []);
 
