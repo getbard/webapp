@@ -33,17 +33,11 @@ type ArticlesData = {
   articles: ArticlesPayload;
 }
 
-const CategoriesDiv = styled.div`
-  > *:first-child {
-    padding-left: 2rem;
-  }
-
-  > *:last-child {
-    padding-right: 2rem;
-  }
+const OverflowLeftGradient = styled.div`
+  background: linear-gradient(270deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
 `;
 
-const OverflowGradient = styled.div`
+const OverflowRightGradient = styled.div`
   background: linear-gradient(270deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
 `;
 
@@ -138,7 +132,7 @@ const Discover: NextPage = (): React.ReactElement => {
   });
 
   const categoriesContainer = useRef<HTMLDivElement>(null);
-  const [categoriesOverflowing, categoriesScrollEnd] = useXOverflowGradient(categoriesContainer);
+  const [categoriesOverflowing, categoriesScrollEnd, categoriesScrollBegin] = useXOverflowGradient(categoriesContainer);
 
   if (auth.userId && categories[0] !== 'feed') {
     categories.unshift('feed');
@@ -160,8 +154,8 @@ const Discover: NextPage = (): React.ReactElement => {
         )
       }
 
-      <div className="relative">
-        <CategoriesDiv
+      <div className="relative w-5/6 mx-auto">
+        <div
           className={`${categoriesOverflowing ? '' : 'justify-center'} flex w-full pb-5 space-x-8 overflow-x-scroll whitespace-no-wrap`}
           ref={categoriesContainer}
         >
@@ -186,11 +180,17 @@ const Discover: NextPage = (): React.ReactElement => {
               );
             })
           }
-        </CategoriesDiv>
+        </div>
+
+        {
+          categoriesOverflowing && !categoriesScrollBegin && (
+            <OverflowLeftGradient className="w-1/6 h-full absolute top-0 bottom-0 left-0 pointer-events-none" />
+          )
+        }
 
         {
           categoriesOverflowing && !categoriesScrollEnd && (
-            <OverflowGradient className="w-1/6 h-full absolute top-0 bottom-0 right-0 pointer-events-none" />
+            <OverflowRightGradient className="w-1/6 h-full absolute top-0 bottom-0 right-0 pointer-events-none" />
           )
         }
       </div>

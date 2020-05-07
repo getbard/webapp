@@ -4,6 +4,7 @@ import useWindowSize from './useWindowSize';
 
 function useXOverflowGradient(ref: RefObject<HTMLElement>): boolean[] {
   const [refOverflowing, setRefOverflowing] = useState(false);
+  const [refScrollBegin, setRefScrollBegin] = useState(true);
   const [refScrollEnd, setRefScrollEnd] = useState(false);
   const size = useWindowSize();
 
@@ -24,6 +25,12 @@ function useXOverflowGradient(ref: RefObject<HTMLElement>): boolean[] {
       } else {
         setRefScrollEnd(false);
       }
+console.log(ref?.current?.scrollLeft);
+      if (ref?.current?.scrollLeft === 0) {
+        setRefScrollBegin(true);
+      } else {
+        setRefScrollBegin(false);
+      }
     }
 
     ref.current.addEventListener('scroll', handleScroll);
@@ -31,7 +38,7 @@ function useXOverflowGradient(ref: RefObject<HTMLElement>): boolean[] {
     return (): void => ref.current?.removeEventListener('scroll', handleScroll);
   }, [ref, size.width]); // Empty array ensures that effect is only run on mount and unmount
 
-  return [refOverflowing, refScrollEnd];
+  return [refOverflowing, refScrollEnd, refScrollBegin];
 }
 
 export default useXOverflowGradient;
