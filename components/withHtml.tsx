@@ -1,8 +1,7 @@
-// Slate is amazing <3
-// https://www.slatejs.org/examples/paste-html
 import { Element, Transforms } from 'slate';
 import { jsx } from 'slate-hyperscript';
 import { ReactEditor } from 'slate-react';
+import * as Sentry from '@sentry/node';
 
 const ELEMENT_TAGS: {
   [key: string]: (el: Element) => { [key: string]: string };
@@ -95,7 +94,13 @@ const withHtml = (editor: ReactEditor): ReactEditor => {
     if (html) {
       const parsed = new DOMParser().parseFromString(html, 'text/html');
       const fragment = deserialize(parsed.body);
-      Transforms.insertFragment(editor, fragment);
+
+      try {
+        Transforms.insertFragment(editor, fragment);
+      } catch (error) {
+        Sentry.captureException(`Failed to insert HTML: ${error}`);
+      }
+
       return;
     }
 
