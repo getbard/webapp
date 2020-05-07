@@ -1,10 +1,15 @@
 import { useRef, useEffect, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
-import { Range, Editor, Node } from 'slate';
+import { Range, Editor } from 'slate';
 import styled from '@emotion/styled';
 import { IconType } from 'react-icons';
 import { FiLink } from 'react-icons/fi';
-import { MdFormatListBulleted, MdFormatListNumbered, MdFormatSize } from 'react-icons/md';
+import {
+  MdFormatListBulleted,
+  MdFormatListNumbered,
+  MdFormatSize,
+  MdFormatQuote,
+} from 'react-icons/md';
 
 import { isMarkActive, toggleMark, isBlockActive, toggleBlock, toggleList } from '../lib/editor';
 import { insertLink } from './withLinks';
@@ -29,14 +34,8 @@ const formatStyles: {
 const blockTypes: {
   [key: string]: { [key: string]:  string | IconType };
 } = {
-  'heading-one': {
-    display: 'A',
-  },
-  'heading-two': {
-    display: 'A',
-  },
-  'heading-three': {
-    display: 'A',
+  quote: {
+    icon: MdFormatQuote,
   },
   'numbered-list': {
     icon: MdFormatListNumbered,
@@ -91,7 +90,29 @@ function MarkButton({ format }: { format: string}): React.ReactElement {
   );
 }
 
-function BlockButton(): React.ReactElement {
+function BlockButton({ format }: { format: string}): React.ReactElement {
+  const editor = useSlate();
+  const Icon = blockTypes[format].icon;
+
+  return (
+    <button
+      className={`px-1 hover:text-secondary ${isBlockActive(editor, format) && 'text-secondary'}`}
+      onMouseDown={(e): void => {
+        e.preventDefault();
+
+        window.analytics.track(`EDITOR TOOLBAR: ${format} clicked`);
+
+        toggleBlock(editor, format);
+      }}
+    >
+      <span className="font-serif text-lg">
+        <Icon />
+      </span>
+    </button>
+  );
+}
+
+function HeadingButton(): React.ReactElement {
   const editor = useSlate();
   const blocks = ['one', 'two', 'three'];
   const [index, setIndex] = useState(0);
@@ -199,7 +220,7 @@ function HoveringToolbar(): React.ReactElement {
         className="bg-black text-white rounded-sm px-2 py-2 absolute z-10 flex opacity-0"
       >
         <div className="flex mr-4">
-          <BlockButton />
+          <HeadingButton />
         </div>
 
         <div className="flex mr-4">
@@ -211,6 +232,10 @@ function HoveringToolbar(): React.ReactElement {
         <div className="flex mr-4">
           <ListButton format="bulleted-list" />
           <ListButton format="numbered-list" />
+        </div>
+
+        <div className="flex mr-4">
+          <BlockButton format="quote" />
         </div>
 
         <div className="flex">

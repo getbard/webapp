@@ -82,9 +82,13 @@ const EditorElement = (props: RenderElementProps): React.ReactElement => {
 
   switch (element.type) {
     default:
-      return <p {...attributes}>{children}</p>;
+      return <p {...attributes} className="mt-4">{children}</p>;
     case 'quote':
-      return <blockquote {...attributes}>{children}</blockquote>;
+      return (
+        <blockquote {...attributes} className="p-8 mt-4 border-l-2 border-primary bg-gray-100 text-md">
+          {children}
+        </blockquote>
+      );
     case 'code':
       return (
         <pre>
@@ -92,17 +96,17 @@ const EditorElement = (props: RenderElementProps): React.ReactElement => {
         </pre>
       );
     case 'heading-one':
-      return <h1 {...attributes} className="text-5xl font-serif">{children}</h1>;
+      return <h1 {...attributes} className="text-5xl mt-10 font-serif">{children}</h1>;
     case 'heading-two':
-      return <h2 {...attributes} className="text-4xl font-serif">{children}</h2>;
+      return <h2 {...attributes} className="text-4xl mt-10 font-serif">{children}</h2>;
     case 'heading-three':
-      return <h3 {...attributes} className="text-3xl font-serif">{children}</h3>;
+      return <h3 {...attributes} className="text-3xl mt-10 font-serif">{children}</h3>;
     case 'list-item':
       return <li {...attributes}>{children}</li>;
     case 'bulleted-list':
-        return <ul {...attributes} className="list-disc pl-6">{children}</ul>;
+        return <ul {...attributes} className="list-disc pl-6 mt-2">{children}</ul>;
     case 'numbered-list':
-      return <ol {...attributes} className="list-decimal pl-6">{children}</ol>;
+      return <ol {...attributes} className="list-decimal pl-6 mt-2">{children}</ol>;
     case 'link':
       return (
         <a href={element.url} {...attributes} className="underline">
