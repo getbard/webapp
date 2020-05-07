@@ -19,9 +19,9 @@ a:hover:not(.logo):not(.button) {
   animation: icon-spin 2s infinite linear;
 }
 
-/* Let the Slate elements breathe */
-[data-slate-editor] > p {
-  @apply mt-4;
+/* No top margin on the first Slate element */
+[data-slate-editor]:first-child {
+  @apply mt-0;
 }
 
 @-webkit-keyframes icon-spin {

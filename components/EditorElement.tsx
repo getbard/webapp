@@ -82,7 +82,7 @@ const EditorElement = (props: RenderElementProps): React.ReactElement => {
 
   switch (element.type) {
     default:
-      return <p {...attributes}>{children}</p>;
+      return <p {...attributes} className="mt-4">{children}</p>;
     case 'quote':
       return (
         <blockquote {...attributes} className="p-8 mt-4 border-l-2 border-primary bg-gray-100 text-md">
