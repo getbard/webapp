@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/react-hooks';
 import { useInView } from 'react-intersection-observer';
 import debounce from 'lodash/debounce';
+import styled from '@emotion/styled';
 
 import { Category, Article, ArticlesPayload } from '../generated/graphql';
 import DiscoverArticlesQuery from '../queries/DiscoverArticlesQuery';
 
 import { useAuth } from '../hooks/useAuth';
+import useXOverflowGradient from '../hooks/useXOverflowGradient';
 
 import { withApollo } from '../lib/apollo';
 import withLayout from '../components/withLayout';
@@ -16,23 +18,24 @@ import DiscoverArticles from '../components/DiscoverArticles';
 import Feed from '../components/Feed';
 import GenericError from '../components/GenericError';
 import DiscoverArticlesFallback from '../components/DiscoverArticlesFallback';
-import CategoryDropdown from '../components/CategoryDropdown';
 
-const defaultCategories = ['all'];
+const categories = ['all'];
 for (let category in Category) {
   category = category
     .split(/(?=[A-Z])/)
     .join(' ')
     .toLowerCase();
 
-  if (defaultCategories.length !== 11) {
-    defaultCategories.push(category);
-  }
+  categories.push(category);
 }
 
 type ArticlesData = {
   articles: ArticlesPayload;
 }
+
+const OverflowGradient = styled.div`
+  background: linear-gradient(270deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+`;
 
 function ArticlesContainer({
   articlesWithHeader = [],
@@ -120,65 +123,12 @@ const Discover: NextPage = (): React.ReactElement => {
   const auth = useAuth();
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState(router?.query?.category as string || 'all');
-  const [hasSetCategories, setHasSetCategories] = useState(false);
-  const [categories, setCategories] = useState<string[]>(defaultCategories);
   const { loading, data, error, fetchMore } = useQuery(DiscoverArticlesQuery, {
     variables: { category: selectedCategory },
   });
 
-  useEffect(() => {
-    if (hasSetCategories) {
-      return;
-    }
-
-    const articles: Article[] = [
-      ...data?.articles?.articlesWithHeader || [],
-      ...data?.articles?.articlesWithoutHeader || [],
-    ];
-  
-    const categoryCounter = new Map();
-  
-    articles.forEach((article: Article) => {
-      if (article.category) {
-        const category = article.category;
-
-        if (categoryCounter.has(category)) {
-          categoryCounter.set(category, categoryCounter.get(category));
-        } else if (categoryCounter.size !== 10) {
-          categoryCounter.set(category, 1);
-        }
-      }
-    });
-
-    for (let category in Category) {
-      category = category
-        .split(/(?=[A-Z])/)
-        .join(' ')
-        .toLowerCase();
-
-      if (!categoryCounter.has(category) && categoryCounter.size !== 10) {
-        categoryCounter.set(category, 0);
-      }
-    }
-  
-    const newCategories = [...categoryCounter.keys()];
-    newCategories.sort((a, b) => {
-      if (a > b) {
-        return 1;
-      }
-
-      if (a < b) {
-        return -1;
-      }
-
-      return 0;
-    });
-  
-    newCategories.unshift('all');
-
-    setCategories(newCategories);
-    setHasSetCategories(true);
-  }, [data?.articlesWitHeader?.length]);
+  const categoriesContainer = useRef<HTMLDivElement>(null);
+  const [categoriesOverflowing, categoriesScrollEnd] = useXOverflowGradient(categoriesContainer);
 
   if (auth.userId && categories[0] !== 'feed') {
     categories.unshift('feed');
@@ -200,51 +150,40 @@ const Discover: NextPage = (): React.ReactElement => {
         )
       }
 
-      <div className="hidden md:block w-full px-5 pb-5 text-center">
+      <div className="relative">
+        <div
+          className={`${categoriesOverflowing ? '' : 'justify-center'} flex w-full pb-5 space-x-4 overflow-x-scroll whitespace-no-wrap`}
+          ref={categoriesContainer}
+        >
+          {
+            categories.map(category => {
+              let classes = 'inline-block capitalize hover:cursor-pointer hover:text-primary font-medium';
+
+              if (selectedCategory === category) {
+                classes = `${classes} text-primary`;
+              }
+
+              return (
+                <div
+                  key={category}
+                  className={classes}
+                  onClick={(): void => {
+                    handleSelectCategory(category);
+                  }}
+                >
+                  {category}
+                </div>
+              );
+            })
+          }
+        </div>
+
         {
-          categories.map(category => {
-            let classes = 'inline-block capitalize mx-4 text-center hover:cursor-pointer hover:text-primary font-medium';
-
-            if (selectedCategory === category) {
-              classes = `${classes} text-primary`;
-            }
-
-            return (
-              <div
-                key={category}
-                className={classes}
-                onClick={(): void => {
-                  handleSelectCategory(category);
-                }}
-              >
-                {category}
-              </div>
-            );
-          })
+          categoriesOverflowing && !categoriesScrollEnd && (
+            <OverflowGradient className="w-1/12 h-full absolute top-0 bottom-0 right-0 pointer-events-none" />
+          )
         }
       </div>
-
-      {
-        <div className="md:hidden pb-5 text-center">
-          {
-            auth?.userId && (
-              <div
-                className="inline-block capitalize mx-4 text-center hover:cursor-pointer hover:text-primary font-medium"
-                onClick={(): void => handleSelectCategory('feed')}
-              >
-                feed
-              </div>
-            )
-          }
-
-          <CategoryDropdown
-            categories={categories.length === 12 ? categories.slice(1) : categories}
-            category={selectedCategory}
-            setCategory={handleSelectCategory}
-          />
-        </div>
-      }
-
       {
         selectedCategory === 'feed'
           ? <Feed />

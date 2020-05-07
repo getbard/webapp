@@ -12,6 +12,7 @@ import AuthorProfileQuery from '../queries/AuthorProfileQuery';
 import ArticlesSummaryQuery from '../queries/ArticlesSummaryQuery';
 
 import { useAuth } from '../hooks/useAuth';
+import useXOverflowGradient from '../hooks/useXOverflowGradient';
 
 import { withApollo } from '../lib/apollo';
 import withLayout from '../components/withLayout';
@@ -36,6 +37,11 @@ type BorderHackProps = {
 
 const BorderHack = styled.div`
   width: ${(props: BorderHackProps): string => props?.width ? props.width.toString() + 'px' : '100%'};
+`;
+
+const OverflowGradient = styled.div`
+  width: ${(props: BorderHackProps): string => props?.width ? '8.333333%' : '0px'};
+  background: linear-gradient(270deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
 `;
 
 function Articles({
@@ -89,18 +95,9 @@ const Author: NextPage = (): React.ReactElement => {
   const [section, setSection] = useState(querySection || 'articles');
   const [sectionContent, setSectionContent] = useState<ProfileSection | null>(null);
   const { loading, error, data } = useQuery(AuthorProfileQuery, { variables: { username } });
+
   const sectionsContainer = useRef<HTMLDivElement>(null);
-  const [sectionsOverflowing, setSectionsOverflowing] = useState(false);
-
-  useEffect(() => {
-    if (sectionsContainer?.current) {
-      const isOverflowing = sectionsContainer.current.scrollWidth > sectionsContainer.current.clientWidth;
-
-      if (sectionsOverflowing !== isOverflowing) {
-        setSectionsOverflowing(isOverflowing);
-      }
-    }
-  }, [data?.user?.profileSections?.length]);
+  const [sectionsOverflowing, sectionsScrollEnd] = useXOverflowGradient(sectionsContainer);
 
   useEffect(() => {
     if (section !== 'articles' && section !== 'activity') {
@@ -228,17 +225,6 @@ const Author: NextPage = (): React.ReactElement => {
                   </div>
                 )
               }
-
-              {
-                sectionsOverflowing && (
-                  <div
-                    className="absolute mt-8 top-0 right-0 text-xs text-gray-300"
-                    title="Scroll for more sections"
-                  >
-                    more sections &gt;
-                  </div>
-                )
-              }
             </div>
 
             <BorderHack
@@ -246,6 +232,15 @@ const Author: NextPage = (): React.ReactElement => {
               className="m-0 pt-4 border-b-2 border-gray-300 bottom-0"
             ></BorderHack>
           </div>
+
+          {
+            sectionsOverflowing && !sectionsScrollEnd && (
+              <OverflowGradient
+                width={sectionsContainer?.current?.scrollWidth}
+                className="h-full absolute top-0 bottom-0 right-0 pointer-events-none"
+              ></OverflowGradient>
+            )
+          }
 
           {
             section === 'articles' && (

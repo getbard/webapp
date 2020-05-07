@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Thu May 07 2020 09:00:49 GMT-0700 (Pacific Daylight Time)
+# timestamp: Thu May 07 2020 15:53:36 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -70,8 +70,15 @@ enum Category {
   books
   business
   creative_writing
+  culture
+  education
+  entertainment
+  family
   fiction
+  food
   health
+  history
+  lifestyle
   opinion
   philosophy
   politics
@@ -79,8 +86,11 @@ enum Category {
   relationships
   science
   self
+  sports
   technology
   travel
+  writing
+  world
 }
 
 type Comment {
