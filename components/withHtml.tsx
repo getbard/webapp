@@ -56,6 +56,11 @@ const deserialize = (el: any): any => {
     .map(deserialize)
     .flat();
 
+  // At least one child with text is required
+  if (!children.length) {
+    children.push({ text: '' });
+  }
+
   if (el.nodeName === 'BODY') {
     return jsx('fragment', {}, children);
   }

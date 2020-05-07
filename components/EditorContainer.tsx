@@ -38,7 +38,7 @@ const saveArticle = debounce(({
       },
     }],
   });
-}, 1000);
+}, 2000);
 
 const emptyDocumentString = '[{"type":"paragraph","children":[{"text":""}]}]';
 
