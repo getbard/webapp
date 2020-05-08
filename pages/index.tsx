@@ -156,7 +156,7 @@ const Discover: NextPage = (): React.ReactElement => {
 
       <div className="relative w-5/6 mx-auto">
         <div
-          className={`${categoriesOverflowing ? '' : 'justify-center'} flex w-full pb-5 space-x-8 overflow-x-scroll whitespace-no-wrap`}
+          className="flex w-full pb-5 space-x-8 overflow-x-scroll whitespace-no-wrap"
           ref={categoriesContainer}
         >
           {

@@ -25,7 +25,7 @@ function useXOverflowGradient(ref: RefObject<HTMLElement>): boolean[] {
       } else {
         setRefScrollEnd(false);
       }
-console.log(ref?.current?.scrollLeft);
+
       if (ref?.current?.scrollLeft === 0) {
         setRefScrollBegin(true);
       } else {
