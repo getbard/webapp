@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Thu May 07 2020 15:53:36 GMT-0700 (Pacific Daylight Time)
+# timestamp: Mon May 11 2020 14:41:27 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -265,6 +265,7 @@ type Mutation {
   createStripeSession(input: CreateStripeSessionInput!): CreateStripeSessionPayload!
   createSubscription(input: CreateSubscriptionInput!): CreateSubscriptionPayload!
   cancelSubscription(input: CancelSubscriptionInput!): CancelSubscriptionPayload!
+  updateStripePlanPrice(input: UpdateStripePlanPriceInput!): UpdateStripePlanPricePayload!
   followUser(input: FollowUserInput!): FollowUserPayload!
   unfollowUser(input: UnfollowUserInput!): UnfollowUserPayload!
   createComment(input: CreateCommentInput!): CreateCommentPayload!
@@ -408,6 +409,14 @@ type UpdateProfileSectionPayload {
   id: ID!
 }
 
+input UpdateStripePlanPriceInput {
+  amount: Int!
+}
+
+type UpdateStripePlanPricePayload {
+  id: ID!
+}
+
 input UpdateUserInput {
   id: ID!
   firstName: String!
@@ -451,5 +460,6 @@ type User {
   stripeUserId: String
   stripePlanId: String
   stripePlan: StripePlan
+  stripeDashboardUrl: String
   profileSections: [ProfileSection]
 }

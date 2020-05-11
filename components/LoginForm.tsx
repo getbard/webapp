@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useAuth } from '../hooks/useAuth';
 
 import Button from './Button';
+import SocialMediaLogin from './SocialMediaLogin';
 
 type FormData = {
   email: string;
@@ -22,6 +23,7 @@ function LoginForm({
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, errors, setError } = useForm<FormData>();
   const redirect = router?.query?.redirect as string || '/';
+  const [pendingCred, setPendingCred] = useState<any | null>(null);
 
   const setFormToForgotPassword = (): void => {
     window.analytics.track('LOGIN FORM: Forgot password clicked')
@@ -39,7 +41,7 @@ function LoginForm({
     setLoading(true);
 
     auth
-      .signIn(email, password)
+      .signIn(email, password, pendingCred)
       .then(() => {
         router.push('/');
       })
@@ -52,7 +54,16 @@ function LoginForm({
   return (
     <div className="w-full max-w-md bg-white border border-gray-300 rounded-sm px-8 pt-6 pb-8 mb-4">
       <div className="mb-5 text-center">
-        Welcome back!
+        Welcome back, please login to your account.
+      </div>
+
+      <SocialMediaLogin
+        setError={setError}
+        setPendingCred={setPendingCred}
+      />
+
+      <div className="text-center my-5 text-xs">
+        - OR -
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>

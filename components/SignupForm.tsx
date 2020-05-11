@@ -7,6 +7,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { useAuth } from '../hooks/useAuth';
 
 import Button from './Button';
+import SocialMediaLogin from './SocialMediaLogin';
 
 import { CreateUserInput } from '../generated/graphql';
 import CreateUserMutation from '../queries/CreateUserMutation';
@@ -108,6 +109,12 @@ function SignupUser(): React.ReactElement {
         <div className="bg-white border border-gray-300 rounded-sm px-8 pt-6 pb-8 mb-4">
           <div className="mb-5 text-center">
             Join the writing revolution
+          </div>
+
+          <SocialMediaLogin setError={setError} />
+
+          <div className="text-center my-5 text-xs">
+            - OR -
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)}>
