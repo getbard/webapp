@@ -3,6 +3,8 @@ import { NextPage } from 'next';
 import Link from 'next/link';
 import { NextSeo } from 'next-seo';
 
+import { withApollo } from '../lib/apollo';
+
 import LoginForm from '../components/LoginForm';
 import ForgotPasswordForm from '../components/ForgotPasswordForm';
 
@@ -46,5 +48,5 @@ const Login: NextPage = (): React.ReactElement => {
   );
 };
 
-export default Login;
+export default withApollo()(Login);
  

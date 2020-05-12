@@ -45,11 +45,11 @@ function SocialMediaLogin({
     auth
       .signInWithProvider(provider)
       .then((user) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        const [firstName, lastName] = user?.displayName.split(' ');
-        
         if (signup) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          // @ts-ignore
+          const [firstName, lastName] = user?.displayName.split(' ');
+        
           createUser({
             variables: {
               input: {
