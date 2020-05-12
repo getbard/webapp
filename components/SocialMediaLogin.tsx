@@ -3,6 +3,10 @@ import styled from '@emotion/styled';
 import * as firebase from 'firebase/app';
 import firebaseAuth from '../lib/firebase';
 import { useRouter } from 'next/router';
+import { useMutation } from '@apollo/react-hooks';
+
+import { CreateUserInput } from '../generated/graphql';
+import CreateUserMutation from '../queries/CreateUserMutation';
 
 import { useAuth } from '../hooks/useAuth';
 
@@ -35,11 +39,33 @@ function SocialMediaLogin({
   const router = useRouter();
   const errorName = signup ? 'signup' : 'login';
   const actionText = signup ? 'Join' : 'Login';
+  const [createUser] = useMutation<CreateUserInput>(CreateUserMutation);
 
   const onSocialLogin = (provider: firebase.auth.AuthProvider): void => {
     auth
       .signInWithProvider(provider)
-      .then(() => {
+      .then((user) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        const [firstName, lastName] = user?.displayName.split(' ');
+        
+        if (signup) {
+          createUser({
+            variables: {
+              input: {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                // @ts-ignore
+                id: user?.uid,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                // @ts-ignore
+                email: user?.email,
+                firstName: firstName || '',
+                lastName: lastName || '',
+              },
+            },
+          });
+        }
+
         router.push('/');
       })
       .catch((error) => {

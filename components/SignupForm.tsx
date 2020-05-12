@@ -111,7 +111,7 @@ function SignupUser(): React.ReactElement {
             Join the writing revolution
           </div>
 
-          <SocialMediaLogin setError={setError} />
+          <SocialMediaLogin setError={setError} signup />
 
           <div className="text-center my-5 text-xs">
             - OR -
