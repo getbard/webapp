@@ -4,6 +4,7 @@ import * as firebase from 'firebase/app';
 import firebaseAuth from '../lib/firebase';
 import { useRouter } from 'next/router';
 import { useMutation } from '@apollo/react-hooks';
+import * as Sentry from '@sentry/node';
 
 import { CreateUserInput } from '../generated/graphql';
 import CreateUserMutation from '../queries/CreateUserMutation';
@@ -69,6 +70,8 @@ function SocialMediaLogin({
         router.push('/');
       })
       .catch((error) => {
+        Sentry.captureException(error);
+
         if (setError) {
           if (error?.code === 'auth/account-exists-with-different-credential') {
             window.analytics.track('SOCIAL MEDIA LOGIN: Account exists with different credential', {
