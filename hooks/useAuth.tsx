@@ -6,7 +6,8 @@ import { useRouter } from 'next/router';
 type AuthContext = {
   user: firebase.User | null;
   userId: string | null | undefined;
-  signIn: (email: string, password: string) => Promise<firebase.auth.UserCredential | firebase.User | null>;
+  signIn: (email: string, password: string, pendingCred?: any) => Promise<firebase.auth.UserCredential | firebase.User | null>;
+  signInWithProvider: (provider: firebase.auth.AuthProvider, pendingCred?: any) => Promise<firebase.auth.UserCredential | firebase.User | null>;
   signUp: (email: string, password: string) => Promise<firebase.auth.UserCredential | firebase.User | null>;
   signOut: () => Promise<boolean | void>;
   sendPasswordResetEmail: (email: string) => Promise<boolean | void>;
@@ -14,6 +15,7 @@ type AuthContext = {
 }
 
 const fbSignIn = (email: string, password: string): Promise<firebase.auth.UserCredential | firebase.User | null> => firebase.auth().signInWithEmailAndPassword(email, password);
+const fbSignInWithProvider = (provider: firebase.auth.AuthProvider): Promise<firebase.auth.UserCredential | firebase.User | null> => firebase.auth().signInWithPopup(provider);
 const fbSignUp = (email: string, password: string): Promise<firebase.auth.UserCredential | firebase.User | null> => firebase.auth().createUserWithEmailAndPassword(email, password);
 const fbSignOut = (): Promise<boolean | void> => firebase.auth().signOut();
 const fbSendPasswordResetEmail = (email: string): Promise<boolean | void> => firebase.auth().sendPasswordResetEmail(email);
@@ -23,6 +25,7 @@ const authContext = createContext<AuthContext>({
   user: null,
   userId: null,
   signIn: fbSignIn,
+  signInWithProvider: fbSignInWithProvider,
   signUp: fbSignUp,
   signOut: fbSignOut,
   sendPasswordResetEmail: fbSendPasswordResetEmail,
@@ -38,15 +41,39 @@ function useAuthContext(ctxUserId: string): AuthContext {
   const signIn = (
     email: string,
     password: string,
+    pendingCred?: any,
   ): Promise<firebase.auth.UserCredential | firebase.User | null> => {
     return firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(response => {
         setUser(response.user);
+
+        if (pendingCred) {
+          response?.user?.linkWithCredential(pendingCred);
+        }
+
         return response.user;
       });
   };
+
+  const signInWithProvider = (
+    provider: firebase.auth.AuthProvider,
+    pendingCred?: any,
+  ): Promise<firebase.auth.UserCredential | firebase.User | null> => {
+    return firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(response => {
+        setUser(response.user);
+
+        if (pendingCred) {
+          response?.user?.linkAndRetrieveDataWithCredential(pendingCred);
+        }
+
+        return response.user;
+      });
+  }
 
   const signUp = (
     email: string,
@@ -119,10 +146,11 @@ function useAuthContext(ctxUserId: string): AuthContext {
     user,
     userId,
     signIn,
+    signInWithProvider,
     signUp,
     signOut,
     sendPasswordResetEmail,
-    confirmPasswordReset
+    confirmPasswordReset,
   };
 }
 
