@@ -79,8 +79,8 @@ function Item({ item }: { item: FeedItem }): React.ReactElement {
         object?.__typename === 'Article' && item.activities.map((activity: FeedActivity | null) => {
           if (!activity) return;
           return (
-            <div key={activity.id} className="mt-4">
-              <ArticleCard article={activity.object as Article} />
+            <div key={activity.id} className="mt-4 mx-auto w-2/3">
+              <ArticleCard article={activity.object as Article} noTrim />
             </div>
           );
         })
