@@ -74,7 +74,7 @@ function Activity({ activity }: { activity: FeedActivity }): React.ReactElement 
 
       {
         object?.__typename === 'Article' && (
-          <div key={activity.id} className="mt-4">
+          <div key={activity.id} className="mt-4 mx-auto w-1/2">
             <ArticleCard article={activity.object as Article} noTrim />
           </div>
         )
@@ -116,7 +116,7 @@ function ProfileFeed({ userId, name }: { userId: string; name: string }): React.
   }
 
   return (
-    <div className="sm:w-3/5 py-5 container mx-auto relative">
+    <div className="py-5 container mx-auto relative">
       {profileFeed.results.map((feedActivity: FeedActivity) => <Activity key={feedActivity.id} activity={feedActivity} />)}
     </div>
   );
