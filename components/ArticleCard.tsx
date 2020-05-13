@@ -32,16 +32,22 @@ const ArticleCardImage = styled.div`
   background-image: url(${(props: ArticleCardImageProps): string => props.url});
 `;
 
-function ArticleCard({ article }: { article: Article }): React.ReactElement {
+function ArticleCard({
+  article,
+  noTrim = false,
+}: {
+  article: Article;
+  noTrim?: boolean;
+}): React.ReactElement {
   const articleHref = article?.slug ? `/articles/s/${article.slug}` : `/articles/i/${article.id}`;
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName[0] + '.'}`;
   const readingTime = timeToRead(article.wordCount);
 
-  const articleTitle = article.title.length > 45
+  const articleTitle = !noTrim && article.title.length > 45
     ? `${article.title.substr(0, article.title.lastIndexOf(' ', 45))}...`
     : article.title;
 
-  const articleSummary = article.summary && article.summary.length > 75
+  const articleSummary = !noTrim && article.summary && article.summary.length > 75
     ? `${article.summary.substr(0, article.summary.lastIndexOf(' ', 75))}...`
     : article.summary
 
