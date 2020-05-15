@@ -122,7 +122,7 @@ const Collections: NextPage = (): React.ReactElement => {
       }
     });
   }
-console.log(data);
+
   return (
     <>
       <NextSeo
