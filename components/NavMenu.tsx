@@ -73,7 +73,7 @@ function DisplayMenu(): React.ReactElement {
         </a>
       </Link>
 
-      <Link href="/collections">
+      <Link href={`/${username}/collections`}>
         <a
           className="hover:bg-gray-100 block py-2 pl-2 pr-12"
           onClick={(): void => window.analytics.track('MENU: Collections clicked')}

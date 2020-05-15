@@ -20,6 +20,7 @@ import Button from '../../components/Button';
 import Notification from '../../components/Notification';
 import CollectionFallback from '../../components/CollectionFallback';
 import GenericError from '../../components/GenericError';
+import PublicCollectionToggle from '../../components/PublicCollectionToggle';
 
 const Collections: NextPage = (): React.ReactElement => {
   const router = useRouter();
@@ -111,6 +112,17 @@ const Collections: NextPage = (): React.ReactElement => {
     }
   }
 
+  const handlePublicToggle = (isPublic: boolean): void  => {
+    updateCollection({
+      variables: {
+        input: {
+          id: data.collection.id,
+          public: isPublic,
+        }
+      }
+    });
+  }
+console.log(data);
   return (
     <>
       <NextSeo
@@ -126,6 +138,11 @@ const Collections: NextPage = (): React.ReactElement => {
 
       <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
         <div className="mb-6">
+          <PublicCollectionToggle
+            isPrivate={!data?.collection?.public}
+            onClick={handlePublicToggle}
+          />
+
           <div className="flex justify-between items-center">
             <TextareaAutosize 
               className="focus:outline-none text-4xl font-serif w-full h-auto resize-none placeholder-gray-500 font-bold"

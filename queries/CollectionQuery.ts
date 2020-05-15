@@ -8,6 +8,7 @@ const CollectionQuery = gql`
       description
       userId
       articleIds
+      public
       articles {
         id
         title
