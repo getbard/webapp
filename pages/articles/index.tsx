@@ -4,19 +4,19 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { NextSeo } from 'next-seo';
 
-import { Article } from '../generated/graphql';
-import ArticlesSummaryQuery from '../queries/ArticlesSummaryQuery';
+import { Article } from '../../generated/graphql';
+import ArticlesSummaryQuery from '../../queries/ArticlesSummaryQuery';
 
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 
-import { withApollo } from '../lib/apollo';
-import withLayout from '../components/withLayout';
-import ArticleTypeSelector from '../components/ArticleTypeSelector';
-import ArticleRow from '../components/ArticleRow';
-import PageHeader from '../components/PageHeader';
-import ArticlesFallback from '../components/ArticlesFallback';
-import EmptyState from '../components/EmptyState';
-import GenericError from '../components/GenericError';
+import { withApollo } from '../../lib/apollo';
+import withLayout from '../../components/withLayout';
+import ArticleTypeSelector from '../../components/ArticleTypeSelector';
+import ArticleRow from '../../components/ArticleRow';
+import PageHeader from '../../components/PageHeader';
+import ArticlesFallback from '../../components/ArticlesFallback';
+import EmptyState from '../../components/EmptyState';
+import GenericError from '../../components/GenericError';
 
 function ArticlesDisplay({
   articleType,
