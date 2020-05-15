@@ -201,13 +201,15 @@ const Author: NextPage = (): React.ReactElement => {
               />
 
               {
-                publicCollections.length && (
-                  <ProfileSectionSelector
-                    name="Collections"
-                    setSection={setSection}
-                    section={section}
-                  />
-                )
+                publicCollections.length
+                  ? (
+                    <ProfileSectionSelector
+                      name="Collections"
+                      setSection={setSection}
+                      section={section}
+                    />
+                  )
+                  : ''
               }
 
               {
