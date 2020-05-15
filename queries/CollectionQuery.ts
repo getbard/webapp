@@ -7,6 +7,33 @@ const CollectionQuery = gql`
       name
       description
       userId
+      articleIds
+      articles {
+        id
+        title
+        summary
+        slug
+        publishedAt
+        subscribersOnly
+        wordCount
+        category
+        author {
+          id
+          username
+          firstName
+          lastName
+        }
+        headerImage {
+          id
+          url
+        }
+      }
+      user {
+        id
+        username
+        firstName
+        lastName
+      }
     }
   }
 `;

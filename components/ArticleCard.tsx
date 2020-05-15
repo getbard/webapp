@@ -77,24 +77,37 @@ function ArticleCard({
       <Link href="/articles/[...id]" as={articleHref} passHref={true}>
         <a className="hover:cursor-pointer">
           {
-            article?.headerImage?.url &&
-            <ProgressiveImage
-              delay={500}
-              src={`${article.headerImage.url}&w=400`}
-              placeholder={`${article.headerImage.url}&w=400&auto=compress&blur=80`}
-            >
-              {(src: string): React.ReactElement =>
-                <ArticleCardImage className="flex-grow flex items-end h-40 rounded-t-sm -mt-3 -mx-3 mb-3" url={src}>
-                  {
-                    article?.subscribersOnly && (
-                      <span className="sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 flex md:hidden items-center text-xs text-primary font-sans">
-                        <FiFeather className="mr-1" /> Supporters Only
-                      </span>
-                    )
+            article?.headerImage?.url
+              ? (
+                <ProgressiveImage
+                  delay={500}
+                  src={`${article.headerImage.url}&w=400`}
+                  placeholder={`${article.headerImage.url}&w=400&auto=compress&blur=80`}
+                >
+                  {(src: string): React.ReactElement =>
+                    <ArticleCardImage className="flex-grow flex items-end h-40 rounded-t-sm -mt-3 -mx-3 mb-3" url={src}>
+                      {
+                        article?.subscribersOnly && (
+                          <span className="sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 flex md:hidden items-center text-xs text-primary font-sans">
+                            <FiFeather className="mr-1" /> Supporters Only
+                          </span>
+                        )
+                      }
+                    </ArticleCardImage>
                   }
-                </ArticleCardImage>
-              }
-            </ProgressiveImage>
+                </ProgressiveImage>
+              )
+              : (
+                <div className="flex-grow flex justify-center items-center h-40 rounded-t-sm -mt-3 -mx-3 mb-3 bg-primary relative">
+                  <span className="text-white text-6xl font-serif">
+                    b.
+                  </span>
+
+                  <span className="absolute bottom-0 left-0 sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 flex md:hidden items-center text-xs text-primary font-sans">
+                    <FiFeather className="mr-1" /> Supporters Only
+                  </span>
+                </div>
+              )
           }
 
           <div>

@@ -80,6 +80,10 @@ function CollectionRow({
       delete input.__typename;
     }
 
+    if (input.userId) {
+      delete input.userId;
+    }
+
     updateCollection({
       variables: { input },
     });

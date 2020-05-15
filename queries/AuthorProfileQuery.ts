@@ -23,6 +23,9 @@ const AuthorProfileQuery = gql`
         id
         title
       }
+      collections {
+        id
+      }
     }
   }
 `;

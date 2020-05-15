@@ -1,7 +1,5 @@
 
-import { useState } from 'react';
 import Link from 'next/link';
-import { FiCopy, FiFeather } from 'react-icons/fi';
 import { useMutation } from '@apollo/react-hooks';
 import { GoLock } from 'react-icons/go';
 
@@ -77,7 +75,7 @@ function CollectionRow({ collection, refetch }: { collection: Collection; refetc
 
       {collectionOwner && (
         <div className="flex justify-end items-center">
-          <Link href={`/collections/${collection.id}/edit`}>
+          <Link href={`/collections/${collection.id}`}>
             <a
               className="inline text-primary hover:underline hover:cursor-pointer mr-4 transition duration-150 ease-in-out"
               onClick={(): void => window.analytics.track('COLLECTION ROW: Edit clicked', trackingData)}

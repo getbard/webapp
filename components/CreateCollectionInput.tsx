@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@apollo/react-hooks';
-import { FiPlus } from 'react-icons/fi';
 import styled from '@emotion/styled';
 
+import { useAuth } from '../hooks/useAuth';
 import useOnClickOutside from '../hooks/useOnClickOutside';
 
 import CreateCollectionMutation from '../queries/CreateCollectionMutation';
@@ -18,9 +18,9 @@ const Input = styled.input`
   min-width: 14rem;
 `;
 
-
 function CreateCollectionInput({ refetch }: { refetch: () => void }): React.ReactElement {
   const menuRef = useRef(null);
+  const auth = useAuth();
   const { register, handleSubmit, errors } = useForm<FormData>();
   const [displayInput, setDisplayInput] = useState(false);
   const [createCollection, { error }] = useMutation(CreateCollectionMutation);
@@ -32,6 +32,11 @@ function CreateCollectionInput({ refetch }: { refetch: () => void }): React.Reac
   });
 
   const onSubmit = ({ name }: FormData): void => {
+    window.analytics.track('CREATE COLLECTION INPUT: Collection created from input', {
+      name,
+      userId: auth.userId,
+    });
+
     createCollection({ variables: { input: { name } } });
     setDisplayInput(false);
     refetch();

@@ -4,23 +4,21 @@ import { useQuery } from '@apollo/react-hooks';
 import Link from 'next/link';
 import { NextSeo } from 'next-seo';
 
-import { Collection } from '../../generated/graphql';
-import UserCollectionsQuery from '../../queries/UserCollectionsQuery';
+import UsernameQuery from '../../queries/UsernameQuery';
 
 import { withApollo } from '../../lib/apollo';
 import withLayout from '../../components/withLayout';
 import PageHeader from '../../components/PageHeader';
-import CollectionRow from '../../components/CollectionRow';
+import CollectionContainer from '../../components/CollectionContainer';
 
 const Collections: NextPage = (): React.ReactElement => {
   const router = useRouter();
   const { username } = router.query;
-  const { data, loading, error, refetch } = useQuery(UserCollectionsQuery, {
+  const { data } = useQuery(UsernameQuery, {
     variables: { username },
   });
 
   const prettyName = data?.user?.firstName ? `${data.user.firstName}'s` : `${username}'s`;
-  const collections = data?.user?.collections || [];
   const seoTitle = `${prettyName} Collections`;
   const seoDescription = `Articles curated by ${username}.`;
 
@@ -45,18 +43,10 @@ const Collections: NextPage = (): React.ReactElement => {
             </a>
           </Link>
 
-          &nsbp;Collections
+          &nbsp;Collections
         </PageHeader>
 
-        <div>
-          {collections.map((collection: Collection) => (
-            <CollectionRow
-              key={collection.id}
-              collection={collection}
-              refetch={refetch}
-            />
-          ))}
-        </div>
+        <CollectionContainer username={username as string || ''} />
       </div>
     </>
   );
