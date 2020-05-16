@@ -188,8 +188,17 @@ const Collections: NextPage = (): React.ReactElement => {
           </TextareaAutosize>
 
           <div>
-            {articles.length} article{articles.length === 1 ? '' : 's'}
-            &nbsp;collected by&nbsp;
+            {
+              articles.length
+               ? (
+                <span>
+                  {articles.length} article{articles.length === 1 ? '' : 's'} collected by&nbsp;
+                </span>
+               )
+               : (
+                 <span>Empty collection by&nbsp;</span>
+               )
+            }
 
             <Link href={`/${data?.collection?.user?.username}`}>
               <a
@@ -202,20 +211,30 @@ const Collections: NextPage = (): React.ReactElement => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
-          {articles.map((article: Article) => (
-              <div key={article.id} className="col-span-1 relative">
-                {isEditing && (
-                  <FiX
-                    className="absolute top-0 right-0 text-4xl text-red-600 bg-white rounded-bl-sm border-t border-r border-gray-300 p-1 z-10 hover:bg-gray-100 hover:cursor-pointer hover:text-red-800"
-                    onClick={(): void => handleRemoveArticle(article.id)}
-                  />
-                )}
-
-                <ArticleCard article={article} />
-              </div>
-            ))}
-        </div>
+        {
+          articles.length
+          ? (
+            <div className="grid grid-cols-2 gap-2">
+              {articles.map((article: Article) => (
+                  <div key={article.id} className="col-span-1 relative">
+                    {isEditing && (
+                      <FiX
+                        className="absolute top-0 right-0 text-4xl text-red-600 bg-white rounded-bl-sm border-t border-r border-gray-300 p-1 z-10 hover:bg-gray-100 hover:cursor-pointer hover:text-red-800"
+                        onClick={(): void => handleRemoveArticle(article.id)}
+                      />
+                    )}
+    
+                    <ArticleCard article={article} />
+                  </div>
+                ))}
+            </div>
+          )
+          : (
+            <div className="flex justify-center items-center text-3xl p-20">
+              There are no articles in this collection.
+            </div>
+          )
+        }
       </div>
 
       <Notification

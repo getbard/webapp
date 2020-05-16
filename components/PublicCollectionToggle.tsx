@@ -19,7 +19,6 @@ const Toggle = styled.div<ToggleProps>`
 `;
 
 function PublicCollectionToggle({ isPrivate, onClick }: Props): React.ReactElement {
-
   return (
     <div className="flex flex-col justify-center">
       <label htmlFor="sub-toggle" className={`flex items-center cursor-pointer`}>

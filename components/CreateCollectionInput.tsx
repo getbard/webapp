@@ -23,7 +23,11 @@ function CreateCollectionInput({ refetch }: { refetch: () => void }): React.Reac
   const auth = useAuth();
   const { register, handleSubmit, errors } = useForm<FormData>();
   const [displayInput, setDisplayInput] = useState(false);
-  const [createCollection, { error }] = useMutation(CreateCollectionMutation);
+  const [createCollection, { error }] = useMutation(CreateCollectionMutation, {
+    update() {
+      refetch();
+    }
+  });
 
   useOnClickOutside(menuRef, () => {
     if (displayInput) {
@@ -39,7 +43,6 @@ function CreateCollectionInput({ refetch }: { refetch: () => void }): React.Reac
 
     createCollection({ variables: { input: { name } } });
     setDisplayInput(false);
-    refetch();
   };
 
   return (
