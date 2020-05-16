@@ -15,6 +15,7 @@ const ProfileFeedQuery = gql`
         }
         verb
         time
+        collectedArticle
         object {
           ... on Article {
             id
@@ -52,6 +53,27 @@ const ProfileFeedQuery = gql`
               firstName
               lastName
               username
+            }
+          }
+          ... on Collection {
+            id
+            name
+            articles {
+              id
+              slug
+              title
+              summary
+              wordCount
+              headerImage {
+                id
+                url
+              }
+              author {
+                id
+                firstName
+                lastName
+                username
+              }
             }
           }
           ... on User {

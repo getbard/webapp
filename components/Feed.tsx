@@ -17,6 +17,7 @@ import FeedUserInfo from './FeedUserInfo';
 import FeedFallback from './FeedFallback';
 import EmptyState from './EmptyState';
 import GenericError from './GenericError';
+import FeedCollectionInfo from './FeedCollectionInfo';
 
 function Item({ item }: { item: FeedItem }): React.ReactElement {
   const { verb, actor_count: actorCount } = item;
@@ -25,6 +26,16 @@ function Item({ item }: { item: FeedItem }): React.ReactElement {
 
   const actorName = actor.lastName ? `${actor.firstName} ${actor.lastName}` : actor.lastName;
   const action = verb === 'commented' ? 'commented on' : verb;
+
+  const collectedArticle = object?.__typename === 'Collection' && verb === 'collected'
+  ? object?.articles?.find(article => {
+    if (activity.collectedArticle?.length && activity.collectedArticle[0]) {
+      return article?.id === activity.collectedArticle[0];
+    }
+
+    return false;
+  })
+  : null;
 
   return (
     <div className="rounded-sm p-5 border border-gray-300 my-4">
@@ -68,6 +79,22 @@ function Item({ item }: { item: FeedItem }): React.ReactElement {
               <FeedUserInfo user={object} />
             )
           }
+
+          {
+            object?.__typename === 'Collection' && action === 'collected' && (
+              <>
+                an article in <FeedCollectionInfo collection={object} />
+              </>
+            )
+          }
+
+          {
+            object?.__typename === 'Collection' && action === 'created' && (
+              <>
+                a new collection called <FeedCollectionInfo collection={object} />
+              </>
+            )
+          }
         </div>
 
         <div className="text-xs">
@@ -95,6 +122,14 @@ function Item({ item }: { item: FeedItem }): React.ReactElement {
               readOnly={true}
               commentId={object.id}
             />
+          </div>
+        )
+      }
+
+      {
+        object?.__typename === 'Collection' && action === 'collected' && collectedArticle && (
+          <div key={activity.id} className="mt-4 mx-auto w-1/2">
+            <ArticleCard article={collectedArticle as Article} noTrim />
           </div>
         )
       }
