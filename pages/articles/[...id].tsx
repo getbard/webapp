@@ -27,6 +27,7 @@ import AuthorSupport from '../../components/AuthorSupport';
 import ArticleHeaderSupport from '../../components/ArticleHeaderSupport';
 import ContentBlocker from '../../components/ContentBlocker';
 import Button from '../../components/Button';
+import ShareArticleButton from '../../components/ShareArticleButton';
 
 const ArticleContainer: NextPage = (props: any): React.ReactElement => {
   const auth = useAuth();
@@ -202,7 +203,9 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
               </div>
             </div>
 
-            <div className="text-right">
+            <div className="flex justify-end items-center space-x-4">
+              <ShareArticleButton article={article} minimal />
+
               {
                 auth.userId === article.author.id
                   ? (
@@ -254,7 +257,7 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
         { 
           auth.userId !== article.author.id && !article?.contentBlocked && (
             <AuthorSupport
-              author={article.author}
+              article={article}
               articleTrackingData={articleTrackingData}
             />
           )

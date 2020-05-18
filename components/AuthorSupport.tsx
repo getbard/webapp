@@ -3,23 +3,24 @@ import { useRouter } from 'next/router';
 
 import { useAuth } from '../hooks/useAuth';
 
-import { User } from '../generated/graphql';
+import { User, Article } from '../generated/graphql';
 
 import BecomeSupporterButton from './BecomeSupporterButton';
 import OneTimeSupportButton from './OneTimeSupportButton';
 import FollowButton from './FollowButton';
+import ShareArticleButton from './ShareArticleButton';
 
 function AuthorSupport({
-  author,
+  article,
   articleTrackingData,
 }: {
-  author:  User;
+  article: Article;
   articleTrackingData: any;
 }): React.ReactElement {
   const auth = useAuth();
   const router = useRouter();
   const { support } = router.query;
-  const authorName = `${author.firstName}${author?.lastName && ' ' + author.lastName}`;
+  const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName}`;
 
   const handleAuthorClick = (): void => {
     window.analytics.track(`ARTICLE: author name clicked`, articleTrackingData);
@@ -31,7 +32,7 @@ function AuthorSupport({
         <div>
           This article was written by&nbsp;
 
-          <Link href={`/${author.username}`} >
+          <Link href={`/${article.author.username}`} >
             <a
               className="underline font-bold"
               onClick={handleAuthorClick}
@@ -47,29 +48,28 @@ function AuthorSupport({
       </div>
 
       {
-        author.id !== auth.userId && (
-          <div className="flex justify-center flex-col items-center">
-            {author?.stripeUserId && author?.stripePlan && (
+        article.author.id !== auth.userId && (
+          <div className="space-x-4">
+            {article.author?.stripeUserId && article.author?.stripePlan && (
               <BecomeSupporterButton
-                author={author}
+                author={article.author}
                 displayModal={!!support}
               />
             )}
 
-            <div className="mt-2">
               <FollowButton
-                className="mr-2"
-                user={author}
+                user={article.author}
                 follower={auth.userId || ''}
               />
 
-              {author?.stripeUserId && (
+              {article.author?.stripeUserId && (
                 <OneTimeSupportButton
-                  stripeUserId={author?.stripeUserId || ''}
-                  author={author}
+                  stripeUserId={article.author?.stripeUserId || ''}
+                  author={article.author}
                 />
               )}
-            </div>
+
+              <ShareArticleButton article={article} />
           </div>
         )
       }

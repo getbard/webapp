@@ -7,7 +7,7 @@ import { User } from '../generated/graphql';
 import BecomeSupporterButton from './BecomeSupporterButton';
 import FollowButton from './FollowButton';
 
-function AuthorSupport({
+function AuthorHeaderSupport({
   author,
 }: {
   author:  User;
@@ -39,4 +39,4 @@ function AuthorSupport({
   );
 }
 
-export default AuthorSupport;
+export default AuthorHeaderSupport;
