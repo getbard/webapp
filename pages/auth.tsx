@@ -4,6 +4,7 @@ import { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import firebase from '../lib/firebase';
+import Link from 'next/link';
 
 import { withApollo } from '../lib/apollo';
 
@@ -33,6 +34,9 @@ const ResetPassword: NextPage = (): React.ReactElement => {
   const [email, setEmail] = useState('');
   const { register, handleSubmit, errors, watch } = useForm<FormData>();
 
+  const passwordResetSuccessMessage = 'Your password has been reset!';
+  const emailValidationSuccessMessage = 'Your email has been verified.';
+
   const handleResetPassword = (data: FormData | undefined): void => {
     const { password } = data || {};
 
@@ -48,7 +52,7 @@ const ResetPassword: NextPage = (): React.ReactElement => {
 
         firebase.auth().signInWithEmailAndPassword(email, password);
 
-        setSuccess(`You're password has been reset! Time to find your next great read.`);
+        setSuccess(passwordResetSuccessMessage);
       })
       .catch(() => {
         window.analytics.track('AUTH: Password reset failed');
@@ -64,7 +68,7 @@ const ResetPassword: NextPage = (): React.ReactElement => {
       .then(() => {
         window.analytics.track('AUTH: Verify email succeeded');
 
-        setSuccess('Your email has been verified. Time to publish your first article!');
+        setSuccess(emailValidationSuccessMessage);
       })
       .catch((error) => {
         window.analytics.track('AUTH: Verify email failed');
@@ -179,7 +183,27 @@ const ResetPassword: NextPage = (): React.ReactElement => {
                 </div>
 
                 <div>
-                  {success}
+                  {success}{' '}
+
+                  {
+                    success === passwordResetSuccessMessage && (
+                      <Link href="/">
+                        <a>
+                          Time to find your next great read.
+                        </a>
+                      </Link>
+                    )
+                  }
+
+                  {
+                    success === emailValidationSuccessMessage && (
+                      <Link href="/write">
+                        <a>
+                          Time to publish your first article!
+                        </a>
+                      </Link>
+                    )
+                  }
                 </div>
               </div>
             )

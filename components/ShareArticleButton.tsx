@@ -63,7 +63,7 @@ function ShareArticleButton({
       }
 
       <Modal open={displayShareModal} onModalClose={(): void => setDisplayShareModal(false)}>
-        <h2 className="text-lg mb-2">
+        <h2 className="text-lg mb-2 mx-10">
           Share <span className="font-bold">{article.title}</span>
         </h2>
 
@@ -104,7 +104,6 @@ function ShareArticleButton({
             <FiMail />
           </a>
         </div>
-
       </Modal>
     </>
   );
