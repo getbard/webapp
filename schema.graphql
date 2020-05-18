@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Mon May 11 2020 14:41:27 GMT-0700 (Pacific Daylight Time)
+# timestamp: Mon May 18 2020 11:21:21 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -93,6 +93,20 @@ enum Category {
   world
 }
 
+type Collection {
+  id: ID!
+  name: String
+  userId: String
+  user: User
+  description: String
+  articles: [Article]
+  articleIds: [String]
+  public: Boolean
+  createdAt: String!
+  updatedAt: String!
+  deletedAt: String
+}
+
 type Comment {
   id: ID!
   userId: String!
@@ -115,6 +129,17 @@ input ConnectStripeAccountInput {
 
 type ConnectStripeAccountPayload {
   success: Boolean!
+}
+
+input CreateCollectionInput {
+  name: String!
+  description: String
+  articleIds: [String]
+  public: Boolean
+}
+
+type CreateCollectionPayload {
+  id: ID!
 }
 
 input CreateCommentInput {
@@ -201,6 +226,15 @@ type DeleteArticlePayload {
   id: ID!
 }
 
+input DeleteCollectionInput {
+  id: ID!
+}
+
+type DeleteCollectionPayload {
+  id: ID!
+  deletedAt: String!
+}
+
 input DeleteCommentInput {
   id: ID!
 }
@@ -233,9 +267,10 @@ type FeedActivity {
   verb: String!
   time: String!
   object: FeedActivityObject
+  collectedArticle: [String]
 }
 
-union FeedActivityObject = Article | Comment | User
+union FeedActivityObject = Article | Comment | User | Collection
 
 type FeedItem {
   id: ID!
@@ -275,6 +310,9 @@ type Mutation {
   createProfileSection(input: CreateProfileSectionInput!): CreateProfileSectionPayload!
   updateProfileSection(input: UpdateProfileSectionInput!): UpdateProfileSectionPayload!
   deleteProfileSection(input: DeleteProfileSectionInput!): DeleteProfileSectionPayload!
+  createCollection(input: CreateCollectionInput!): CreateCollectionPayload!
+  updateCollection(input: UpdateCollectionInput!): UpdateCollectionPayload!
+  deleteCollection(input: DeleteCollectionInput!): DeleteCollectionPayload!
 }
 
 type Plan {
@@ -317,6 +355,7 @@ type Query {
   articleBySlug(slug: String!): Article
   articlesByUser(userId: ID!, drafts: Boolean): [Article]
   authLink(type: AuthLink!, email: String!): String
+  collection(id: ID!): Collection
   commentsByResourceId(resourceId: ID!): [Comment]
   feed: Feed
   profileFeed(userId: ID): ProfileFeed
@@ -386,6 +425,18 @@ type UnsplashPhotoURLs {
   small: String!
   thumb: String!
   download_location: String!
+}
+
+input UpdateCollectionInput {
+  id: ID!
+  name: String
+  description: String
+  articleIds: [String]
+  public: Boolean
+}
+
+type UpdateCollectionPayload {
+  id: ID!
 }
 
 input UpdateCommentInput {
@@ -462,4 +513,5 @@ type User {
   stripePlan: StripePlan
   stripeDashboardUrl: String
   profileSections: [ProfileSection]
+  collections: [Collection]
 }

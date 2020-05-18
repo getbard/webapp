@@ -81,13 +81,11 @@ const StripeConnect: NextPage = (): React.ReactElement => {
         Connecting with Stripe
       </PageHeader>
 
-      <p>
-        {
-          stripeResults?.success || accountAlreadyConnected
-            ? <SuccessInfo />
-            : 'Something went wrong. Try again later and let us know if you keep having trouble.'
-        }
-      </p>
+      {
+        stripeResults?.success || accountAlreadyConnected
+          ? <SuccessInfo />
+          : <p>Something went wrong. Try again later and let us know if you keep having trouble.</p>
+      }
     </div>
   );
 }
