@@ -92,16 +92,16 @@ function OneTimeSupportButton({
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
-            <label htmlFor="donationAmount" className="hidden">
+            <label htmlFor="donationAmount" className="font-bold text-primary">
               Donation amount
             </label>
             
             <input
-              className={`border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.donationAmount && 'focus:border-primary'} placeholder-gray-500 ${errors.donationAmount && 'border-red-600'}`}
+              className={`border rounded-sm block w-full sm:w-auto py-2 px-3 focus:outline-none ${!errors.donationAmount && 'focus:border-primary'} placeholder-gray-500 ${errors.donationAmount && 'border-red-600'}`}
               id="donationAmount"
               type="number"
               name="donationAmount"
-              placeholder="Enter a donation amount of $2 or more"
+              placeholder="$10"
               ref={register({
                 required: 'Please enter a donation amount',
                 min: {

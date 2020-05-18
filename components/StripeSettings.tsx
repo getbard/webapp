@@ -87,21 +87,21 @@ const StripeSettings = (): React.ReactElement => {
             </label>
 
             <input
-              className={`border rounded-sm w-full py-2 px-3 focus:outline-none ${!errors.amount && 'focus:border-primary'} placeholder-gray-500 ${errors.amount && 'border-red-600'}`}
+              className={`shadow-inner w-full border rounded-sm py-2 px-3 focus:outline-none ${!errors.amount && 'focus:border-primary'} placeholder-gray-500 ${errors.amount && 'border-red-600'}`}
               id="amount"
               type="number"
               name="amount"
               defaultValue={(user?.stripePlan?.amount! || 1000) / 100}
               placeholder="Enter a subscription price of $1 or more"
               ref={register({
-                required: 'Please enter a donation amount',
+                required: 'Please enter a subscription amount',
                 min: {
                   value: 1,
                   message: 'The minimum price is $1',
                 },
                 max: {
                   value: 50,
-                  message: 'The maximum donation is $50. Want to charge higher? Let us know!',
+                  message: 'The maximum subscription is $50. Want to charge higher? Let us know!',
                 }
               })}
             />

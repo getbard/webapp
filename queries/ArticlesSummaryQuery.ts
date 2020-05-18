@@ -13,6 +13,11 @@ const ArticlesSummaryQuery = gql`
       slug
       userId
       wordCount
+      author {
+        id
+        firstName
+        lastName
+      }
     }
   }
 `;
