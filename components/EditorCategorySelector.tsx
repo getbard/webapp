@@ -51,7 +51,7 @@ export function EditorHeaderPhotoSelector({
                 return (
                   <div
                     key={category}
-                    className="capitalize px-4 py-1 text-center hover:cursor-pointer hover:bg-gray-200 text-gray-500 hover:text-gray-800 font-medium"
+                    className="capitalize px-4 py-2 text-center hover:cursor-pointer hover:bg-gray-200 text-gray-500 hover:text-gray-800 font-medium"
                     onClick={(): void => {
                       setCategory(category as Category);
                       setDisplay(false);
@@ -64,7 +64,7 @@ export function EditorHeaderPhotoSelector({
             }
 
             <a 
-              className="px-4 py-1 block hover:bg-gray-200 text-gray-500 hover:text-gray-800 font-medium"
+              className="px-4 py-2 block hover:bg-gray-200 text-gray-500 hover:text-gray-800 font-medium"
               href="https://feedback.getbard.com"
               target="_blank"
               rel="noopener noreferrer"

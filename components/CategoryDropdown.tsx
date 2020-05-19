@@ -49,7 +49,7 @@ export function CategoryDropdown({
                 return (
                   <div
                     key={category}
-                    className="capitalize px-4 py-1 text-center hover:cursor-pointer hover:bg-gray-200 hover:text-primary font-medium"
+                    className="capitalize px-4 py-2 text-center hover:cursor-pointer hover:bg-gray-200 hover:text-primary font-medium"
                     onClick={(): void => {
                       setCategory(category);
                       setDisplay(false);

@@ -28,6 +28,7 @@ import ArticleHeaderSupport from '../../components/ArticleHeaderSupport';
 import ContentBlocker from '../../components/ContentBlocker';
 import Button from '../../components/Button';
 import ShareArticleButton from '../../components/ShareArticleButton';
+import AddToCollection from '../../components/AddToCollection';
 
 const ArticleContainer: NextPage = (props: any): React.ReactElement => {
   const auth = useAuth();
@@ -162,18 +163,24 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
       <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
         <div className="mb-8">
         
-          {
-            article?.category && (
-              <Link href={`/?category=${article.category}`}>
-                <a
-                  className="capitalize text-lg text-gray-500 w-full font-serif font-bold"
-                  onClick={(): void => window.analytics.track(`ARTICLE: Category clicked`, articleTrackingData)}
-                >
-                  {article.category}
-                </a>
-              </Link>
-            )
-          }
+          <div className="flex justify-between items-center h-8 mb-1">
+            <div>
+              {
+                article?.category && (
+                  <Link href={`/?category=${article.category}`}>
+                    <a
+                      className="capitalize text-lg text-gray-500 w-full font-serif font-bold"
+                      onClick={(): void => window.analytics.track(`ARTICLE: Category clicked`, articleTrackingData)}
+                    >
+                      {article.category}
+                    </a>
+                  </Link>
+                )
+              }
+            </div>
+
+            {auth.userId && <AddToCollection articleId={article.id} />}
+          </div>
           
           <div className="text-4xl w-full font-serif font-bold">
             {article.title}

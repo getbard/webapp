@@ -18,12 +18,24 @@ import FeedUserInfo from './FeedUserInfo';
 import FeedFallback from './FeedFallback';
 import EmptyState from './EmptyState';
 import GenericError from './GenericError';
+import FeedCollectionInfo from './FeedCollectionInfo';
 
 function Activity({ activity }: { activity: FeedActivity }): React.ReactElement {
   const auth = useAuth();
   const { actor, time, object, verb } = activity;
+ 
   const actorName = actor.lastName ? `${actor.firstName} ${actor.lastName}` : actor.lastName;
   const action = verb === 'commented' ? 'commented on' : verb;
+
+  const collectedArticle = object?.__typename === 'Collection' && verb === 'collected'
+    ? object?.articles?.find(article => {
+      if (activity.collectedArticle?.length && activity.collectedArticle[0]) {
+        return article?.id === activity.collectedArticle[0];
+      }
+
+      return false;
+    })
+    : null;
 
   return (
     <div className="rounded-sm p-5 border border-gray-300 my-4">
@@ -45,7 +57,6 @@ function Activity({ activity }: { activity: FeedActivity }): React.ReactElement 
           }
 
           &nbsp;{action}&nbsp;
-
           {
             object?.__typename === 'Article' && (
               <>
@@ -63,6 +74,22 @@ function Activity({ activity }: { activity: FeedActivity }): React.ReactElement 
           {
             object?.__typename === 'User' && (
               <FeedUserInfo user={object} />
+            )
+          }
+
+          {
+            object?.__typename === 'Collection' && action === 'collected' && (
+              <>
+                an article in <FeedCollectionInfo collection={object} />
+              </>
+            )
+          }
+
+          {
+            object?.__typename === 'Collection' && action === 'created' && (
+              <>
+                a new collection called <FeedCollectionInfo collection={object} />
+              </>
             )
           }
         </div>
@@ -89,6 +116,14 @@ function Activity({ activity }: { activity: FeedActivity }): React.ReactElement 
               readOnly={true}
               commentId={object.id}
             />
+          </div>
+        )
+      }
+
+      {
+        object?.__typename === 'Collection' && action === 'collected' && collectedArticle && (
+          <div key={activity.id} className="mt-4 mx-auto w-1/2">
+            <ArticleCard article={collectedArticle as Article} noTrim />
           </div>
         )
       }

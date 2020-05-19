@@ -5,6 +5,8 @@ const UsernameQuery = gql`
     user(username: $username) {
       id
       username
+      firstName
+      lastName
     }
   }
 `;

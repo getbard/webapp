@@ -17,7 +17,12 @@ type FormData = {
 
 const StripeSettings = (): React.ReactElement => {
   const { register, handleSubmit, errors } = useForm<FormData>();
-  const { data, loading: dataLoading, error: dataError, refetch } = useQuery(StripeSettingsQuery, { variables: { username: 'me' } });
+  const {
+      data,
+      loading: dataLoading,
+      error: dataError,
+      refetch,
+    } = useQuery(StripeSettingsQuery, { variables: { username: 'me' } });
   
   const [updatePrice, {
     loading: mutationLoading,

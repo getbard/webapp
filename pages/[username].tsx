@@ -29,6 +29,7 @@ import ProfileFeed from '../components/ProfileFeed';
 import GenericError from '../components/GenericError';
 import BardError from './_error';
 import ProfileSectionDisplay from '../components/ProfileSectionDisplay';
+import CollectionContainer from '../components/CollectionContainer';
 
 
 type BorderHackProps = {
@@ -120,6 +121,8 @@ const Author: NextPage = (): React.ReactElement => {
     return <BardError statusCode={404} hasGetInitialPropsRun={true} err={null} />;
   }
 
+  const publicCollections = user?.collections?.filter(collection => !collection?.public) || [];
+
   const {
     loading: articlesLoading,
     error: articlesError,
@@ -198,6 +201,18 @@ const Author: NextPage = (): React.ReactElement => {
               />
 
               {
+                publicCollections.length
+                  ? (
+                    <ProfileSectionSelector
+                      name="Collections"
+                      setSection={setSection}
+                      section={section}
+                    />
+                  )
+                  : ''
+              }
+
+              {
                 user?.profileSections?.length
                   ? (
                     <div className="inline whitespace-no-wrap space-x-8">
@@ -260,6 +275,12 @@ const Author: NextPage = (): React.ReactElement => {
                 userId={user.id}
                 name={user.firstName}
               />
+            )
+          }
+
+          {
+            section === 'collections' && (
+              <CollectionContainer username={user.username} />
             )
           }
 
