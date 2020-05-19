@@ -43,7 +43,7 @@ function CollectionRow({ collection, refetch }: { collection: Collection; refetc
         <div>
           <Link href={`/collections/${collection.id}`}>
             <a
-              className="flex justify-between items-center text-3xl font-serif hover:text-primary hover:cursor-pointer transition duration-150 ease-in-out"
+              className="flex items-center text-3xl font-serif hover:text-primary hover:cursor-pointer transition duration-150 ease-in-out"
               onClick={(): void => window.analytics.track('COLLECTION ROW: Collection name clicked', trackingData)}
             >
               {collection.name}
