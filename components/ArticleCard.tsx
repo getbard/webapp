@@ -103,9 +103,11 @@ function ArticleCard({
                     b.
                   </span>
 
-                  <span className="absolute bottom-0 left-0 sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 flex md:hidden items-center text-xs text-primary font-sans">
-                    <FiFeather className="mr-1" /> Supporters Only
-                  </span>
+                  {article?.subscribersOnly && (
+                    <span className="absolute bottom-0 left-0 sub-only bg-white rounded-tr-sm pl-1 pt-1 pr-2 flex md:hidden items-center text-xs text-primary font-sans">
+                      <FiFeather className="mr-1" /> Supporters Only
+                    </span>
+                  )}
                 </div>
               )
           }

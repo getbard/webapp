@@ -179,7 +179,7 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
               }
             </div>
 
-            <AddToCollection articleId={article.id} />
+            {auth.userId && <AddToCollection articleId={article.id} />}
           </div>
           
           <div className="text-4xl w-full font-serif font-bold">

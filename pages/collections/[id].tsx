@@ -89,7 +89,7 @@ const Collections: NextPage = (): React.ReactElement => {
 
   const handleRemoveArticle = (articleId: string): void => {
     window.analytics.track('COLLECTION: Remove article clicked', trackingData);
-    const deleteConfirmed = confirm('Are you sure you want to remove this article?');
+    const deleteConfirmed = confirm('Are you sure you want to remove this article from this collection?');
 
     if (deleteConfirmed) {
       window.analytics.track('COLLECTION: Remove article confirmed', trackingData);
@@ -214,9 +214,9 @@ const Collections: NextPage = (): React.ReactElement => {
         {
           articles.length
           ? (
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {articles.map((article: Article) => (
-                  <div key={article.id} className="col-span-1 relative">
+                  <div key={article.id} className="col-span-1 relative flex">
                     {isEditing && (
                       <FiX
                         className="absolute top-0 right-0 text-4xl text-red-600 bg-white rounded-bl-sm border-t border-r border-gray-300 p-1 z-10 hover:bg-gray-100 hover:cursor-pointer hover:text-red-800"

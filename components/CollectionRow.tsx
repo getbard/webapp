@@ -29,7 +29,7 @@ function CollectionRow({ collection, refetch }: { collection: Collection; refetc
 
   const handleDelete = (): void => {
     window.analytics.track('COLLECTION ROW: Delete clicked', trackingData);
-    const deleteConfirmed = confirm('Are you sure you want to delete this collection?');
+    const deleteConfirmed = confirm('Are you sure you want to delete this collection? This will not delete the articles it contains.');
 
     if (deleteConfirmed) {
       window.analytics.track('COLLECTION ROW: Delete confirm clicked', trackingData);
@@ -67,6 +67,7 @@ function CollectionRow({ collection, refetch }: { collection: Collection; refetc
               </div>
             )
           }
+
           <div className="text-xs">
             {collection?.articleIds?.length || 0} article{collection?.articleIds?.length === 1 ? '' : 's'}
           </div>
