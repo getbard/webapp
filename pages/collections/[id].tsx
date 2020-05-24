@@ -138,11 +138,15 @@ const Collections: NextPage = (): React.ReactElement => {
 
       <div className="sm:w-3/5 px-5 py-5 container mx-auto relative">
         <div className="mb-6">
-          <PublicCollectionToggle
-            isPrivate={!data?.collection?.public}
-            onClick={handlePublicToggle}
-          />
-
+          {
+            collectionOwner && (
+              <PublicCollectionToggle
+                isPrivate={!data?.collection?.public}
+                onClick={handlePublicToggle}
+              />
+            )
+          }
+          
           <div className="flex justify-between items-center">
             <TextareaAutosize 
               className="focus:outline-none text-4xl font-serif w-full h-auto resize-none placeholder-gray-500 font-bold"

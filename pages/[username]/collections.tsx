@@ -4,6 +4,8 @@ import { useQuery } from '@apollo/react-hooks';
 import Link from 'next/link';
 import { NextSeo } from 'next-seo';
 
+import { useAuth } from '../../hooks/useAuth';
+
 import UsernameQuery from '../../queries/UsernameQuery';
 
 import { withApollo } from '../../lib/apollo';
@@ -14,11 +16,13 @@ import ButtonLink from '../../components/ButtonLink';
 
 const Collections: NextPage = (): React.ReactElement => {
   const router = useRouter();
+  const auth = useAuth();
   const { username } = router.query;
   const { data } = useQuery(UsernameQuery, {
     variables: { username },
   });
-
+  
+  const collectionOwner = auth.userId === data?.user?.id;
   const prettyName = data?.user?.firstName ? `${data.user.firstName}'s` : `${username}'s`;
   const seoTitle = `${prettyName} Collections`;
   const seoDescription = `Articles curated by ${username}.`;
@@ -49,9 +53,13 @@ const Collections: NextPage = (): React.ReactElement => {
           </PageHeader>
 
           <div className="mb-4">
-            <ButtonLink href="/collections/create">
-              Create collection
-            </ButtonLink>
+            {
+              collectionOwner && (
+                <ButtonLink href="/collections/create">
+                  Create collection
+                </ButtonLink>
+              )
+            }
           </div>
         </div>
 
