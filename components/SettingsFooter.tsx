@@ -15,16 +15,6 @@ function SettingsFooter(): React.ReactElement {
         </a>
       </Link>
 
-      <a
-        className="mr-4 md:mr-0 inline-block md:block"
-        href="https://feedback.getbard.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={(): void => window.analytics.track('MENU: Feedback clicked')}
-      >
-        Feedback
-      </a>
-
       <Link href="/privacy">
         <a className="mr-4 md:mr-0 inline-block md:block">
           Privacy

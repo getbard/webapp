@@ -86,17 +86,7 @@ const FAQ: NextPage = (): React.ReactElement => {
           </h2>
 
           <p>
-            Awesome. Submit it to&nbsp;
-            <a
-              className="underline"
-              href="https://feedback.getbard.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(): void => window.analytics.track('MENU: Feedback clicked')}
-            >
-              our feature/bug tracking platform
-            </a>
-            &nbsp;or email us directly at <a className="underline" href="mailto:hello@getbard.com">hello@getbard.com</a>.
+            Awesome. Email us directly at <a className="underline" href="mailto:hello@getbard.com">hello@getbard.com</a>.
           </p>
         </div>    
 

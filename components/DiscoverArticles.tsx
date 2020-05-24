@@ -100,16 +100,6 @@ function DiscoverArticles({
                     alt="Bard - The ultimate hub for writers who want to get paid | Product Hunt Embed"
                   />
                 </a>
-
-                <a 
-                  className="font-bold"
-                  href="https://feedback.getbard.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(): void => window.analytics.track('DISCOVER: Feedback clicked')}
-                >
-                  Have a feature request? Let us know!
-                </a>
               </div>  
             )
           }

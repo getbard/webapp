@@ -23,15 +23,6 @@ function Footer(): React.ReactElement {
           </a>
         </Link>
 
-        <a 
-          href="https://feedback.getbard.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={(): void => window.analytics.track('MENU: Feedback clicked')}
-        >
-          Feedback
-        </a>
-
         <Link href="/privacy">
           <a>
             Privacy
