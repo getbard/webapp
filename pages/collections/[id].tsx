@@ -133,6 +133,10 @@ const Collections: NextPage = (): React.ReactElement => {
           type: 'website',
           description: seoDescription,
           url: `https://getbard.com/collections/${id}`,
+          images: [{
+            url: 'https://getbard.com/collection-og.png',
+            alt: 'collect articles on bard.',
+          }],
         }}
       />
 
