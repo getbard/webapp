@@ -69,7 +69,7 @@ const Collections: NextPage = (): React.ReactElement => {
     ? 'you'
     : `${data?.collection?.user?.firstName}${data?.collection?.user?.lastName && ' ' + data?.collection?.user?.lastName[0] + '.'}`;
 
-  const seoDescription = `A collection of articles curated by a guy.`;
+  const seoDescription = `A collection of articles curated by ${displayName}.`;
 
   const handleSaveCollection = (): void => {
     window.analytics.track('COLLECTION: Save clicked', trackingData);
