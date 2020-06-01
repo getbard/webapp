@@ -10,7 +10,6 @@ import ButtonLink from './ButtonLink';
 import BecomeSupporterButton from './BecomeSupporterButton';
 
 const GradientBlocker = styled.div`
-  width: 100%;
   background: linear-gradient(0deg, rgba(255,255,255,1) 40%, rgba(255,255,255,0) 100%);
 `;
 
@@ -25,7 +24,7 @@ const ContentBlocker = ({ author }: { author: User }): React.ReactElement => {
   }
 
   return (
-    <div className="absolute top-0 left-0 right-0 bottom-0">
+    <div className="mb-10 absolute top-0 left-0 right-0 bottom-0">
       <GradientBlocker className="h-full w-full" />
 
       <div className="bg-white flex flex-col justify-center items-center pb-10 pt-0 -mt-16">
