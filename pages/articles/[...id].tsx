@@ -29,6 +29,7 @@ import ContentBlocker from '../../components/ContentBlocker';
 import Button from '../../components/Button';
 import ShareArticleButton from '../../components/ShareArticleButton';
 import AddToCollection from '../../components/AddToCollection';
+import MoreArticles from '../../components/MoreArticles';
 
 const ArticleContainer: NextPage = (props: any): React.ReactElement => {
   const auth = useAuth();
@@ -269,6 +270,8 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
             />
           )
         }
+
+        <MoreArticles author={article.author} />
       
         {!article?.contentBlocked && <Comments resourceId={article.id} />}
 
