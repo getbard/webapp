@@ -25,7 +25,7 @@ function MoreArticles({ author, article }: { author: User; article: Article }): 
         Read more from {author.firstName}
       </h2>
 
-      <div className="space-y-4 md:space-y-0 md:space-x-4 flex flex-col md:flex-row justify-center items-center md:-mx-20">
+      <div className="space-y-4 md:space-y-0 md:space-x-4 flex flex-col md:flex-row justify-center md:-mx-20">
         {articlesToDisplay.map((article: Article) => <ArticleCard key={article.id} article={article} />)}
       </div>
     </div>
