@@ -6,12 +6,18 @@ import MoreArticlesByUserQuery from '../queries/MoreArticlesByUserQuery';
 
 import ArticleCard from './ArticleCard';
 
-function MoreArticles({ author }: { author: User }): React.ReactElement {
+function MoreArticles({ author, article }: { author: User; article: Article }): React.ReactElement {
   const { data } = useQuery(MoreArticlesByUserQuery, { variables: {
     userId: author.id,
     drafts: false,
-    limit: 3,
+    limit: 4,
   } });
+
+  const articlesToDisplay = data?.articlesByUser.filter((currArticle: Article) => article.id !== currArticle.id);
+
+  if (!articlesToDisplay?.length) {
+    return <></>;
+  }
 
   return (
     <div className="mt-10 space-y-1">
@@ -19,8 +25,8 @@ function MoreArticles({ author }: { author: User }): React.ReactElement {
         Read more from {author.firstName}
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:-mx-20">
-        {data?.articlesByUser.map((article: Article) => <ArticleCard key={article.id} article={article} />)}
+      <div className="space-y-4 md:space-y-0 md:space-x-4 flex flex-col md:flex-row justify-center items-center md:-mx-20">
+        {articlesToDisplay.map((article: Article) => <ArticleCard key={article.id} article={article} />)}
       </div>
     </div>
   );

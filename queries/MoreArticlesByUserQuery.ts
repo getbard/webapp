@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 const MoreArticlesByUserQuery = gql`
-  query moreArticlesByUser($userId: ID!, $drafts: Boolean) {
-    articlesByUser(userId: $userId, drafts: $drafts, limit: 3) {
+  query moreArticlesByUser($userId: ID!, $drafts: Boolean, $limit: Int) {
+    articlesByUser(userId: $userId, drafts: $drafts, limit: $limit) {
       id
       title
       summary

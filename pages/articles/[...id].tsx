@@ -271,7 +271,7 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
           )
         }
 
-        <MoreArticles author={article.author} />
+        <MoreArticles article={article} author={article.author} />
       
         {!article?.contentBlocked && <Comments resourceId={article.id} />}
 
