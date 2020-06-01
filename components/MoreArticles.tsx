@@ -13,7 +13,7 @@ function MoreArticles({ author, article }: { author: User; article: Article }): 
     limit: 4,
   } });
 
-  const articlesToDisplay = data?.articlesByUser.filter((currArticle: Article) => article.id !== currArticle.id);
+  const articlesToDisplay = data?.articlesByUser.filter((currArticle: Article) => article.id !== currArticle.id).slice(0, 3);
 
   if (!articlesToDisplay?.length) {
     return <></>;
