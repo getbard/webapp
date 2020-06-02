@@ -30,6 +30,7 @@ import Button from '../../components/Button';
 import ShareArticleButton from '../../components/ShareArticleButton';
 import AddToCollection from '../../components/AddToCollection';
 import MoreArticles from '../../components/MoreArticles';
+import FreeArticles from '../../components/FreeArticles';
 
 const ArticleContainer: NextPage = (props: any): React.ReactElement => {
   const auth = useAuth();
@@ -271,7 +272,11 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
           )
         }
 
-        <MoreArticles article={article} author={article.author} />
+        {
+          article?.contentBlocked
+            ? <FreeArticles author={article.author} />
+            : <MoreArticles article={article} author={article.author} />
+        }
       
         {!article?.contentBlocked && <Comments resourceId={article.id} />}
 

@@ -11,7 +11,7 @@ function MoreArticles({ author, article }: { author: User; article: Article }): 
     userId: author.id,
     drafts: false,
     limit: 4,
-  } });
+  }});
 
   const articlesToDisplay = data?.articlesByUser.filter((currArticle: Article) => article.id !== currArticle.id).slice(0, 3);
 
