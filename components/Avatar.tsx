@@ -37,7 +37,7 @@ function Avatar({
   small?: boolean;
 }): React.ReactElement {
   const [display, setDisplay] = useState(false);
-  const [url, setUrl] = useState(user?.avatarUrl || `https://avatars.dicebear.com/api/identicon/${user.username}.svg?options[background]=%23004346&options[colors]=["blueGrey"]&options[colorLevel]=50`);
+  const [url, setUrl] = useState(user?.avatarUrl || encodeURI(`https://avatars.dicebear.com/api/identicon/${user.username}.svg?options[background]=%23004346&options[colors]=["blueGrey"]&options[colorLevel]=50`));
 
   const [updateUser, { loading, error, called }] = useMutation(UpdateUserMutation);
 
