@@ -19,6 +19,7 @@ const ArticleByIdQuery = gql`
         username
         firstName
         lastName
+        avatarUrl
         stripeUserId
         stripePlan {
           id
@@ -57,6 +58,7 @@ export const ArticleByIdQueryString = `
         username
         firstName
         lastName
+        avatarUrl
         stripeUserId
         stripePlan {
           id

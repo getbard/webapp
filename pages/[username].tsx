@@ -30,7 +30,7 @@ import GenericError from '../components/GenericError';
 import BardError from './_error';
 import ProfileSectionDisplay from '../components/ProfileSectionDisplay';
 import CollectionContainer from '../components/CollectionContainer';
-
+import Avatar from '../components/Avatar';
 
 type BorderHackProps = {
   width: number | undefined;
@@ -144,6 +144,11 @@ const Author: NextPage = (): React.ReactElement => {
 
       <div className="px-5 pt-5 grid grid-cols-1 sm:grid-cols-4 gap-2 sm:gap-5">
         <div className="text-center break-words mb-10">
+          <Avatar
+            user={user}
+            readOnly={user.id !== auth.userId}
+          />
+
           <div className="text-4xl font-serif font-bold">{user.firstName} {user.lastName}</div>
           <div className="text-xl text-gray-600 mb-2">{user.username}</div>
           

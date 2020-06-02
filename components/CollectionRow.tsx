@@ -38,7 +38,7 @@ function CollectionRow({ collection, refetch }: { collection: Collection; refetc
   }
 
   return (
-    <div className="border border-gray-300 rounded-sm shadow-sm my-2 p-4 flex justify-between items-center">
+    <div className="border border-gray-300 rounded-sm my-2 p-4 flex justify-between items-center">
       <div>
         <div>
           <Link href={`/collections/${collection.id}`}>

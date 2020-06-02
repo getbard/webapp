@@ -31,6 +31,7 @@ import ShareArticleButton from '../../components/ShareArticleButton';
 import AddToCollection from '../../components/AddToCollection';
 import MoreArticles from '../../components/MoreArticles';
 import FreeArticles from '../../components/FreeArticles';
+import Avatar from '../../components/Avatar';
 
 const ArticleContainer: NextPage = (props: any): React.ReactElement => {
   const auth = useAuth();
@@ -193,22 +194,26 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
           </div>
 
           <div className="grid grid-cols-2">
-            <div className="col-span-1">
-              <div className="text-sm font-bold">
-                By&nbsp;
-                <Link href={`/${article.author.username}`} >
-                  <a
-                    className="underline"
-                    onClick={handleAuthorClick}
-                  >
-                    {authorName}
-                  </a>
-                </Link>
-              </div>
+            <div className="col-span-1 flex items-center space-x-2">
+              {article.author?.avatarUrl && <Avatar user={article.author} readOnly={true} small />}
+
+              <div>
+                <div className="text-sm font-bold">
+                  By&nbsp;
+                  <Link href={`/${article.author.username}`} >
+                    <a
+                      className="underline"
+                      onClick={handleAuthorClick}
+                    >
+                      {authorName}
+                    </a>
+                  </Link>
+                </div>
 
 
-              <div className="text-xs w-full relative">
-                <DateMeta resource={article} dateParam="publishedAt" action="" /> | {readingTime}
+                <div className="text-xs w-full relative">
+                  <DateMeta resource={article} dateParam="publishedAt" action="" /> | {readingTime}
+                </div>
               </div>
             </div>
 

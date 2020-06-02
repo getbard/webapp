@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Mon May 18 2020 11:21:21 GMT-0700 (Pacific Daylight Time)
+# timestamp: Tue Jun 02 2020 15:07:24 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -353,7 +353,8 @@ type Query {
   articles(category: String, headerCursor: String, headlessCursor: String): ArticlesPayload
   article(id: ID!): Article
   articleBySlug(slug: String!): Article
-  articlesByUser(userId: ID!, drafts: Boolean): [Article]
+  articlesByUser(userId: ID!, drafts: Boolean, limit: Int): [Article]
+  freeArticlesByUser(userId: ID!, limit: Int): [Article]
   authLink(type: AuthLink!, email: String!): String
   collection(id: ID!): Collection
   commentsByResourceId(resourceId: ID!): [Comment]
@@ -514,4 +515,5 @@ type User {
   stripeDashboardUrl: String
   profileSections: [ProfileSection]
   collections: [Collection]
+  avatarUrl: String
 }

@@ -1,7 +1,6 @@
 
-import { useState } from 'react';
 import Link from 'next/link';
-import { FiCopy, FiFeather } from 'react-icons/fi';
+import { FiFeather } from 'react-icons/fi';
 import { useMutation } from '@apollo/react-hooks';
 
 import { useAuth } from '../hooks/useAuth';
@@ -48,7 +47,7 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
   }
 
   return (
-    <div className="border border-gray-300 rounded-sm shadow-sm my-2 p-4 flex justify-between items-center">
+    <div className="border border-gray-300 rounded-sm my-2 p-4 flex justify-between items-center">
       <div>
         <Link href={articleTitleUrl}>
           <a
