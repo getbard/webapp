@@ -40,6 +40,10 @@ function Avatar({
   const [url, setUrl] = useState(user?.avatarUrl || `https://avatars.dicebear.com/api/identicon/${user.username}.svg?options[background]=%23004346&options[colors]=["blueGrey"]&options[colorLevel]=50`);
 
   const [updateUser, { loading, error, called }] = useMutation(UpdateUserMutation);
+
+  const trackingData = {
+    userId: user.id,
+  };
   
   const handleSelect = (avatarUrl: string): void => {
     setDisplay(false);
@@ -55,6 +59,12 @@ function Avatar({
       },
     }});
 
+    window.analytics.track('AVATAR: new avatar uploaded', {
+      ...trackingData,
+      oldUrl: url,
+      newUrl: avatarUrl,
+    });
+
     setUrl(avatarUrl);
   }
 
@@ -69,7 +79,10 @@ function Avatar({
             >
               <div
                 className="upload-indicator hidden w-full h-full bg-white absolute bg-opacity-75 hover:cursor-pointer justify-center items-center text-4xl text-primary"
-                onClick={(): void => setDisplay(true)}
+                onClick={(): void => {
+                  window.analytics.track('AVATAR: upload icon clicked', trackingData);
+                  setDisplay(true);
+                }}
               >
                 <FiUpload />
               </div>
