@@ -242,7 +242,7 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
           {
             article?.subscribersOnly && article?.contentBlocked && (
               <>
-                <div className="text-center font-bold text-primary p-5 mt-5">
+                <div className="text-center font-bold text-primary p-5 mt-20">
                   <div>
                     Oh! You edited our HTML. We trimmed the content on the server but nice try!
                   </div>

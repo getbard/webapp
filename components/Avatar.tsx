@@ -96,7 +96,7 @@ function Avatar({
                 error={error}
                 bgColor="bg-primary"
               >
-                Saved
+                Saved!
               </Notification>
             </AvatarContainer>
           )
