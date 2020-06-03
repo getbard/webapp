@@ -18,6 +18,7 @@ const ArticleBySlugQuery = gql`
         username
         firstName
         lastName
+        avatarUrl
         stripeUserId
         stripePlan {
           id
@@ -55,6 +56,7 @@ export const ArticleBySlugQueryString = `
         username
         firstName
         lastName
+        avatarUrl
         stripeUserId
         stripePlan {
           id

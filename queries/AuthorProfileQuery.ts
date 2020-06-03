@@ -13,6 +13,7 @@ const AuthorProfileQuery = gql`
       followerIds
       subscribers
       stripeUserId
+      avatarUrl
       stripePlan {
         id
         amount
