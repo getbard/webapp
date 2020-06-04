@@ -37,7 +37,10 @@ function DonationCard({
 
       <Button
         className="w-full md:w-auto"
-        onClick={(): void => onSubmit({ donationAmount })}
+        onClick={(): void => {
+          window.analytics.track('PRESET DONATION CARD: Donate clicked', { donationAmount });
+          onSubmit({ donationAmount });
+        }}
       >
         Donate
       </Button>
