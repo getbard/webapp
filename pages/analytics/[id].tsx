@@ -48,7 +48,7 @@ function CustomizedAxisTick({ x, y, payload }: any): React.ReactElement {
   );
 }
 
-const ArticleContainer: NextPage = (props: any): React.ReactElement => {
+const ArticleContainer: NextPage = (): React.ReactElement => {
   const auth = useAuth();
   const router = useRouter();
   const { id } = router.query;
@@ -56,7 +56,7 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
 
   const { loading, error, data } = useQuery(ArticleAnalyticsByIdQuery, { variables: { id } });
 
-  if (loading && !props?.article?.id) return <ArticleAnalyticsFallback />;
+  if (loading && !id) return <ArticleAnalyticsFallback />;
 
   if (error?.message.includes('Article not found')) return <BardError statusCode={404} hasGetInitialPropsRun={true} err={null} />;
   if (error) return <div><GenericError title error={error} /></div>;
