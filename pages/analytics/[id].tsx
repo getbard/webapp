@@ -79,7 +79,7 @@ const ArticleContainer: NextPage = (props: any): React.ReactElement => {
 
   const analyticsData: {
     [key: string]: any;
-  } = { '06-08-2020': { date: '06-08-2020' } };
+  } = {};
 
   // Populate the last 30 days
   for (let i = 0; i < 30; i++) {
