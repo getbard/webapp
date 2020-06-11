@@ -84,6 +84,15 @@ function DisplayMenu(): React.ReactElement {
 
       <div className="border-b border-gray-200"></div>
 
+      <Link href="/analytics">
+        <a
+          className="hover:bg-gray-100 block py-2 pl-2 pr-12"
+          onClick={(): void => window.analytics.track('MENU: Analytics clicked')}
+        >
+          Analytics
+        </a>
+      </Link>
+
       <Link href="/earn-money">
         <a
           className="hover:bg-gray-100 block py-2 pl-2 pr-12"

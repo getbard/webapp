@@ -47,7 +47,7 @@ function ArticleRow({ article, refetch }: { article: Article; refetch: () => voi
   }
 
   return (
-    <div className="border border-gray-300 rounded-sm my-2 p-4 flex justify-between items-center">
+    <div className="border border-gray-300 rounded-sm my-4 p-4 flex justify-between items-center">
       <div>
         <Link href={articleTitleUrl}>
           <a
