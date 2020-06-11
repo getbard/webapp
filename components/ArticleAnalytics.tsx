@@ -36,7 +36,7 @@ function CustomTooltip({ payload, label, active }: TooltipProps): React.ReactEle
 function CustomizedAxisTick({ x, y, payload }: any): React.ReactElement {
   return (
     <g transform={`translate(${x},${y})`}>
-      <text x={0} y={0} dy={16} textAnchor="end" fill="#004346" transform="rotate(-35)">{format(new Date(payload.value || 0), 'LLLL do')}</text>
+      <text x={0} y={0} dy={16} textAnchor="end" fill="#004346" transform="rotate(-35)">{format(new Date(payload?.value || 0), 'LLLL do')}</text>
     </g>
   );
 }
