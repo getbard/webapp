@@ -179,6 +179,7 @@ function EditorContainer({ article }: { article?: Article }): React.ReactElement
           subscribersOnly,
           headerImage,
           category,
+          wordCount,
         }
       };
     } else {
