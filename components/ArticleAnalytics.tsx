@@ -34,10 +34,9 @@ function CustomTooltip({ payload, label, active }: TooltipProps): React.ReactEle
 }
 
 function CustomizedAxisTick({ x, y, payload }: any): React.ReactElement {
-  console.log(payload, payload.value);
   return (
     <g transform={`translate(${x},${y})`}>
-      <text x={0} y={0} dy={16} textAnchor="end" fill="#004346" transform="rotate(-35)">{format(new Date(payload?.value || 0), 'LLLL do')}</text>
+      <text x={0} y={0} dy={16} textAnchor="end" fill="#004346" transform="rotate(-35)">{format(new Date(payload.value || 0), 'LLLL do')}</text>
     </g>
   );
 }
@@ -58,7 +57,7 @@ function ArticleAnalytics({ id }: { id: string }): React.ReactElement {
 
   // Populate the last 30 days
   for (let i = 0; i < 30; i++) {
-    const date = format(subDays(new Date(), i), 'MM-dd-yyyy');
+    const date = format(subDays(new Date(), i), 'yyyy-MM-dd');
     analyticsData[date] = {
       date,
       views: 0,
