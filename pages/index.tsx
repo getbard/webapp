@@ -42,22 +42,18 @@ const OverflowRightGradient = styled.div`
 `;
 
 function ArticlesContainer({
-  articlesWithHeader = [],
-  articlesWithoutHeader = [],
+  articles = [],
   error,
   loading,
   category,
-  headerCursor,
-  headlessCursor,
+  cursor,
   fetchMore,
 }: {
-  articlesWithHeader: Article[];
-  articlesWithoutHeader: Article[];
+  articles: Article[];
   error: any;
   loading: boolean;
   category: string;
-  headerCursor: string;
-  headlessCursor: string;
+  cursor: string;
   fetchMore: (options: any) => any;
 }): React.ReactElement {
   const [loadingMore, setLoadingMore] = useState(false);
@@ -66,12 +62,12 @@ function ArticlesContainer({
   const debounceFetchMore = debounce(fetchMore, 2000, { leading: true });
 
   useEffect(() => {
-    if (!loadingMore && endOfCardsInView && articlesWithHeader.length > 6) {
+    if (!loadingMore && endOfCardsInView && articles.length > 6) {
       setLoadingMore(true);
 
       debounceFetchMore({
         query: DiscoverArticlesQuery,
-        variables: { category, headerCursor, headlessCursor },
+        variables: { category, cursor },
         updateQuery: ((
           previousResult: ArticlesData,
           { fetchMoreResult }: { fetchMoreResult: ArticlesData }
@@ -81,24 +77,16 @@ function ArticlesContainer({
           const { articles: previousArticles } = previousResult as ArticlesData;
           const { articles: newArticles } = fetchMoreResult as ArticlesData;
 
-          const uniqueArticlesWithHeader = new Map();
-          previousArticles?.articlesWithHeader?.forEach(article => uniqueArticlesWithHeader.set(article?.id, article));
-          newArticles?.articlesWithHeader?.forEach(article => uniqueArticlesWithHeader.set(article?.id, article));
-          const articlesWithHeader = [...uniqueArticlesWithHeader.values()];
-          const headerCursor = articlesWithHeader[articlesWithHeader.length - 1]?.id || null;
-  
-          const uniqueArticlesWithoutHeader = new Map();
-          previousArticles?.articlesWithoutHeader?.forEach(article => uniqueArticlesWithoutHeader.set(article?.id, article));
-          newArticles?.articlesWithoutHeader?.forEach(article => uniqueArticlesWithoutHeader.set(article?.id, article));
-          const articlesWithoutHeader = [...uniqueArticlesWithoutHeader.values()];
-          const headlessCursor = articlesWithoutHeader[articlesWithoutHeader.length - 1]?.id || null;
+          const uniqueArticles = new Map();
+          previousArticles?.articles?.forEach(article => uniqueArticles.set(article?.id, article));
+          newArticles?.articles?.forEach(article => uniqueArticles.set(article?.id, article));
+          const articles = [...uniqueArticles.values()];
+          const cursor = articles[articles.length - 1]?.id || null;
 
           return {
             articles: {
-              articlesWithHeader,
-              articlesWithoutHeader,
-              headerCursor,
-              headlessCursor,
+              articles,
+              cursor,
               __typename: previousArticles.__typename,
             },
           }
@@ -113,8 +101,7 @@ function ArticlesContainer({
   return (
     <>
       <DiscoverArticles
-        articlesWithHeader={articlesWithHeader}
-        articlesWithoutHeader={articlesWithoutHeader}
+        articles={articles}
         category={category}
       />
 
@@ -201,11 +188,9 @@ const Discover: NextPage = (): React.ReactElement => {
             <ArticlesContainer
               error={error}
               loading={loading}
-              articlesWithHeader={data?.articles?.articlesWithHeader}
-              articlesWithoutHeader={data?.articles?.articlesWithoutHeader}
+              articles={data?.articles?.articles}
               category={selectedCategory}
-              headerCursor={data?.articles?.headerCursor}
-              headlessCursor={data?.articles?.headlessCursor}
+              cursor={data?.articles?.cursor}
               fetchMore={fetchMore}
             />
           )

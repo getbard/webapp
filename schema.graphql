@@ -1,5 +1,5 @@
 # source: http://localhost:4000
-# timestamp: Wed Jun 10 2020 15:13:03 GMT-0700 (Pacific Daylight Time)
+# timestamp: Thu Jun 11 2020 14:50:10 GMT-0700 (Pacific Daylight Time)
 
 directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
 
@@ -60,6 +60,8 @@ type ArticlesPayload {
   articlesWithoutHeader: [Article]
   headerCursor: String
   headlessCursor: String
+  articles: [Article]
+  cursor: String
 }
 
 enum AuthLink {
@@ -365,7 +367,7 @@ type PublishArticlePayload {
 }
 
 type Query {
-  articles(category: String, headerCursor: String, headlessCursor: String): ArticlesPayload
+  articles(category: String, cursor: String, headerCursor: String, headlessCursor: String): ArticlesPayload
   article(id: ID!): Article
   articleBySlug(slug: String!): Article
   articlesByUser(userId: ID!, drafts: Boolean, limit: Int): [Article]
