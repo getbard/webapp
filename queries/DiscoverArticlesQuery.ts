@@ -1,11 +1,10 @@
 import gql from 'graphql-tag';
 
 const DiscoverArticlesQuery = gql`
-  query articles($category: String, $headerCursor: String, $headlessCursor: String) {
-    articles(category: $category, headerCursor: $headerCursor, headlessCursor: $headlessCursor) {
-      headerCursor
-      headlessCursor
-      articlesWithHeader {
+  query articles($category: String, $cursor: String) {
+    articles(category: $category, cursor: $cursor) {
+      cursor
+      articles {
         id
         title
         summary
@@ -24,23 +23,6 @@ const DiscoverArticlesQuery = gql`
         headerImage {
           id
           url
-        }
-      }
-      articlesWithoutHeader {
-        id
-        title
-        summary
-        content
-        slug
-        publishedAt
-        subscribersOnly
-        wordCount
-        category
-        author {
-          id
-          username
-          firstName
-          lastName
         }
       }
     }
