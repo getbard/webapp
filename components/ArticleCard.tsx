@@ -43,8 +43,8 @@ function ArticleCard({
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName[0] + '.'}`;
   const readingTime = timeToRead(article.wordCount);
 
-  const articleTitle = !noTrim && article.title.length > 45
-    ? `${article.title.substr(0, article.title.lastIndexOf(' ', 45))}...`
+  const articleTitle = !noTrim && article.title.length > 55
+    ? `${article.title.substr(0, article.title.lastIndexOf(' ', 55))}...`
     : article.title;
 
   const articleSummary = !noTrim && article.summary && article.summary.length > 75
