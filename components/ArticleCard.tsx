@@ -106,7 +106,7 @@ function ArticleCard({
             <textarea
               id={`${article.id}-card-title`}
               className={`cursor-pointer outline-none font-serif font-bold transition duration-150 ease-in resize-none w-full overflow-hidden ${article.title.length > 66 ? 'text-lg' : 'text-xl'}`}
-              rows={article.title.length > 33 ? 2 : 1}
+              rows={article.title.length > 36 ? 2 : 1}
               value={article.title}
               title={article.title}
               readOnly
