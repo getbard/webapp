@@ -43,8 +43,8 @@ function ArticleCard({
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName[0] + '.'}`;
   const readingTime = timeToRead(article.wordCount);
 
-  const articleTitle = !noTrim && article.title.length > 55
-    ? `${article.title.substr(0, article.title.lastIndexOf(' ', 55))}...`
+  const articleTitle = !noTrim && article.title.length > 65
+    ? `${article.title.substr(0, article.title.lastIndexOf(' ', 65))}...`
     : article.title;
 
   const articleSummary = !noTrim && article.summary && article.summary.length > 75
@@ -116,7 +116,7 @@ function ArticleCard({
             <textarea
               id={`${article.id}-card-title`}
               className="cursor-pointer outline-none font-serif font-bold text-xl transition duration-150 ease-in resize-none w-full overflow-hidden"
-              rows={article.title.length > 25 ? 2 : 1}
+              rows={article.title.length > 31 ? 2 : 1}
               value={articleTitle}
               title={article.title}
               readOnly
