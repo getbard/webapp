@@ -102,7 +102,7 @@ function Activity({ activity }: { activity: FeedActivity }): React.ReactElement 
       {
         object?.__typename === 'Article' && (
           <div key={activity.id} className="mt-4 mx-auto w-1/2">
-            <ArticleCard article={activity.object as Article} noTrim />
+            <ArticleCard article={activity.object as Article} />
           </div>
         )
       }
@@ -123,7 +123,7 @@ function Activity({ activity }: { activity: FeedActivity }): React.ReactElement 
       {
         object?.__typename === 'Collection' && action === 'collected' && collectedArticle && (
           <div key={activity.id} className="mt-4 mx-auto w-1/2">
-            <ArticleCard article={collectedArticle as Article} noTrim />
+            <ArticleCard article={collectedArticle as Article} />
           </div>
         )
       }

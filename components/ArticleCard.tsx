@@ -34,22 +34,12 @@ const ArticleCardImage = styled.div`
 
 function ArticleCard({
   article,
-  noTrim = false,
 }: {
   article: Article;
-  noTrim?: boolean;
 }): React.ReactElement {
   const articleHref = article?.slug ? `/articles/s/${article.slug}` : `/articles/i/${article.id}`;
   const authorName = `${article.author.firstName}${article.author?.lastName && ' ' + article.author.lastName[0] + '.'}`;
   const readingTime = timeToRead(article.wordCount);
-
-  const articleTitle = !noTrim && article.title.length > 65
-    ? `${article.title.substr(0, article.title.lastIndexOf(' ', 65))}...`
-    : article.title;
-
-  const articleSummary = !noTrim && article.summary && article.summary.length > 75
-    ? `${article.summary.substr(0, article.summary.lastIndexOf(' ', 75))}...`
-    : article.summary
 
   const trackingData = {
     articleId: article.id,
@@ -115,9 +105,9 @@ function ArticleCard({
           <div>
             <textarea
               id={`${article.id}-card-title`}
-              className="cursor-pointer outline-none font-serif font-bold text-xl transition duration-150 ease-in resize-none w-full overflow-hidden"
-              rows={article.title.length > 31 ? 2 : 1}
-              value={articleTitle}
+              className={`cursor-pointer outline-none font-serif font-bold transition duration-150 ease-in resize-none w-full overflow-hidden ${article.title.length > 66 ? 'text-lg' : 'text-xl'}`}
+              rows={article.title.length > 33 ? 2 : 1}
+              value={article.title}
               title={article.title}
               readOnly
             />
@@ -125,8 +115,8 @@ function ArticleCard({
             <textarea
               id={`${article.id}-card-summary`}
               className="cursor-pointer outline-none text-gray-600 text-sm resize-none w-full overflow-hidden"
-              rows={2}
-              value={articleSummary || ''}
+              rows={article.summary && article.summary.length > 66 ? 4 : 2}
+              value={article.summary || ''}
               title={article.summary || ''}
               readOnly
             />
