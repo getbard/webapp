@@ -80,7 +80,7 @@ function ArticlesContainer({
           const uniqueArticles = new Map();
           previousArticles?.articles?.forEach(article => uniqueArticles.set(article?.id, article));
           newArticles?.articles?.forEach(article => uniqueArticles.set(article?.id, article));
-          const articles = [...uniqueArticles.values()];
+          const articles = [...uniqueArticles.values()].filter(Boolean);
           const cursor = articles[articles.length - 1]?.id || null;
 
           return {
