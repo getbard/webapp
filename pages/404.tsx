@@ -1,36 +1,47 @@
-import { NextPage } from 'next';
-import Link from 'next/link';
-import { NextSeo } from 'next-seo';
+import { NextPage } from 'next'
 
-import withLayout from '../components/withLayout';
+import withLayout from '../components/withLayout'
 
 const Custom404: NextPage = (): React.ReactElement => {
   return (
-    <>
-      <NextSeo
-        title="404"
-        description="We couldn't find what you were looking for."
-      />
+    <div className="p-5 container mx-auto text-2xl space-y-8">
+      <p>Were you expecting to find something else?</p>
 
-      <div className="flex justify-center items-center flex-col p-40 text-lg">
-        <div className="text-4xl text-center font-serif">
-          <div>
-            Not all those who wander are lost.
-          </div>
-        </div>
+      <p>Us too.</p>
 
-        <div>
-          J.R.R. Tolkien was right. And we couldn&apos;t find what you were looking for.
-        </div>
+      <p>
+        Earlier this year we left our jobs to chase a vision. A vision where the
+        great content creators of the web would be compensated for their work.
+        Instead of focusing on marketing, social media, or popularity contests,
+        they could write about what they are passionate about. The things that
+        keep them up at night. And in return? Those of us looking for great
+        content would reward the creators directly.
+      </p>
 
-        <Link href="/">
-          <a className="underline">
-            Find your way home
-          </a>
-        </Link>
-      </div>
-    </>
-  );
+      <p>
+        We still believe in this vision. You can see aspects of it all over the
+        internet. Bard is no longer part of those pushing to help the creators.
+      </p>
+
+      <p>
+        <strong>We failed.</strong>
+      </p>
+
+      <p>
+        We failed to get our product in front of the people. We failed to
+        support the writers the way they needed us to. We failed to stick to our
+        vision and believe in ourselves. For all of those reasons, we are sorry.
+      </p>
+
+      <p>
+        For those we let down, we hope you find a place on the internet where
+        you are compensated in the way you deserve. Never give up on your
+        vision.
+      </p>
+
+      <p>Godspeed.</p>
+    </div>
+  )
 }
 
-export default withLayout(Custom404);
+export default withLayout(Custom404)
