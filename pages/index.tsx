@@ -21,6 +21,9 @@ const Goodbye: NextPage = (): React.ReactElement => {
       <p>
         We still believe in this vision. You can see aspects of it all over the
         internet. Bard is no longer part of those pushing to help the creators.
+      </p>
+
+      <p>
         <strong>We failed.</strong>
       </p>
 
