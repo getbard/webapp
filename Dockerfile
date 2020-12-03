@@ -33,7 +33,6 @@ RUN yarn --production --frozen-lockfile
 RUN yarn cache clean
 
 COPY --from=builder /build/.next .next
-COPY --from=builder /build/generated generated
 COPY public public
 COPY .env .env
 
